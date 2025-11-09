@@ -1,0 +1,371 @@
+/* ==========================================================================
+   VIDEOPLAYER REBUILD: MINIMAL, FUTURISTIC, FUNCTIONAL
+   ========================================================================== */
+
+/* 1. Basis: Globale Variabelen & Reset
+   -------------------------------------------------------------------------- */
+:root {
+    /* Kleurenpalet */
+    --color-background: #0A0A0C; /* Net geen puur zwart om banding te voorkomen */
+    --color-panel: #14161A;      /* Donkergrijs voor het 'zwevende' paneel */
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-accent-blue: #00AFFF; /* Helder, energiek blauw voor accenten */
+    --color-accent-blue-glow: rgba(0, 175, 255, 0.35);
+    --color-text-primary: rgba(255, 255, 255, 0.9);
+    --color-text-secondary: rgba(255, 255, 255, 0.6);
+
+    /* Spatiëring & Radii */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xlg: 32px;
+    --border-radius-md: 12px;
+    --border-radius-sm: 8px;
+
+    /* Timing voor transities */
+    --transition-fast: 0.15s ease-out;
+    --transition-medium: 0.25s ease-out;
+
+
+}
+
+
+/* 2. Body & Algemene Layout
+   -------------------------------------------------------------------------- */
+body.videoPlayer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: var(--vh);
+    background-color: var(--color-background);
+    background-image: 
+         /* Laag 1 (bovenop): Een subtiele paarse nevel voor diepte */
+         radial-gradient(
+            circle at 20% 20%,
+            rgba(140, 82, 255, 0.10) 0%,
+            transparent 40%
+         ),
+
+        /* Laag 2 (midden): De hoofd-accentkleur, een blauwe nevel */
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(0, 175, 255, 0.12) 0%,
+            transparent 50%
+        );
+       /* De 'canvassen' zijn 2x zo groot als het scherm, zodat ze kunnen bewegen */
+    background-size: 200% 200%, 200% 200%;
+
+    /* Startposities voor de animatie */
+    background-position: 0% 0%, 0% 0%;
+
+    /* De animatie zelf */
+    animation: futuristicDrift 40s ease-in-out infinite;
+    font-family: var(----font-main);
+    color: var(--color-text-primary);
+    padding: var(--spacing-md);
+    overflow: hidden;
+    color-scheme: dark; /* Optimaliseert browser-UI (zoals scrollbars) voor donkere thema's */
+}
+
+/* Header en footer worden verborgen voor een 'app-like' gevoel.
+   Verwijder 'display: none' als je ze toch nodig hebt. */
+header, footer {
+    display: none;
+}
+
+/* 3. Artboard: Het hoofdframe
+   -------------------------------------------------------------------------- */
+.video-artboard {
+    display: grid;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 1800px;
+    max-height: min(var(--vh), 1024px);
+    
+    background-color: var(--color-panel);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 0px 2px var(--color-accent-blue-glow);
+    padding: var(--spacing-lg);
+    gap: var(--spacing-lg);
+    overflow: hidden;
+}
+
+/* De 'HUD'-hoeken voor een futuristisch accent. Dit vervangt alle drukke randen. */
+.video-artboard::before,
+.video-artboard::after {
+    content: '';
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-color: var(--color-accent-blue);
+    border-style: solid;
+}
+
+.video-artboard::before {
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    border-width: 2px 0 0 2px;
+}
+
+.video-artboard::after {
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+    border-width: 0 2px 2px 0;
+}
+
+/* 4. Videocontainer & Video Element
+   -------------------------------------------------------------------------- */
+.video-player {
+    grid-area: video;
+    display: flex;
+    background-color: #000; /* Zwarte achtergrond voor letterboxing */
+    border-radius: var(--border-radius-sm);
+    overflow: hidden; /* Zorgt dat de video netjes binnen de radius blijft */
+
+}
+
+.video-player video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border: 1px solid var(--color-text-primary);
+    border-radius: var(--border-radius-sm);
+}
+
+/* 5. Controls & Knoppen
+   -------------------------------------------------------------------------- */
+.allButtonsContainer,
+.future-controls,
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.future-controls {
+    grid-area: controls;
+}
+
+body.videoPlayr .allButtonsContainer{
+    overflow-y: auto;
+    min-height: 0;
+    max-height: 100%;
+}
+
+.action-buttons {
+    grid-area: actions;
+    justify-content: flex-end; /* Knoppen onderaan uitlijnen */
+}
+
+.future-controls__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Algemene knopstijl */
+.customButton,
+#Terugknop,
+#shuffleknop {
+    appearance: none;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 12px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition:
+        color var(--transition-fast),
+        background-color var(--transition-fast),
+        border-color var(--transition-fast),
+        box-shadow var(--transition-medium),
+        transform var(--transition-fast);
+}
+
+/* Interactiestaten: hier komt het blauwe accent tot leven */
+.customButton:hover,
+#Terugknop:hover,
+#shuffleknop:hover {
+    border-color: var(--color-accent-blue);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.customButton:focus-visible,
+#Terugknop:focus-visible,
+#shuffleknop:focus-visible {
+    outline: none;
+    border-color: var(--color-accent-blue);
+    box-shadow: 0 0 12px var(--color-accent-blue-glow);
+    color: #fff;
+}
+
+/* 6. Responsive Layout met Media Queries
+   -------------------------------------------------------------------------- */
+
+/* Default: Desktop (1200px+) */
+.video-artboard {
+    grid-template-columns: clamp(280px, 20vw, 350px) 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "controls video";
+    /* 'actions' wordt in 'controls' geplaatst via flexbox */
+}
+
+.future-controls {
+    justify-content: space-between; /* Titel bovenaan, actieknoppen onderaan */
+   
+}
+
+
+/* Tablet (769px tot 1199px) */
+@media (max-width: 1199px) {
+    .video-artboard {
+        grid-template-columns: clamp(240px, 25vw, 280px) 1fr;
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+}
+
+
+/* --- Mobiel Algemeen (geldt voor ZOWEL Portrait als Landscape) --- */
+@media (max-width: 768px) {
+   body.videoPlayer {
+        padding: 0; /* Geen padding op de body voor edge-to-edge */
+    }
+    body.videoPlayer .video-artboard {
+        width: 100vw;
+        height: var(--vh);
+        max-height: var(--vh);
+        margin: 0;
+        border-radius: 0;
+        border: none;
+    }
+    body.videoPlayer .future-controls__title { display: none; }
+    body.videoPlayer .video-artboard::before, .video-artboard::after { display: none !important; } 
+}
+
+
+/* Mobiel Portrait (tot 768px) */
+@media (max-width: 768px) and (orientation: portrait){
+    body.videoPlayer .video-artboard {
+        padding: var(--spacing-md);
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr; /* Controls nemen benodigde ruimte, video de rest */
+        grid-template-areas:
+            "dashboard"
+            "video";
+    }
+
+    /* .allButtonsContainer wordt nu de 'dashboard' area */
+    body.videoPlayer .allButtonsContainer {
+        grid-area: dashboard;
+        flex-direction: column;
+        gap: var(--spacing-md);
+        height: 100%;
+    }
+
+    body.videoPlayer .future-controls,
+    body.videoPlayer .action-buttons {
+        flex-direction: row; /* Knoppen naast elkaar */
+        justify-content: space-around;
+        gap: var(--spacing-sm);
+    }
+
+    body.videoPlayer .video-player {
+        grid-area: video;
+        /* De container mag nu kleiner worden dan zijn content, wat overflow voorkomt. */
+        min-height: 0;
+    }
+    
+}
+
+/* Mobiel Landscape (tot 768px breed) */
+@media screen and (max-width: 926px) and (orientation: landscape) {
+
+    body.videoPlayer {
+        padding: 0;
+    }
+
+    body.videoPlayer .video-artboard {
+        border: none;
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+        
+        /* DE OPLOSSING: Definieer de structuur expliciet. */
+        /* Eén rij hoog, twee kolommen breed. */
+        grid-template-columns: clamp(180px, 25vw, 220px) 1fr;
+        grid-template-rows: 1fr;
+        
+        /* Vertel de grid welke gebieden waar moeten komen. */
+        grid-template-areas: "dashboard video";
+    }
+
+
+
+    body.videoPlayer .video-player {
+             /* OPLOSSING (EXTRA): Voorkomt dat de video de layout oprekt in de breedte. */
+         /* Deze twee regels zorgen dat de container nooit de grid oprekt */
+        min-width: 0;
+        min-height: 0;
+        grid-area: video;
+    }
+
+    body.videoPlayer .allButtonsContainer {
+             /* OPLOSSING (EXTRA): Voorkomt dat de video de layout oprekt in de breedte. */
+        min-height: 0;
+        grid-area: dashboard;
+    }
+
+
+        /* Zorg dat de container voor de knoppen zichtbaar is */
+    body.videoPlayer .allButtonsContainer {
+        display: flex;
+        grid-area: dashboard;
+        flex-direction: column; /* Stapel de control-groepen verticaal */
+        justify-content: space-between; /* Duwt de titel/knoppen naar boven en actieknoppen naar beneden */
+        gap: var(--spacing-lg);
+        overflow-y: auto;       
+    }
+
+        /* Er is nu ruimte voor de titel, dus toon hem weer */
+    body.videoPlayer .future-controls__title {
+        display: block;
+    }
+    
+    /* Zorg dat de knoppen binnen de groepen ook verticaal staan */
+    body.videoPlayer .future-controls,
+    body.videoPlayer .action-buttons {
+        flex-direction: column; /* Knoppen onder elkaar */
+        align-items: stretch; /* Laat knoppen de volledige breedte van de sidebar vullen */
+    }
+
+        /* Herstel de ronde hoeken die in de vorige versie weg waren gehaald */
+    body.videoPlayer .video-player,
+    body.videoPlayer .video-player video {
+        border-radius: var(--border-radius-sm);
+    }
+
+    body.videoPlayer .video-player video {
+        height: 100%;
+     }
+
+
+    body.videoPlayer .video-artboard::before, .video-artboard::after { display: none !important; } 
+
+}
+
+@media screen and (max-height: 275px) and (orientation: landscape) {
+    body.videoPlayer .action-buttons {
+        display: none !important;
+    }
+    
+}

@@ -1,0 +1,296 @@
+/** -- FONTS & VARIABLES ---- */
+@font-face {
+    font-family: 'DarkForest';
+    src: url('../assets/dark_forest/darkforest.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+
+    /**------------[colors]----------*/
+
+    /*background*/
+    --font-main: 'DarkForest', sans-serif;
+    --color-primary-blue--bg---dark: #152036;
+    --color-primary-blue--bg---medium: #2B305F;
+    --color-primary-blue--bg---light: #3A5078;
+    --color-primary-white--bg: #F4F4F8;
+    --color-accent-blue--bg: #3498db;
+    --color-accent-grey--bg:  rgb(232, 232, 232);
+
+    /*text*/
+    --color-primary-white--text---main: #F5F7FA;
+    --color-primary-white--text---alt: #ffffff;
+    --color-primary-white--text---light: #F7FFF6;
+
+    /*border*/
+    --color-primary-white--border--bright: whitesmoke;
+    --color-primary-grey--border---light: #f3f3f3;
+    --color-primary-white--border--accent: rgba(255, 255, 255, 0.85);
+ 
+
+    /**-------[Spatiëring ]-----------*/
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-smd: 10px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xlg: 32px;
+
+    /*letter-space*/
+    --space-letter-lg: 0.08em;
+    --space-letter-xlg: 0.10em;
+    
+    /**-----------[ Typografie ]---------*/
+    --font-size-base: clamp(16px, 1.2vw, 20px);
+    --font-size-label: clamp(15px, 1.1vw, 18px);
+    --font-size-h2: clamp(18px, 2vw, 24px);
+
+    --font-size-checkbox--icon: 14px;
+
+
+    /**-------------[ Borders ]------------*/
+    --border-radius-sm: 5px;
+    --border-radius-smd: 8px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 15px;
+    --border-standard: 3px solid var(--color-primary-white--border);
+
+    --border-size-lg: 4px;
+
+    --vh: 100dvh;
+
+    /**height - width **/
+    --height-max: 900px;
+    --width-max: 1600px;
+
+    --checkbox-dimensions: 24px;
+    --checkbox-dimensions--bigger: 28px;
+
+    --vp-background-style: solid; /* solid | subtle-grid | vignette */
+    --vp-bg-color: #0b0b0d;       /* basiszwart, net geen #000 voor banding */
+    --vp-grid-color: rgba(255, 255, 255, 0.04);
+    --vp-vignette-center: rgba(0, 0, 0, 0);
+    --vp-vignette-edge: rgba(0, 0, 0, 0.65);
+
+
+}
+
+:root[future-theme="light"] {
+
+    /**box-shadow*/
+    --form-box-shadow-color--main: var(0, 0, 0, 0.30);
+    --form-box-shadow-color--main-subtle: var(0, 0, 0, 0.10);
+    --form-box-shadow-color--blue-accent: rgba(52, 152, 219, 0.7);
+    --form-box-shadow-color--white-accent: rgba(255, 255, 255, 0.7);
+
+    /**---------------[FONT]-------------*/
+
+    /**color*/
+    --selection-bg-text-color-darkBlue: #2C3E50;
+    --selection-bg-text-color-lightBlue: #5A7692;
+    --selection-bg-text-color-lightBlueShade: #6e7b8b;
+    --selection-border-color--main: rgb(48, 72, 120);
+    --selection-border-color--main--subtleTrans: rgba(48, 72, 120, 0.9);
+    --selection-border-color--main--semiTans: rgba(48, 72, 120, 0.5);
+    --selection-bg-mainContainer: rgba(255, 255, 255, 0.8);
+    --selection-bg-mainContainer--trans: rgba(255, 255, 255, 0.7);
+  
+
+    /**---->>checkbox*/
+    /*default*/
+    --selection-checkbox-bg-color-main: #304878c7;
+    --selection-checkbox-border-color-main: rgba(255, 255, 255, 0.95);
+    --selection-checkbox-border-color-accent--warm: rgba(245, 245, 245, 0.95);
+    
+
+    /*hover*/
+    --selection-checkbox-border-color-main--hover:rgba(255, 255, 255, 1);
+    --selection-checkbox-bg-color-main--hover: #3ea6ea;
+    --selection-checkbox-shadow-outsidecolor: var(--selection-bg-mainContainer--trans);
+    --selection-checkbox-shadow-insidecolor: rgba(255, 255, 255, 0.15);
+    
+
+    /**size*/
+    --selection-font-size-introText--h2---mobile: clamp(16px, 1.7vw, 1.2rem);
+    --selection-font-size-introText--h2--Sub---mobile: clamp(14px, 1.4vw, 1rem);
+
+    /**-----------[shadow]----------*/
+
+    --selection-bg-text-shadow-blue-trans: rgba(21, 32, 54, 0.3);
+    --selection-bg-text-shadow-blue-trans--Sub: rgba(21, 32, 54, 0.1);
+
+    --selection-border-shadow--main--blueaccent: rgba(52, 152, 219, 0.7);
+
+    /**box-shadow*/
+    --form-box-shadow-main: 0px 4px 12px var(--form-box-shadow-color--main);
+    --form-box-shadow-main--subtle: 0px 4px 12px var(--form-box-shadow-color--main-subtle);
+    --form-box-shaduw--blueaccent: 0 0 18px 2px var(--form-box-shadow-color--blue-accent);
+    --form-box-shaduw--blueaccent---border: 0 0 18px var(--form-box-shadow-color--blue-accent);
+    --form-box-shadow-darkblue--inset: 0 0 20px 1px var(--selection-bg-text-color-lightBlueShade);
+
+    /**-->>checkbox*/
+    --form--checkbox-shadouw-hover-main: 
+            0 0 2px 1px var(--selection-checkbox-shadow-outsidecolor),
+            inset 0 0 10px 2px var(--selection-checkbox-shadow-insidecolor);
+
+
+
+    /*
+    /**heigt*/
+    --selection-footer-h: clamp(44px, 8vh, 64px);
+    /*min ideaal, max*/
+    --selection-header-h: clamp(2rem, 7vh, 3rem);
+    /*min ideaal, max*/
+
+    /**padding*/
+    --selection-introText-pad-y: clamp(1rem, 7vh, 1.5rem);
+    --selection-introText-pad-x: clamp(0.7rem, 3vw, 1rem);
+    --selection-footer-pad-y: 6px;
+    --selection-footer-pad-y--landscape: 2px;
+    --selection-mainContainer-pad: clamp(0.5rem, 5vh, 0.7rem) clamp(0.1rem, 5vw, 0.2rem);
+
+    /**column-gap*/
+    --selection-column-gap--main: clamp(1rem, 10vh, 1.5rem);
+    --selection-column-gap--main---sm: clamp(var(--spacing-xs), 2vh, var(--spacing-sm));
+    --selection-column-gap--main---md: clamp(var(--spacing-md), 5vh, var(--spacing-lg));
+
+
+    /**dynamic heigt*/
+     --vh: 100dvh;
+
+     /**------------------------[VIDEO]-------------------****/
+     --videoplayer-height-footer-header: max(4.5vh, var(var(--space-letter-xlg)));
+
+}
+
+
+:root[future-theme="dark"] {
+    /** Tekst: helder en leesbaar, maar niet pijnlijk wit */
+    --color-text-light: #F7FFF6;
+
+
+    /** Containers: subtiel lichter voor een gelaagd effect */
+    --selection-bg-mainContainer: rgba(58, 80, 120, 0.2);
+    /* Transparante versie van --color-primary-light */
+
+    /** Randen & Schaduwen: geen harde lijnen, maar een zachte 'gloed' */
+    --selection-border-color--main: rgba(52, 152, 219, 0.7);
+    /* Transparante versie van je accentkleur */
+
+    /* Vertel de browser dat dit een dark scheme is */
+    color-scheme: dark;
+    --vh:  100dvh;
+}
+
+
+/** ---GLOBAL RESET--- */
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    display: block;
+    height: auto;
+
+}
+
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--color-primary-dark);
+    height: auto;
+    color-scheme: light;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(92, 88, 88);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease-out, visibilty 0.5s ease-out;
+}
+
+.loading-screen--hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader {
+    border: 8px solid var(--color-primary-grey--border---light);
+    border-top: 8px solid var(--color-accent-blue--bg);
+    border-radius: 50%;
+    display: flex;
+    width: clamp(min(50px, 10vw), 50px, max(75px, 20vw));
+    height: clamp(min(50px, 10vw), 50px, max(75px, 20vw));
+    animation: spin 2s linear infinite;
+}
+
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* --- VOEG DEZE KEYFRAMES TOE AAN JE CSS (bijv. onderaan) --- */
+@keyframes bgDriftCalm {
+  0%   { background-position: 0% 40%, 60% 60%; }
+  50%  { background-position: 100% 60%, 40% 40%; }
+  100% { background-position: 0% 40%, 60% 60%; }
+}
+
+@keyframes futuristicDrift {
+  0% {
+    /* Startpositie voor beide nevels */
+    background-position: 0% 0%, 0% 0%;
+  }
+  25% {
+    /* Halverwege bewegen ze naar tegenovergestelde hoeken voor een parallax-effect */
+    background-position: 100% 100%, 0% 100%;
+  }
+  75% {
+    /* Halverwege bewegen ze naar tegenovergestelde hoeken voor een parallax-effect */
+    background-position: 0% 100%, 100% 100%;
+  }
+  100% {
+    /* Terug naar de startpositie voor een naadloze loop */
+    background-position: 0% 0%, 0% 0%;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .selection-main {
+        animation: none;
+    }
+}
+
+/** --- UTILITY CLASSES --- */
+.d-none {
+    display: none;
+}
+
+.d-flex {
+    display: flex;
+}
+
