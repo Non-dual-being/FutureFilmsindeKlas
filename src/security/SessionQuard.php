@@ -8,6 +8,7 @@ final class SessionQuard {
         private readonly bool $strictSameSite;
         private readonly string $baseUrl;
         private readonly bool $isSecure;
+        private const LOGINPAGE = 'loginfuturepage.php';
 
     public function __construct(
         int $timeoutSeconds = 1800,
@@ -36,7 +37,7 @@ final class SessionQuard {
                 'use_only_cookies'  => 1,
                 'use_strict_mode'   => 1,
                 'cookie_httponly'   => 1,
-                'cookie_secure'     => $this->isSecure && !str_contains($_SERVER['HTTP_HOST'], 'localhost'),
+                'cookie_secure'     => $this->isSecure /*&&  !str_contains($_SERVER['HTTP_HOST'], 'localhost') */,
                 'cookie_samesite'   => $this->strictSameSite 
                     ? 'Strict' 
                     : 'Lax'
@@ -50,6 +51,96 @@ final class SessionQuard {
          * if left doesnt exist or is null then assign it with right value
          */
 
+        /* 
+           * [-----------------------------------[COOKIES EXPLANATION]------------------]  
+        */
+
+        /**-------------]| use_only_cookies |
+         * PHP gebruikt alleen cookies voor sessie-ID's (geen url parameter als SID)
+         * VOorkomt session fixation via URL
+         * 
+        */
+
+
+        /**-------------]| use_strict_mode |
+         * PHP accpeteert geen geranden of reeds gebruikte sessie ids. 
+         * ALs sessie id niet bestaat wordt er een nieuwe aangemaakt
+         * ZOnder deze instelling kan een aanvallen eigen ID injecteren
+         * 
+        */
+
+        /**-------------]| cookie_httponly |
+         * De sessie cookie krijgt de vlag HTTP only waardoor het niet toegankelijk is via javascript
+         * Verminderd XSS impact
+         * Cookie kan niet uitgelezen worden via document.cookie
+         * 
+        */
+
+        /**-------------]| cookie_secure |
+         * Alleen cookie verzenden als het over een veilige verbinding draait
+         * 
+        */
+
+        /**-------------]| cookie_samesite |
+         * Strict: Sessiecookie gaat nuiet mee in crosss-sute requests ook niet via links
+         * Lax: Cookie wordt niet meegestuurd bij cross-site POSTS maar wel bij top level navigaties (VIA GET)
+         * None Staat cross site altijd toe, dit moet in combie met cookie secure
+         * 
+        */
+
+        /* 
+           * [-----------------------------------[FINGERPRINT]------------------]  
+        */
+
+                /** ---------] | user_agent | & | 'ip_address |
+         * je instrueert php met cookie -en security opties
+         * php genereert of hervat een sessie id via cookie PHPSESSID
+         * $_SESSION een superglobale due gevuld en weggescheven wordt
+         */
+
+
+
+        /* 
+           * [-----------------------------------[PHP SESSIE COOKIE]------------------]  
+        */
+
+        /** ---------] | session start |
+         * je instrueert php met cookie -en security opties
+         * php genereert of hervat een sessie id via cookie PHPSESSID
+         * $_SESSION een superglobale due gevuld en weggescheven wordt
+         */
+
+        /* 
+           * [-----------------------------------[BEST PRACTICES]------------------]  
+        */
+
+        /** secure + httponly + samesite/strict altijd op true instellen */
+
+        /** sessie-id regeneren om fixation tegen te komen: `session_regenerate_id(true)` */
+
+        /** session life-time + inactivity timeout instellen bijvoorbeeld 30 min */
+
+        /** cookie_path idealiter op je app root */
+
+        /** cookie_domein alleen als je subdomeinen wilt delen */
+
+        /** fingerprint User Agent op basis van tolerante check (browsers kunnen het wijzigen) */
+
+        /** fingerprint ID -> hard match kan te stevig zijn vanwege wisselingen: controleer op delen zoals ASN of laatste 3 cijfers */
+
+        /** CSRF-tokens -> gebruik CSRF server side tokens voor extra beveiliging bij formulieren */
+
+        /** XSS-hardening Httponly is stap 1 aanvullend strikte content security, output escaping,vermijden van inline scripts of zet nonce/hashes */
+
+        /** logout unset alle sessie waarden, session_destroy gebruiken, sessesie cookie ongeldig maken */
+
+        /** Bij ontbreken van https redirect of veilig falen */
+
+
+
+        
+        
+
     }
 
     public function publicSessionStart(): void 
@@ -59,7 +150,7 @@ final class SessionQuard {
                 'use_only_cookies'  => 1,
                 'use_strict_mode'   => 1,
                 'cookie_httponly'   => 1,
-                'cookie_secure'     => $this->isSecure && !str_contains($_SERVER['HTTP_HOST'], 'localhost'),
+                'cookie_secure'     => $this->isSecure /* &&  !str_contains($_SERVER['HTTP_HOST'], 'localhost') */,
                 'cookie_samesite'   => $this->strictSameSite 
                     ? 'Strict' 
                     : 'Lax'
@@ -94,7 +185,7 @@ final class SessionQuard {
 
         if (!$validSessionSettings) {
             error_log("ongewenste login");
-            $this->logoutAndRedirect('db_inlogPagina.php');
+            $this->logoutAndRedirect(self::LOGINPAGE);
         }
 
          // activity check
@@ -113,7 +204,7 @@ final class SessionQuard {
     }
 
 
-    public function logoutAndRedirect(string $location = 'db_inlogPagina.php'): never
+    public function logoutAndRedirect(string $location = self::LOGINPAGE): never
     {
         $secureLocation = $this->makeBaseUrlLink($location);
         $this->destroySession();

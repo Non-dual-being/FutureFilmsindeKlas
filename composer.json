@@ -10,7 +10,7 @@
             "GeoFort\\": "src/"
         },
         "files": [
-            "src/Security/bootstrap.php"
+            "src/bootstrap.php"
         ]
     }
 }
