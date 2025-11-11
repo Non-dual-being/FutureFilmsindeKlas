@@ -27,22 +27,65 @@ const bindControlsOnce = () => {
 
 const getDefaultvideoList = (myVideoList, max = 8, level = '1') => {
     console.warn("selectionpage list was empty, rendering defaultlist");
-    const themes = Object.keys(myVideoList); //array van de keys
-    const pick = new Set();
 
-    const poolSize = themes.reduce(
-        (n, t) => n + ((myVideoList[t][level] || []).length),
+    const themes = Object.keys(myVideoList); //array van de keys
+
+    /**
+     * map is a datastructuur for key value pairs 
+     * slice kopies array of theme and level specific vids
+     * result is a key value pair of key theme and vids of chosen levens in array
+     * */
+
+    const listByTheme = new Map(
+        themes.map((t) => [
+            t,
+            ((myVideoList[t]?.[level] || [])).slice()
+        ])
+    )
+
+    let themesLoop = themes.filter((t) => 
+        ((listByTheme.get(t)?.length || 0) > 0)
+    );
+
+    const poolSize = themesLoop.reduce((n, t) =>
+        n + (listByTheme.get(t)?.length || 0),
         0
     );
 
-    if (poolSize === 0) return [];
 
-    while (pick.size < Math.min(max, poolSize)) {
-        const theme = themes[Math.floor(Math.random() * themes.length)];
-        const list = myVideoList[theme][level] || [];
+    /**
+     * n is initialie 0, dan after first loop the amount of videos of the first theme'
+     * On ended you have the amounbt of videos of that level
+     */
+
+    if (poolSize == 0) return [];
+
+    const target = Math.min(max, poolSize);
+    const pick = new Set();
+
+    while (pick.size < target) {
+        if (themesLoop.length == 0){
+            themesLoop = themes.filter((t) => (listByTheme.get(t)?.length || 0)  > 0);
+            if (themesLoop.length === 0) break;
+        }
+
+        
+        const idxTheme = Math.floor(Math.random() * themesLoop.length);
+        const theme = themesLoop[idxTheme];
+
+        themesLoop = themesLoop.filter(t => t !== theme);
+
+        const list = listByTheme.get(theme) || [];
         if (list.length === 0) continue;
-            const item = list[Math.floor(Math.random() * list.length)];
-            pick.add(item);
+
+        const idxItem = Math.floor(Math.random() * list.length);
+        const item = list[idxItem];
+
+        const newList = list.filter(video => video !== item);
+        listByTheme.set(theme, newList);
+
+        pick.add(item);
+
     }
         
     return [...pick];
