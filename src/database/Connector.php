@@ -1,6 +1,6 @@
-<? 
+<?php 
 declare(strict_types=1);
-namespace GeoFort\database;
+namespace GeoFort\Database;
 
 use PDO;
 use PDOException;
@@ -61,7 +61,4 @@ class Connector {
         return self::$instance;
     }
 }
-
-
-
 ?>

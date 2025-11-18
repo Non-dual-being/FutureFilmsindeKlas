@@ -10,7 +10,8 @@
             "GeoFort\\": "src/"
         },
         "files": [
-            "src/bootstrap.php"
+            "src/bootstrap.php",
+            "src/Services/ErrorHandlers/Flashhelpers.php"
         ]
     }
 }

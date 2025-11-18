@@ -1,0 +1,276 @@
+body.main-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+    place-items: center;
+    align-content: center ;
+    height: 100%;
+    width: 100%;
+    min-height: calc(var(--vh) * 100);
+    gap: var(--spacing-md);
+    background-color: var(--color-background);
+
+    background-image: 
+         /* Laag 1 (bovenop): Een subtiele paarse nevel voor diepte */
+         radial-gradient(
+            circle at 20% 20%,
+            rgba(140, 82, 255, 0.10) 0%,
+            transparent 40%
+         ),
+
+        /* Laag 2 (midden): De hoofd-accentkleur, een blauwe nevel */
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(0, 175, 255, 0.12) 0%,
+            transparent 50%
+        );
+       /* De 'canvassen' zijn 2x zo groot als het scherm, zodat ze kunnen bewegen */
+    background-size: 200% 200%, 200% 200%;
+
+    /* Startposities voor de animatie */
+    background-position: 0% 0%, 0% 0%;
+
+    /* De animatie zelf */
+    animation: futuristicDrift 40s ease-in-out infinite;
+    font-family: var(----font-main);
+    color: var(--color-text-primary);
+    padding: var(--spacing-md);
+    overflow: hidden;
+    color-scheme: dark; /* Optimaliseert browser-UI (zoals scrollbars) voor donkere thema's */
+
+}
+
+.login-container {
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    width: 100%;
+    max-width: 500px;
+}
+
+body form.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    gap: var(--spacing-md);
+    background-color: var(--color-panel, #14161A);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md, 12px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 0 2px var(--color-accent-blue-glow);
+    padding: var(--spacing-lg);
+
+}
+
+.inlogh1 {
+    font-family: var(----font-main);
+    color: var(--color-text-primary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    text-align: center;
+}
+
+form section label, form section input {
+    display: flex;
+}
+
+form section {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: clamp(var(--spacing-sm), (var(--vh) * 5), var(--spacing-md));
+}
+
+form.login-form input[type="email"],
+form.login-form input[type="password"] {
+    width: 100%;
+    padding: var(--spacing-md);
+    font-family: var(----font-main);
+    border-radius: var(--border-radius-sm);
+    background-color: transparent;
+    color: var(--color-primary-white--text---main);
+    font-size: var(--font-size-base);
+    font: var(----font-main);
+    transition: all 0.3 ease-in-out;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+form.login-form input[type="email"]:hover,
+form.login-form input[type="password"]:hover {
+    box-shadow: var(--form-box-shadow-main);
+}
+
+form.login-form input[type="email"]:active,
+form.login-form input[type="password"]:active {
+    box-shadow: var(--form-box-shadow-main--subtle);
+    border: 1px solid var(  --selection-checkbox-border-color-accent--warm);
+}
+
+form label {
+    font-weight: bold;
+
+}
+
+form button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    border: 3px solid white;
+    background: var(--selection-checkbox-border-color-accent--warm);
+    color: black;
+    font-family: var(----font-main);
+    letter-spacing: var(--space-letter-xlg);
+    font-weight: bold;
+    font-size: var(--font-size-h2);
+    transition: all 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+form button:hover{
+    background-color: transparent ;
+    color: var(--selection-checkbox-border-color-accent--warm);
+    box-shadow: var(--form-box-shadow-darkblue--inset);
+
+}
+
+form button:active{
+    background-color: var(--selection-bg-text-shadow-blue-trans);
+    box-shadow: none;
+}
+
+@media (max-width: 926px) {
+    body.main-grid{
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        min-height: calc(var(--vh) * 100);
+        align-items: center;
+        padding: var(--spacing-sm) var(--spacing-lg);
+        height: 100%;
+        width: 100%;
+        max-width: 100vw;
+
+    }
+
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 100%;
+        min-height: 100%;
+        width: 100%; 
+        flex-grow: 1;
+        grid-row: none;
+
+    }
+
+}
+
+@media (max-width: 926px) and (orientation: portrait){
+    .login-container{
+        justify-content: center;
+    }
+
+    .inlogh1 {
+        display: inline-flex;
+        flex-direction: row;
+
+    }
+
+    .login-container form.login-form,
+    .login-container .inlogh1 {
+
+        width: 100%;
+        
+    }
+
+
+
+     body.main-grid .login-container form.login-form{
+        height: auto;
+        justify-content: space-evenly;
+        gap: 3rem;
+        padding: 3rem var(--spacing-xlg); 
+        
+    }
+
+     body.main-grid .login-container form.login-form section{
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        gap: var(--spacing-md);
+     }
+}
+
+
+@media (max-width: 926px) and (orientation: landscape) {
+        body.main-grid  {
+            overflow-y: auto;
+        }
+
+        body.main-grid .login-container {
+            height: auto;
+            min-height: 100%;
+            max-width: 600px;
+        }
+
+        
+        body.main-grid .login-container form.login-form section{
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            gap: var(--spacing-md);
+        }
+
+        body.main-grid .login-container form.login-form{
+            height: auto;
+            justify-content: space-evenly;
+            gap: 2rem;
+            padding: 3rem var(--spacing-xlg); 
+        
+        }
+
+}
+
+@media screen and (min-width: 927px) {
+
+    body.main-grid {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 0;
+        padding: max(2rem, 10vh) 0;
+        margin: 0 auto;
+    }
+
+    body.main-grid main.login-container{
+        flex-grow: 1;
+        justify-content: start;
+        max-width: 600px;
+    }
+
+
+    main.login-container form {
+        height: auto;
+        min-height: 400px;
+        gap: calc(var(--spacing-md), var(--vh) * 10, var(--spacing-lg));
+        justify-content: space-around;
+    }
+
+    main.login-container form section {
+
+    }
+    
+}
+
+

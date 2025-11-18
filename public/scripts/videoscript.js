@@ -21,7 +21,7 @@ const bindControlsOnce = () => {
     controlsBound = true;
     playBtn?.addEventListener('click', () => videoPlayer.play());
     pauzeBtn?.addEventListener('click', () => videoPlayer.pause());
-    shuffleBtn?.addEventListener('click', () => speelVideos(true, true));
+    shuffleBtn?.addEventListener('click', () => handlePlayList(true, true));
     fullScreenBtn?.addEventListener('click', () => videoPlayer.requestFullscreen?.().catch?.(() => {}));
 }
 
@@ -91,7 +91,6 @@ const getDefaultvideoList = (myVideoList, max = 8, level = '1') => {
     return [...pick];
 }
 
-
 const getPath = (relPath) => {
     return (
         './videos/' +
@@ -102,9 +101,7 @@ const getPath = (relPath) => {
     )
 }
 
-
-
-function speelVideos(shuffle = false, isIntro = true) {
+function handlePlayList(shuffle = false, isIntro = true) {
     const introVideo = 'inout/intro.mp4';
     const outroVideo = 'inout/outro.mp4';
     let videoLijst = getList() ?? [];
@@ -179,7 +176,7 @@ window.onload = function() {
         const defaultList = getDefaultvideoList(videoList, 8, '1') ?? [];
         localStorage.setItem(videoIndex, JSON.stringify(defaultList))
     }
-    speelVideos();
+    handlePlayList();
 };
 
 document.addEventListener('wheel', function(event) {

@@ -5,10 +5,12 @@ use PDO;
 
 class LoginAttemptsSQLService {
     private PDO $pdo;
+    private readonly int $MAX_ATTEMPTS;
     
-    public function __construct(PDO $pdo)
+    public function __construct(PDO $pdo, $max = 5)
     {
         $this->pdo = $pdo;
+        $this->MAX_ATTEMPTS = $max;
     }
 
     private function errorLogException(string $e, string $context): void 
@@ -24,12 +26,21 @@ class LoginAttemptsSQLService {
             FROM 
                 login_attempts 
             WHERE 
-                ip_address = :ip_address";
+                ip_address = :ip_address
+            ORDER BY
+                attempt_time DESC
+            LIMIT 1";
+
 
             $stmt = $this->pdo->prepare($SQL);
             $stmt->execute(['ip_address' => $ip]);
             $result = $stmt->fetchColumn();
-            return $result ?: null;
+            /**geen records */
+            if ($result === false) return false;
+
+            /** 0 geen block 1 wel block en wel ip  */
+            return (bool) $result;
+
 
         } catch (PDOException $e){
             $this->errorLogException($e->getMessage(), "checkBlockedIP");
@@ -46,14 +57,14 @@ class LoginAttemptsSQLService {
                 login_attempts
             WHERE
                 ip_address = :ip_address
-                AND
-                attempt_time > (NOW() - INTERVAL 1 HOUR);
+            AND
+                attempt_time > (NOW() - INTERVAL 1 HOUR)
             ";
 
             $stmt = $this->pdo->prepare($SQL);
             $stmt->execute(['ip_address' => $ip]);
             $attempts = $stmt->fetchColumn();
-            return $attempts ?: 0;
+            return (int) $attempts ?: 0;
 
         } catch(PDOException $e) {
             $this->errorLogException($e->getMessage(), "checkLoginAttempts");
@@ -71,7 +82,7 @@ class LoginAttemptsSQLService {
                 ip_address = :ip_address
             ";
             $stmt = $this->pdo->prepare($SQL);
-            return $stmt->execute(['ip_address' => $ip]);
+            return $stmt->execute(['ip_address' => $ip]) ?: false;
 
         } catch(PDOException $e) {
             $this->errorLogException($e->getMessage(), "blockIP");
@@ -88,7 +99,7 @@ class LoginAttemptsSQLService {
             ";
             
             $stmt = $this->pdo->prepare($SQL);
-            return $stmt->execute([':ip_address' => $ip]);
+            return $stmt->execute(['ip_address' => $ip]) ?: false;
 
         } catch (PDOException $e) {
             $this->errorLogException($e->getMessage(), "clearAttempts");
@@ -105,10 +116,57 @@ class LoginAttemptsSQLService {
             ";
             
             $stmt = $this->pdo->prepare($SQL);
-            return $stmt->execute([':ip_address' => $ip]);
+            return $stmt->execute(['ip_address' => $ip]);
 
         }  catch (PDOException $e) {
             $this->errorLogException($e->getMessage(), "insertLoginAttempt");
+            return null;
+        }
+    }
+
+    public function checkInsertBlock(string $ip): ?object {
+        try {
+           $blocked = false;
+
+           if (!$this->pdo->inTransaction()) $this->pdo->beginTransaction();
+
+            $ok = $this->insertLoginAttempt($ip);
+
+            if ($ok === null || $ok === false) {
+                 if ($this->pdo->inTransaction()) $this->pdo->rollBack();
+                return null;
+            }
+
+            $currentAttempts = $this->checkLoginAttempts($ip);
+            
+            if ($currentAttempts === null) {
+                 if ($this->pdo->inTransaction()) $this->pdo->rollBack();
+                return null;
+            }
+
+           if (($currentAttempts) >= $this->MAX_ATTEMPTS) {
+                 $blockattempt = $this->blockIP($ip);
+
+                 if ($blockattempt === null) {
+                    if ($this->pdo->inTransaction()) $this->pdo->rollBack();
+                    return null;
+                 }
+
+                 $blocked = true;
+           }
+           
+           $this->pdo->commit();
+
+           return (object) [
+                    'blocked' => $blocked,
+                    'attempts' => $currentAttempts,
+                    'left' => max(0, ($this->MAX_ATTEMPTS - $currentAttempts))
+           ];
+
+
+        } catch (PDOException $e) {
+               if ($this->pdo->inTransaction())  $this->pdo->rollBack();
+            $this->errorLogException($e->getMessage(), "checkInsertBlock");
             return null;
         }
     }

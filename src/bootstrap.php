@@ -6,7 +6,7 @@ use GeoFort\Security\AuthMiddleWare;
 
 try {
         // The path should point to your project's root directory
-    $path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+    $path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
     $dotenv = Dotenv::createImmutable($path);
     $dotenv->load();
 
@@ -22,16 +22,15 @@ AuthMiddleWare::setEnvironment($envActive);
 $baseUrl=$_ENV['BASE_URL'] ?? $_SERVER['BASE_URL'];
 AuthMiddleWare::setBaseUrl($baseUrl);
 
-if ($EnvActive === 'development'){
+if ($envActive === 'development'){
     ini_set('display_errors', 1);  // Schakel weergave van fouten in de browser in
     ini_set('display_startup_errors', 1);
 
-} else if ($EnvActive === 'production'){
+} else if ($envActive === 'production'){
     ini_set('display_errors', 0);  // Schakel weergave van fouten in de browser in
     ini_set('display_startup_errors', 0);
 
 }
-
 error_reporting(E_ALL);
 ini_set('log_errors', 1);  
 date_default_timezone_set('Europe/Amsterdam');

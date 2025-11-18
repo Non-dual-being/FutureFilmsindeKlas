@@ -1,17 +1,17 @@
 const THEME = 'light';
-const htmEL = document.documentElement;
+const HTML_EL = document.documentElement;
 
-if (htmEL){
-    if  (htmEL.getAttribute('future-theme') !== THEME){
-        DOCUMENT_EL.setAttribute('future-theme', THEME);
+if (HTML_EL){
+    if  (HTML_EL.getAttribute('future-theme') !== THEME){
+        HTML_EL.setAttribute('future-theme', THEME);
     }
 }
 
 
 function setVhVar() {
   const vh = window.innerHeight * 0.01;
-  if (htmEL)
-    htmEL.style.setProperty('--vh', `${vh}px`);
+  if (HTML_EL)
+    HTML_EL.style.setProperty('--vh', `${vh}px`);
 }
 
 setVhVar();
@@ -19,8 +19,6 @@ window.addEventListener('resize', setVhVar);
 window.addEventListener('orientationchange', setVhVar);
 
 /**light modus afdwingne */
-
-
 
 export const CSSUTILS = {
     'displayNone' : 'd-none',
@@ -35,9 +33,19 @@ export const CSSSTATES = {
     'checkboxNoneChecked' : 'checkbox-none-checked',
 }
 
+export const CSSFLASH = {
+    'flashShow'     : 'flash-Show',
+    'flashHide'     : 'flash-Hide',
+    'flashShowSuccess'   : 'flash-show--Success',
+    'flashShowError'    : 'flash-show--Error',
+    'flashShowSuccessSubtle'   : 'flash-show--Success-subtle',
+    'flashShowErrorSubtle'    : 'flash-show--Error-subtle'
+}
+
 const CSSVARS = {
     ...CSSUTILS,
-    ...CSSSTATES
+    ...CSSSTATES,
+    ...CSSFLASH
 }
 
 
