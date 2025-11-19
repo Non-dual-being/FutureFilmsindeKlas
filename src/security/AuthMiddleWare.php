@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace GeoFort\security;
 
 use GeoFort\Database\Connector;
-use GeoFort\Service\SQL\AdminUsersSQLService;
+use GeoFort\Services\SQL\AdminUsersSQLService;
 use PDO;
 use PDOException;
 
@@ -21,8 +21,8 @@ final class AuthMiddleWare
     {
         
         try {
-            $pdo = Connector::getConnection();
-            $this->pdo = $pdo;
+            $pdo_db = Connector::getConnection();
+            $this->pdo = $pdo_db;
         } catch (PDOException $e) {
             error_log("Verbindingsfout in AuthMiddleware: " . $e->getMessage());
         }
@@ -53,7 +53,7 @@ final class AuthMiddleWare
     }
 
     public static function getEnvironment(): ?string {
-        if (in_array(self::$environment, self::ALLOWED_BASEURLS, true)){
+        if (in_array(self::$environment, self::ALLOWED_ENVS, true)){
             return self::$environment;
         } else return null;
     }

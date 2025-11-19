@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace GeoFort\security;
 use GeoFort\Services\SQL\AdminUsersSQLService;
+use GeoFort\Services\Http\HeaderRedirector;
 use PDO;
 
 
@@ -11,26 +12,22 @@ final class SessionQuard {
         private readonly string $baseUrl;
         private readonly bool $isSecure;
         private readonly ?PDO $pdo;
-        private readonly ?AdminUsersSQLService $adminUserSQL;
+        private readonly ?AdminUsersSQLService $adminUsersSQL;
 
-        private const LOGINPAGE = 'loginfuturepage.php';
+        private const LOGINPAGE = 'loginthefuture.php';
+        private const ERRORPAGE = 'error.php';
         private const REVALIDATION_INTERVAL = 900; /**15 min */
+        private static array $SECURE_LOCATIONS = ['loginthefuture.php', 'error.php', 'https://planetaryhealth.xyz/Futurefilmsindeklas', 'https://futurefilms.test'];
 
 
     public function __construct(
-        ?PDO $PDO,
+        ?PDO $pdo,
         int $timeoutSeconds = 1800,
         bool $strictSameSite = true,
-        string $baseUrl = 'https://planetaryhealth.xyz/Futurefilmsindeklas'
+        string $baseUrl = 'https://futurefims.test'
     ){
         $this->pdo = $pdo;
-        if ($this->pdo){
-            $this->adminUsersSQL = new AdminUsersSQLService($this->pdo);
-        } else {
-            $this->adminUsersSQL = null;
-        }
-
-        $this->adminUserSQL = $adminUserSQL;
+        $this->adminUsersSQL = $this->pdo ? new AdminUsersSQLService($this->pdo) : null;
         $this->timeoutSeconds = $timeoutSeconds;
         $this->strictSameSite = $strictSameSite;
         $this->baseUrl = rtrim($baseUrl, '/');
@@ -185,7 +182,7 @@ final class SessionQuard {
         $ipMismatch = ($_SESSION['ip_address'] ?? '')  !== ($_SERVER['REMOTE_ADDR'] ?? '');
         $MisMatch = ($uaMismatch || $ipMismatch);
 
-        if ($MisMatch) $this->logoutAndRedirect(self::LOGINPAGE);
+        $this->logoutAndRedirect(to: 'login', msg: 'Sessie ongeldig. Log opnieuw in.');
 
         
         //username && loggedin sessios var check
@@ -201,14 +198,18 @@ final class SessionQuard {
 
         if (!$validSessionSettings) {
             error_log("ongeldig inlog door verkeerde authentificatie");
-            $this->logoutAndRedirect(self::LOGINPAGE);
+            $this->logoutAndRedirect(to: 'login', msg: 'Sessie ongeldig. Log opnieuw in.');
         }
 
 
         //als de servce onbeschikbaar is zelf
         if ($this->adminUsersSQL === null){
             error_log("Session revalidation failed: DB service is unavailable. Forcing logout.");
-            $this->logoutAndRedirect(self::LOGINPAGE);
+           $this->logoutAndRedirect(
+                to: 'error',
+                code: 503,
+                msg: 'Service tijdelijk niet beschikbaar. Probeer het later opnieuw.'
+            );
         }
 
         $lastRevalidation = $_SESSION['last_revalidation_time'] ?? 0;
@@ -218,12 +219,19 @@ final class SessionQuard {
 
             if ($userExists === null){
                 error_log("Session revalidation failed: DB service is unavailable. Forcing logout.");
-                $this->logoutAndRedirect(self::LOGINPAGE);
+                $this->logoutAndRedirect(
+                    to: 'error',
+                    code: 503,
+                    msg: 'Service tijdelijk niet beschikbaar. Probeer het later opnieuw.'
+                );
             }
 
             if ($userExists === false){
                 error_log("Session revalidation returned false for user with id " . $_SESSION['user_id']);
-                $this->logoutAndRedirect(self::LOGINPAGE);
+                  $this->logoutAndRedirect(
+                    to: 'login',
+                    msg: 'Je sessie is ongeldig geworden. Log opnieuw in.'
+                );
             }
 
             $_SESSION['last_revalidation_time'] = time();
@@ -240,23 +248,53 @@ final class SessionQuard {
             ((time() - $last) > $this->timeoutSeconds)
         );
         
-        if ($inactivityLimitReached) $this->logoutAndRedirect(self::LOGINPAGE . "?InactivityMessage=sessie_verlopen");
+        if ($inactivityLimitReached) {
+            $this->logoutAndRedirect(
+            to: 'login',
+            msg: 'Uitgelogd door inactiviteit.'
+        );
+
+        }
        
         $_SESSION['LAST_ACTIVITY'] = time();
 
     }
 
 
-    public function logoutAndRedirect(string $location = self::LOGINPAGE): never
-    {
-        $secureLocation = $this->makeBaseUrlLink($location);
+    public function logoutAndRedirect(
+        string $to = 'login', 
+        int $code = 302, 
+        string $msg = '',
+        int $errorCode = 500
+    ): never {
         $this->destroySession();
-        $this->redirect($secureLocation);
 
-        /**
-         * never omdat je uitlogt en dus niet meer terug komt naar de functie
-         * De functie kun niets teruggeven aan de gebruiker, want die wordt niet bereikt
-         */
+        switch ($to) {
+            case 'login':
+                HeaderRedirector::toLogin(
+                    baseUrl: $this->baseUrl,
+                    path: self::LOGINPAGE,
+                    inactiviveMsg: $msg
+                );
+                break;
+            case 'error': 
+                HeaderRedirector::toError(
+                    baseUrl: $this->baseUrl,
+                    path: self::ERRORPAGE,
+                    errorCode: $errorCode,
+                    message: $msg
+                );
+            break;
+            case 'home' :
+                default:
+                    HeaderRedirector::absolute(
+                        baseUrl: $this->baseUrl,
+                        path: '',
+                        query: [],
+                        httpCode: $code ?: 302
+                    );
+                break;
+        }
     }
 
     private function redirect(string $location): never
