@@ -2,6 +2,11 @@
 declare(strict_types=1);
 namespace GeoFort\security;
 
+use GeoFort\Database\Connector;
+use GeoFort\Service\SQL\AdminUsersSQLService;
+use PDO;
+use PDOException;
+
 final class AuthMiddleWare 
 {
     private const ALLOWED_BASEURLS = ['https://futurefilms.test', 'https://planetaryhealth.xyz/Futurefilmsindeklas'];
@@ -9,15 +14,22 @@ final class AuthMiddleWare
 
     private static string $environment;
     private static string $baseUrl;
-
     private SessionQuard $Quard;
+    private ?PDO $pdo = null;
 
     public function __construct()
     {
+        
+        try {
+            $pdo = Connector::getConnection();
+            $this->pdo = $pdo;
+        } catch (PDOException $e) {
+            error_log("Verbindingsfout in AuthMiddleware: " . $e->getMessage());
+        }
         $timeOut = (int) $this->timeout();
         $this->Quard = new SessionQuard(
+            pdo: $this->pdo,
             timeoutSeconds: $timeOut,
-            requiredUsername: 'Future GeoFort Docent',
             strictSameSite: true,
             baseUrl: self::$baseUrl
         );

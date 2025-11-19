@@ -36,6 +36,38 @@ class AdminUsersSQLService {
             return null;
         } 
     }
+
+    public function isUserStillValid(int $id, string $email): ?bool {
+        try{
+            $SQL = 
+            "SELECT
+                1
+            FROM
+                admin_users
+            WHERE
+                id = :id AND email = :email
+            LIMIT 1
+            ";
+
+            $stmt = $this->pdo->prepare($SQL);
+            $stmt->execute([
+                'id' => $id,
+                'email' => $email
+            ]);
+            return $stmt->fetchColumn() !== false;
+
+            /**
+             * 1 bij gevonden is niet geljk aan false dus true
+             * bij niet gevonden false, meer false is niet niet geljk aan false, dus false
+             * 
+             */
+
+
+        } catch (PDOException $e){
+            $this->errorLogException($e->getMessage(), "isUserStillValid");
+            return null;
+        }
+    }
 }
 
 ?>

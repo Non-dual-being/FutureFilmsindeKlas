@@ -1,24 +1,37 @@
 <?php
 declare(strict_types=1);
 namespace GeoFort\security;
+use GeoFort\Services\SQL\AdminUsersSQLService;
+use PDO;
+
 
 final class SessionQuard {
         private readonly int $timeoutSeconds;
-        private readonly string $requiredUsername;
         private readonly bool $strictSameSite;
         private readonly string $baseUrl;
         private readonly bool $isSecure;
+        private readonly ?PDO $pdo;
+        private readonly ?AdminUsersSQLService $adminUserSQL;
+
         private const LOGINPAGE = 'loginfuturepage.php';
+        private const REVALIDATION_INTERVAL = 900; /**15 min */
+
 
     public function __construct(
+        ?PDO $PDO,
         int $timeoutSeconds = 1800,
-        string $requiredUsername = 'Future GeoFort Docent',
         bool $strictSameSite = true,
         string $baseUrl = 'https://planetaryhealth.xyz/Futurefilmsindeklas'
-
     ){
+        $this->pdo = $pdo;
+        if ($this->pdo){
+            $this->adminUsersSQL = new AdminUsersSQLService($this->pdo);
+        } else {
+            $this->adminUsersSQL = null;
+        }
+
+        $this->adminUserSQL = $adminUserSQL;
         $this->timeoutSeconds = $timeoutSeconds;
-        $this->requiredUsername = $requiredUsername;
         $this->strictSameSite = $strictSameSite;
         $this->baseUrl = rtrim($baseUrl, '/');
 
@@ -27,6 +40,7 @@ final class SessionQuard {
             ||
             ($_SERVER['SERVER_PORT'] ?? null == 443)
         );
+
     }
 
     public function privateSessionStart(): void
@@ -171,7 +185,7 @@ final class SessionQuard {
         $ipMismatch = ($_SESSION['ip_address'] ?? '')  !== ($_SERVER['REMOTE_ADDR'] ?? '');
         $MisMatch = ($uaMismatch || $ipMismatch);
 
-        if ($MisMatch) $this->logoutAndRedirect('db_inlogPagina.php');
+        if ($MisMatch) $this->logoutAndRedirect(self::LOGINPAGE);
 
         
         //username && loggedin sessios var check
@@ -179,14 +193,43 @@ final class SessionQuard {
         (
         (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) 
             &&
-        ($_SESSION['username'] ?? null === $this->requiredUsername)
+        (isset($_SESSION['user_id']) && is_int($_SESSION['user_id']))
+            &&
+        (isset($_SESSION['user_email']) && is_string($_SESSION['user_email']))
 
         );
 
         if (!$validSessionSettings) {
-            error_log("ongewenste login");
+            error_log("ongeldig inlog door verkeerde authentificatie");
             $this->logoutAndRedirect(self::LOGINPAGE);
         }
+
+
+        //als de servce onbeschikbaar is zelf
+        if ($this->adminUsersSQL === null){
+            error_log("Session revalidation failed: DB service is unavailable. Forcing logout.");
+            $this->logoutAndRedirect(self::LOGINPAGE);
+        }
+
+        $lastRevalidation = $_SESSION['last_revalidation_time'] ?? 0;
+        if ((time() - $lastRevalidation) > self::REVALIDATION_INTERVAL){
+
+            $userExists = $this->adminUsersSQL->isUserStillValid($_SESSION['user_id'], $_SESSION['user_email']);
+
+            if ($userExists === null){
+                error_log("Session revalidation failed: DB service is unavailable. Forcing logout.");
+                $this->logoutAndRedirect(self::LOGINPAGE);
+            }
+
+            if ($userExists === false){
+                error_log("Session revalidation returned false for user with id " . $_SESSION['user_id']);
+                $this->logoutAndRedirect(self::LOGINPAGE);
+            }
+
+            $_SESSION['last_revalidation_time'] = time();
+
+        }
+
 
          // activity check
         $last = $_SESSION['LAST_ACTIVITY'] ?? null;
@@ -197,7 +240,7 @@ final class SessionQuard {
             ((time() - $last) > $this->timeoutSeconds)
         );
         
-        if ($inactivityLimitReached) $this->logoutAndRedirect('db_inlogPagina.php?InactivityMessage=sessie_verlopen');
+        if ($inactivityLimitReached) $this->logoutAndRedirect(self::LOGINPAGE . "?InactivityMessage=sessie_verlopen");
        
         $_SESSION['LAST_ACTIVITY'] = time();
 

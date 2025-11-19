@@ -83,8 +83,25 @@ try{
                     // Sessie-ID regenereren voor beveiliging
                     session_regenerate_id(true);
                     $cleared = $LoginService->clearAttempts($ipClient);
-                    if ($cleared === null) $Flasher->general("Service fout neem contact op met beheerder");
+                    if ($cleared === null) error_log("Login attempts could not be removed from database");
+                    $_SESSION['user_name']  = $user['username'];
+                    $_SESSION['user_id']  = $user['id'];
+                    $_SESSION['user_email'] = $user['email'];
 
+                    $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+                    $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
+                    $_SESSION['loggedin']   = true;
+                    $_SESSION['LAST_ACTIVITY'] = time();
+                    $_SESSION['last_revalidation_time'] = time();
+
+                    session_write_close(); // Sla sessie op en laat andere requests doorgaan
+                        
+                    //verwijder de pogingnen van de geldige admin
+                    $LoginAttempsSQLService->clearAttempts($ip);
+                        
+                    // **Doorverwijzing naar dashboard.php**
+                    header("Location: future-dashbaord.php");
+                    exit();
 
                 } else {
                    $failedLoginAttempt = $LoginService->checkInsertBlock($ipClient);
