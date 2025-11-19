@@ -3,7 +3,6 @@ use Dotenv\Dotenv;
 use GeoFort\Database\Connector;
 use GeoFort\Security\AuthMiddleWare;
 
-use GeoFort\ErrorHandlers\InvalidArg;
 use GeoFort\ErrorHandlers\FlashMessageHandler;
 use GeoFort\ErrorHandlers\FormExceptionHandler;
 use GeoFort\ErrorHandlers\GeneralException;
