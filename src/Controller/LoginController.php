@@ -12,6 +12,8 @@ use GeoFort\Services\Validators\InputValidator;
 use GeoFort\Services\SQL\AdminUsersSQLService;
 use GeoFort\Services\SQL\LoginAttemptsSQLService;
 use GeoFort\Services\Http\ClientIpResolver;
+use GeoFort\Services\Http\HeaderRedirector;
+use GeoFort\Services\Utils\parseDate;
 
 use GeoFort\Enums\FlashTarget\LoginFlashTarget;
 
@@ -26,26 +28,30 @@ try {
 
 } catch (PDOException $e){
     error_log("DatabaseFout: " . $e->getMessage());
-    $message = urlencode("The service is momentarily not available, is time to get a cup of coffee");
-    header("Location: errorPage.php?code=503&message={$message}");
+    HeaderRedirector::toError("error.php", 503); 
     exit();
 }
 
+
 $LoginService = new LoginAttemptsSQLService($pdo);
 $AdminService = new AdminUsersSQLService($pdo);
-
 $Flasher = new LoginFlasher();
 $FlashHandler = new FlashMessageHandler(LoginFlashTarget::class);
 $validator = new InputValidator();
+
+
+
 
 try{
     if (!isset($_SESSION[CSRF])) 
         $_SESSION[CSRF] = bin2hex(random_bytes(32));
 
+    $inactiveMsg = filter_input(INPUT_GET, 'inactiveMsg', FILTER_UNSAFE_RAW) ?? null;
 
-    if (isset($_GET['InactivityMessage'])) 
-        $Flasher->inactive($_GET['InactivityMessage'] ?? 'future-sessie verlopen');
-
+    if ($inactiveMsg!== null && $inactiveMsg !== ''){
+        $Flasher->inactive($inactiveMsg);
+ 
+    }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         $correctPost = (
@@ -97,10 +103,9 @@ try{
                     session_write_close(); // Sla sessie op en laat andere requests doorgaan
                         
                     //verwijder de pogingnen van de geldige admin
-                    $LoginAttempsSQLService->clearAttempts($ip);
-                        
-                    // **Doorverwijzing naar dashboard.php**
-                    header("Location: future-dashbaord.php");
+                    $LoginService->clearAttempts($ipClient);
+
+                    HeaderRedirector::toDashboard();
                     exit();
 
                 } else {

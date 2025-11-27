@@ -182,7 +182,7 @@ final class SessionQuard {
         $ipMismatch = ($_SESSION['ip_address'] ?? '')  !== ($_SERVER['REMOTE_ADDR'] ?? '');
         $MisMatch = ($uaMismatch || $ipMismatch);
 
-        $this->logoutAndRedirect(to: 'login', msg: 'Sessie ongeldig. Log opnieuw in.');
+        if ($MisMatch) $this->logoutAndRedirect(to: 'login', msg: 'Sessie ongeldig. Log in opnieuw in op het Dasboard.');
 
         
         //username && loggedin sessios var check
@@ -198,7 +198,7 @@ final class SessionQuard {
 
         if (!$validSessionSettings) {
             error_log("ongeldig inlog door verkeerde authentificatie");
-            $this->logoutAndRedirect(to: 'login', msg: 'Sessie ongeldig. Log opnieuw in.');
+            $this->logoutAndRedirect(to: 'login', msg: 'Ongeldige Sessie. Log opnieuw in.');
         }
 
 
@@ -214,7 +214,6 @@ final class SessionQuard {
 
         $lastRevalidation = $_SESSION['last_revalidation_time'] ?? 0;
         if ((time() - $lastRevalidation) > self::REVALIDATION_INTERVAL){
-
             $userExists = $this->adminUsersSQL->isUserStillValid($_SESSION['user_id'], $_SESSION['user_email']);
 
             if ($userExists === null){
@@ -230,7 +229,7 @@ final class SessionQuard {
                 error_log("Session revalidation returned false for user with id " . $_SESSION['user_id']);
                   $this->logoutAndRedirect(
                     to: 'login',
-                    msg: 'Je sessie is ongeldig geworden. Log opnieuw in.'
+                    msg: 'De sessie is ongeldig geworden. Log opnieuw in.'
                 );
             }
 
@@ -250,9 +249,9 @@ final class SessionQuard {
         
         if ($inactivityLimitReached) {
             $this->logoutAndRedirect(
-            to: 'login',
-            msg: 'Uitgelogd door inactiviteit.'
-        );
+                to: 'login',
+                msg: 'Uitgelogd door inactiviteit.'
+            );
 
         }
        
@@ -272,14 +271,12 @@ final class SessionQuard {
         switch ($to) {
             case 'login':
                 HeaderRedirector::toLogin(
-                    baseUrl: $this->baseUrl,
                     path: self::LOGINPAGE,
-                    inactiviveMsg: $msg
+                    inactiveMsg: $msg
                 );
                 break;
             case 'error': 
                 HeaderRedirector::toError(
-                    baseUrl: $this->baseUrl,
                     path: self::ERRORPAGE,
                     errorCode: $errorCode,
                     message: $msg
@@ -288,7 +285,6 @@ final class SessionQuard {
             case 'home' :
                 default:
                     HeaderRedirector::absolute(
-                        baseUrl: $this->baseUrl,
                         path: '',
                         query: [],
                         httpCode: $code ?: 302

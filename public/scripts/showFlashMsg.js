@@ -20,7 +20,7 @@ function showFlashMessage(flashMsg, duration = 5000, fadeOut=true) {
             case 'error':
                 return flashShowError;
             case 'success':
-                return flashShowSucces;
+                return flashShowSuccess;
             default:
                 return '';   
         }        

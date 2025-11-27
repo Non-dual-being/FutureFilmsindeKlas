@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Dotenv\Dotenv;
 use GeoFort\Security\AuthMiddleWare;
+use GeoFort\Services\Http\GlobalBaseUrlProvider;
 
 try {
         // The path should point to your project's root directory
@@ -22,6 +23,8 @@ AuthMiddleWare::setEnvironment($envActive);
 $baseUrl=$_ENV['BASE_URL'] ?? $_SERVER['BASE_URL'];
 AuthMiddleWare::setBaseUrl($baseUrl);
 
+GlobalBaseUrlProvider::init($envActive);
+
 if ($envActive === 'development'){
     ini_set('display_errors', 1);  // Schakel weergave van fouten in de browser in
     ini_set('display_startup_errors', 1);
@@ -29,8 +32,9 @@ if ($envActive === 'development'){
 } else if ($envActive === 'production'){
     ini_set('display_errors', 0);  // Schakel weergave van fouten in de browser in
     ini_set('display_startup_errors', 0);
-
 }
+
+
 error_reporting(E_ALL);
 ini_set('log_errors', 1);  
 date_default_timezone_set('Europe/Amsterdam');

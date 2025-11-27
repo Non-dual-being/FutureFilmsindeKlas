@@ -48,13 +48,16 @@ class AdminUsersSQLService {
                 id = :id AND email = :email
             LIMIT 1
             ";
-
+            error_log("user id in sql : " . $id);
+            error_log("user email in sql : " . $email);
             $stmt = $this->pdo->prepare($SQL);
             $stmt->execute([
-                'id' => $id,
-                'email' => $email
+                ':id' => $id,
+                ':email' => $email
             ]);
-            return $stmt->fetchColumn() !== false;
+            $val = $stmt->fetchColumn();
+            error_log('isUserStillValid fetchColumn: ' . var_export($val, true));
+            return  $val !== false;
 
             /**
              * 1 bij gevonden is niet geljk aan false dus true
