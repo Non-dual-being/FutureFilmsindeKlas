@@ -10,7 +10,7 @@ use GeoFort\ErrorHandlers\GeneralException;
 use GeoFort\Services\ErrorHandlers\LoginFlasher;
 use GeoFort\Services\Validators\InputValidator;
 use GeoFort\Services\SQL\AdminUsersSQLService;
-use GeoFort\Services\SQL\LoginAttemptsSQLService;
+use GeoFort\Services\SQL\LoginSecurityService;
 use GeoFort\Services\Http\ClientIpResolver;
 use GeoFort\Services\Http\HeaderRedirector;
 use GeoFort\Services\Utils\parseDate;
@@ -33,7 +33,7 @@ try {
 }
 
 
-$LoginService = new LoginAttemptsSQLService($pdo);
+$LoginService = new LoginSecurityService($pdo);
 $AdminService = new AdminUsersSQLService($pdo);
 $Flasher = new LoginFlasher();
 $FlashHandler = new FlashMessageHandler(LoginFlashTarget::class);
@@ -77,18 +77,25 @@ try{
             if ($ip->haserror) $Flasher->inlogsubmit($ip->error ?? "Ongeldig ip address");
 
             $ipClient = $ip->ip;
+            $emailClient = $resEmail->value;
 
-            $blocked = $LoginService->checkBlockedIP($ipClient);
-            if ($blocked) $Flasher->inlogsubmit("Je bent geblokkeerd, neemt contact op met beheerder");
-            if (is_null($blocked)) $Flasher->general("Service fout, neem contact op met beheerder");
+            $Lock = $LoginService->checkLockOutInfo($emailClient, $ipClient);
 
-            if (!$blocked){
-                $user = $AdminService->isAdminUser($resEmail->value);
+            if ($Lock === null) $Flasher->general("Service fout, neem contact op met beheerder");
+
+            if ($Lock->blocked){
+                $lockOutDateNL = parseDate::parseToLongDutchDate($Lock->lockout_until) ?? "onbekende tijd";
+                $Flasher->inlogsubmit("Inloggen geblokkeert tot {$lockOutDateNL}");
+                
+            } 
+
+            if (!$Lock->blocked){
+                $user = $AdminService->isAdminUser($emailClient);
                 if ($user && !empty($user['password_hash']) && password_verify($resPassword->value, $user['password_hash'])){
 
                     // Sessie-ID regenereren voor beveiliging
                     session_regenerate_id(true);
-                    $cleared = $LoginService->clearAttempts($ipClient);
+                    $cleared = $LoginService->recordSuccessfullogin($emailClient, $ipClient);
                     if ($cleared === null) error_log("Login attempts could not be removed from database");
                     $_SESSION['user_name']  = $user['username'];
                     $_SESSION['user_id']  = $user['id'];
@@ -101,20 +108,25 @@ try{
                     $_SESSION['last_revalidation_time'] = time();
 
                     session_write_close(); // Sla sessie op en laat andere requests doorgaan
-                        
-                    //verwijder de pogingnen van de geldige admin
-                    $LoginService->clearAttempts($ipClient);
-
                     HeaderRedirector::toDashboard();
                     exit();
 
                 } else {
-                   $failedLoginAttempt = $LoginService->checkInsertBlock($ipClient);
+                   $failedLoginAttempt = $LoginService->recordFailedAttempt($emailClient, $ipClient);
                    if ($failedLoginAttempt === null) $Flasher->general("Service niet beschikbaar");
 
-                   if ($failedLoginAttempt->blocked) $Flasher->general("Inloggen geblokeerd, neem contact op met beheerder");
-
-                   $Flasher->inlogsubmit("Foute inlog: {$failedLoginAttempt->left} inlog pogingen over");
+                   if ($failedLoginAttempt->blocked){
+                    error_log(print_r($failedLoginAttempt, true));
+                    $lockOutDateNL = parseDate::parseToLongDutchDate($failedLoginAttempt->lockout_until) ?? "onbekende tijd";
+                    $Flasher->inlogsubmit("Inloggen geblokkeert tot {$lockOutDateNL}");
+                
+                    } else {
+                        $attemptsLeft = (int) $failedLoginAttempt->attempts_left;
+                        $userinfo = $attemptsLeft
+                            ? "$attemptsLeft inlogpogingen over tot blokkade"
+                            : "Na 5 gefaalde inlogpogingen komt er een blokkade";
+                        $Flasher->inlogsubmit($userinfo);
+                    }                  
                 }
             }
 

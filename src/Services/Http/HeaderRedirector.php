@@ -37,14 +37,14 @@ final class HeaderRedirector implements Redirector {
     }
     
     public static function toDashboard(
-        string $path = 'future-dashboard.php',
+        string $path = 'dashboard/index.php',
     ): never {
         $query = [];
         self::absolute($path, $query, 303);
     }
 
     public static function toError(
-        string $path = 'error.php',
+        string $path = '/error/index.php',
         int $errorCode = 500, 
         string  $message = ''
     ): never {

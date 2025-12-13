@@ -4,12 +4,12 @@
 
     interface Redirector {
         public static function toLogin(
-            string $path = 'loginthefuture.php',
+            string $path = 'auth/login-page.php',
             ?string $inactivityMsg = null
         ): never;
 
         public static function toError(
-            string $path = 'error.php',
+            string $path = 'error/index.php',
             int $errorCode = 500, 
             string $message = ''
         ): never;

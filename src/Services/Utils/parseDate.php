@@ -18,7 +18,7 @@ class parseDate
      * @param bool   $withTime  Toon de tijd erbij als die aanwezig is
      * @return string|null      Geformatteerde Nederlandse datum, of null bij ongeldige input
      */
-        if (trim($sqlDate === '')) return null;
+        if (trim($sqlDate) === '') return null;
 
         $dt = self::createDateTimeFromSql($sqlDate);
 
@@ -63,7 +63,7 @@ class parseDate
 
         $base = "{$dayNl} {$dayNumber} {$monthNl} {$year}";
         
-        $hadTimeInput = self::inputHaseTime($sqlDate);
+        $hadTimeInput = self::inputHasTime($sqlDate);
 
         if ($withTime && $hadTimeInput){
             $time = $dt->format('H:i');
@@ -71,9 +71,6 @@ class parseDate
         }
 
         return $base;
-
-
-
 
         
     }
@@ -101,9 +98,9 @@ class parseDate
         }
     }
 
-    private static function inputHaseTime(string $sqlDate): bool 
+    private static function inputHasTime(string $sqlDate): bool 
     {
-        return (bool)preq_match('/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}(:\d{2})?$/', trim($sqlDate));
+        return (bool)preg_match('/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}(:\d{2})?$/', trim($sqlDate));
     }
 
 

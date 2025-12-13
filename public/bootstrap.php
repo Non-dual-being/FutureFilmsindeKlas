@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR .  'autoload.php';
 
 use Dotenv\Dotenv;
 use GeoFort\Security\AuthMiddleWare;
@@ -38,4 +39,8 @@ if ($envActive === 'development'){
 error_reporting(E_ALL);
 ini_set('log_errors', 1);  
 date_default_timezone_set('Europe/Amsterdam');
+
+/**
+ * require once omdat je de klassen maar 1 keer wilt inladen en niet per ongeuk twee keer
+ */
 ?>

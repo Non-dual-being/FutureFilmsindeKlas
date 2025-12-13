@@ -10,7 +10,6 @@ class ComposerStaticInit7a7ef1f69d23030a1d384b76199c40bb
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
-        '2f0693d086f3e0e2d52a9199e33e2bee' => __DIR__ . '/../..' . '/src/bootstrap.php',
         '63fcd0db4dd44b5ac165930336b32daa' => __DIR__ . '/../..' . '/src/Services/ErrorHandlers/Flashhelpers.php',
     );
 

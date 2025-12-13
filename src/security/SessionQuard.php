@@ -14,10 +14,10 @@ final class SessionQuard {
         private readonly ?PDO $pdo;
         private readonly ?AdminUsersSQLService $adminUsersSQL;
 
-        private const LOGINPAGE = 'loginthefuture.php';
-        private const ERRORPAGE = 'error.php';
+        private const LOGINPAGE = 'auth/login-page.php';
+        private const ERRORPAGE = 'error/index.php';
         private const REVALIDATION_INTERVAL = 900; /**15 min */
-        private static array $SECURE_LOCATIONS = ['loginthefuture.php', 'error.php', 'https://planetaryhealth.xyz/Futurefilmsindeklas', 'https://futurefilms.test'];
+        private static array $SECURE_LOCATIONS = ['auth/login-page.php', 'error/index.php', 'https://planetaryhealth.xyz/Futurefilmsindeklas', 'https://futurefilms.test'];
 
 
     public function __construct(

@@ -71,11 +71,32 @@ class LoginSecurityService {
         }
     }
 
+    public function checkLockOutInfo(string $email, string $ip): ?object {
+        try {
+            $seconds = $this->checkLockOutTime($email, $ip);
+            if ($seconds === null) return null;
+
+            $failedSinceSuccess = (int)$this->getAttemptsSinceLastSucces($email, $ip);
+            if ($failedSinceSuccess === null) return null;
+
+            $left = max(0, self::ATTEMPTS_BEFORE_LOCKOUT - $failedSinceSuccess);
+
+            return $this->getLockOutInfo($seconds, $failedSinceSuccess);
+
+            
+        } catch (PDOException | \Exception $e){
+            $this->errorLogException($e->getMessage(), __FUNCTION__);
+            return null;
+        }
+        
+
+    }
+
         /**
      * Registreert een mislukte inlogpoging en past eventueel een lockout toe.
      * @return array|null ['attempts_left' => int, 'lockout_seconds' => int]
      */
-    private function getLockOutInfo(int $seconds, $attemptsLeft = 0): object {
+    private function getLockOutInfo(int $seconds, int $attemptsLeft = 0): object {
         if ($seconds === 0){
             return (object) [
                 'attempts_left' => $attemptsLeft,
@@ -98,6 +119,49 @@ class LoginSecurityService {
         }
 
 
+    }
+
+    private function getAttemptsSinceLastSucces(string $email, string $ip): ?int 
+    {
+        try {
+            $sql =
+            "SELECT
+                MAX(attempt_time)
+            FROM
+                login_attempts
+            WHERE
+                email_address = :email
+                    AND
+                successful = 1
+            ";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['email' => $email]);
+            $lastSuccessAt = $stmt->fetchColumn();
+            $since = $lastSuccessAt ?: '1970-01-01 00:00:00';
+
+            $sql =
+            "SELECT
+                count(*)
+            FROM
+                login_attempts
+            WHERE
+                email_address = :email
+                    AND
+                successful = 0
+                    AND
+                attempt_time > :since
+            ";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['email' => $email, 'since' => $since]);
+            $failedSinceSuccess =  $stmt->fetchColumn();
+
+            return $failedSinceSuccess ?: 0;
+            
+        } catch (PDOException | \Exception $e){
+            $this->errorLogException($e->getMessage(), __FUNCTION__);
+            return null;
+        }
     }
 
     public function recordFailedAttempt(string $email, string $ip): ?object {
@@ -130,37 +194,9 @@ class LoginSecurityService {
                 return null;
             }
             
-            $sql =
-            "SELECT
-                MAX(attempt_time)
-            FROM
-                login_attempts
-            WHERE
-                email_address = :email
-                    AND
-                successful = 1
-            ";
+            $failedSinceSuccess = (int) $this->getAttemptsSinceLastSucces($email, $ip);
 
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(['email' => $email]);
-            $lastSuccessAt = $stmt->fetchColumn();
-            $since = $lastSuccessAt ?: '1970-01-01 00:00:00';
-
-            $sql =
-            "SELECT
-                count(*)
-            FROM
-                login_attempts
-            WHERE
-                email_address = :email
-                    AND
-                successful = 0
-                    AND
-                attempt_time > :since
-            ";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(['email' => $email, 'since' => $since]);
-            $failedSinceSuccess = (int)$stmt->fetchColumn();
+            if ($failedSinceSuccess === null) return null;
 
             $lockOutSeconds = 0;
 
