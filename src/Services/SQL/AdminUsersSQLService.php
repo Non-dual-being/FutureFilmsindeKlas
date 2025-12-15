@@ -1,6 +1,8 @@
 <?php
 namespace GeoFort\Services\SQL;
+
 use PDO;
+use PDOException;
 
 class AdminUsersSQLService {
     private PDO $pdo;
