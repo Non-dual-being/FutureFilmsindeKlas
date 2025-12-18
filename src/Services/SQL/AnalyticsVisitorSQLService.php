@@ -164,17 +164,20 @@ final class AnalyticsVisitorSQLService {
         try {
             $devices =
             "SELECT
-                device_type
+                device_type,
                 count(*) as visitors
             FROM
                 analytics_visitors
             GROUP BY
                 device_type
             ORDER BY
-                visitors
+                visitors DESC
             ";
 
             $stmt = $this->pdo->query($devices);
+            /**
+             * query direcly leads to a pdostatemet-> save to use here cuz no users paramaters
+             */
             return $stmt->fetchAll();
 
         }  catch (PDOException $e){

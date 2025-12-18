@@ -3,8 +3,20 @@ declare(strict_types=1);
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR .  'autoload.php';
 
 use Dotenv\Dotenv;
+
 use GeoFort\Security\AuthMiddleWare;
+
 use GeoFort\Services\Http\GlobalBaseUrlProvider;
+use GeoFort\Services\SQL\AnalyticsVisitorSQLService;
+
+use GeoFort\Utils\Analytics\VisitorTracker;
+
+use GeoFort\Database\Connector;
+
+error_reporting(E_ALL);
+ini_set('log_errors', 1);  
+date_default_timezone_set('Europe/Amsterdam');
+
 
 try {
         // The path should point to your project's root directory
@@ -35,10 +47,35 @@ if ($envActive === 'development'){
     ini_set('display_startup_errors', 0);
 }
 
+/**
+ * setting up tracking to get visitor info
+ */
 
-error_reporting(E_ALL);
-ini_set('log_errors', 1);  
-date_default_timezone_set('Europe/Amsterdam');
+try {
+    $pdo = Connector::getConnection();
+    $analyticsService = new nalyticsVisitorSQLService($pdo);
+    $salt = null;
+    $salt = $_ENV['ANALYTICS_SALT'] ?? $_SERVER['ANALYTICS_SALT'];
+
+    if (!isset($salt)){
+        error_log("salt in bootstrap could not be innitiallised with env values, falling back to fallback value");
+        if ($envActive === 'development') {
+            $salt = 'development-fallback-salt';
+        } else {
+            $salt = 'production-fallback-salt';
+        }
+    }
+
+    $tracker = new VisitorTracker($analyticsService, $salt);
+    $tracker->track();
+
+} catch (\Throwable $e){
+    error_log("Analytics set up failed in bootstrap: " . $e->getMessage());
+}
+
+
+
+
 
 /**
  * require once omdat je de klassen maar 1 keer wilt inladen en niet per ongeuk twee keer
