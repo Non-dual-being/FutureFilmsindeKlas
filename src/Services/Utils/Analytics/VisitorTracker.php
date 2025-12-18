@@ -46,12 +46,40 @@ final class VisitorTracker {
 
     public function track(): void 
     {
-        if(PHP_SAPI === 'cli') return;
-
-        /**
+                /**
          * cli heeft aan de server vanuit een command line omgeving wordt gebruikt en dat er dus geen bezoeker is
          * 
          */
+        if(PHP_SAPI === 'cli') return;
+
+        /**tracking disabled for auth en dasboard paths */
+
+        $uri = $_SERVER['REQUEST_URI'] ?? '/'; 
+
+        /*
+            *domein zit hier niet in 
+            dus `/dashboard/index is de url`
+        */
+
+
+        $path = parse_url($uri, PHP_URL_PATH) ?: '/';
+        /**
+         * haalt de ?message=tracked visitor eruit filteren om puur url over te houden
+         */
+
+        if (str_starts_with($path, '/dashboard') || str_starts_with($path, '/auth')){
+            return;
+        }
+
+        if (preg_match('~\.(CSS|js|png|jpg|webp|svg|ico)$~i', $path)) return; 
+
+        /**
+         * ~ is de delimiter om het einde en eht begin van de regex string aan te duiden
+         * \. letterlijk de punt
+         * de i maakt het hoofdlettering ongevoelig
+         */
+
+
 
         $ip = $_SERVER['REMOTE_ADDR'] ?? '';
         $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';

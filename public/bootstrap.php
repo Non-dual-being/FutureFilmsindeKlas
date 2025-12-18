@@ -53,17 +53,14 @@ if ($envActive === 'development'){
 
 try {
     $pdo = Connector::getConnection();
-    $analyticsService = new nalyticsVisitorSQLService($pdo);
-    $salt = null;
-    $salt = $_ENV['ANALYTICS_SALT'] ?? $_SERVER['ANALYTICS_SALT'];
+    $analyticsService = new AnalyticsVisitorSQLService($pdo);
+    $salt = $_ENV['ANALYTICS_SALT'] ?? $_SERVER['ANALYTICS_SALT'] ?? '';
 
-    if (!isset($salt)){
+    if (empty($salt)){
         error_log("salt in bootstrap could not be innitiallised with env values, falling back to fallback value");
-        if ($envActive === 'development') {
-            $salt = 'development-fallback-salt';
-        } else {
-            $salt = 'production-fallback-salt';
-        }
+        $salt = $envActive === 'development'
+            ? 'development-fallback-salt'
+            : 'production-fallback-salt';
     }
 
     $tracker = new VisitorTracker($analyticsService, $salt);

@@ -327,7 +327,7 @@ function submitSelection(event) {
     }
 
     opslaanGeselecteerdeVideos(selectedThemes); // Aanroepen van de nieuwe functie.
-    window.location.href = './videoplayer.html';
+    window.location.href = './videoplayer.php';
 
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(checkbox => {

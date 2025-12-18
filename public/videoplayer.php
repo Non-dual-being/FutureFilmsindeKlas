@@ -31,7 +31,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
             </aside>
 
             <div class="action-buttons">
-                <button id="Terugknop" onclick="window.location.href = './index.html';">Nieuwe Selectie</button>
+                <button id="Terugknop" onclick="window.location.href = './index.php';">Nieuwe Selectie</button>
                 <button id="shuffleknop" onclick="speelVideos(true);">Shuffle en Speel Opnieuw</button>
             </div>
         </div>
