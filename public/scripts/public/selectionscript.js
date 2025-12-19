@@ -1,5 +1,5 @@
-import CSSVARS from './cssGlobals.js';
-import videoList from './videolist.js';
+import CSSVARS from './../shared/cssGlobals.js';
+import videoList from './../shared/videolist.js';
 
 /**constanten */
 

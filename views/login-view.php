@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="./../styles/flash.css">
     <link rel="stylesheet" href="./../styles/video-player.css">
     <link rel="stylesheet" href="./../styles/inlog-page.css">
-    <script src="./../scripts/cssGlobals.js" defer type="module"></script>
-    <script src="./../scripts/loginpage.js" defer type="module"></script>
+    <script src="./../scripts/shared/cssGlobals.js" defer type="module"></script>
+    <script src="./../scripts/auth/loginpage.js" defer type="module"></script>
     <script defer>window.flashTargetIds = <?= json_encode(LoginFlashTarget::getValues()); ?></script>
     <script defer>window.flashPrefix = <?= json_encode(LoginFlashTarget::FLASHMESSAGE_PREFIX); ?></script>
 </head>

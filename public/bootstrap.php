@@ -8,8 +8,7 @@ use GeoFort\Security\AuthMiddleWare;
 
 use GeoFort\Services\Http\GlobalBaseUrlProvider;
 use GeoFort\Services\SQL\AnalyticsVisitorSQLService;
-
-use GeoFort\Utils\Analytics\VisitorTracker;
+use GeoFort\Services\Analytics\VisitorTracker;
 
 use GeoFort\Database\Connector;
 

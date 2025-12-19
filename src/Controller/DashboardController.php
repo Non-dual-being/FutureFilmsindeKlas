@@ -1,27 +1,28 @@
 <?php
 declare(strict_types=1);
-use GeoFort\Database\Connector;
-use GeoFort\Security\AuthMiddleWare;
-
+namespace GeoFort\Controller;
+use GeoFort\Services\DashboardStatsService;
 use GeoFort\ErrorHandlers\FlashMessageHandler;
-use GeoFort\ErrorHandlers\FormExceptionHandler;
-use GeoFort\ErrorHandlers\GeneralException;
+use GeoFort\Services\ErrorHandlers\DashboardFlasher;
+use GeoFort\Enums\FlashTarget\DashboardFlashTarget;
 
-use GeoFort\Services\Http\HeaderRedirector;
+final class DashboardController
+{
+    public function __construct(
+        private DashboardStatsService $stats
+    ) {}
 
-
-$GeoFortSession = new AuthMiddleWare();
-$GeoFortSession->privateSession();
-
-try {
-    $pdo = Connector::getConnection();
-    error_log("ik ben op het dashboard geweest");
-
-} catch (PDOException $e){
-    error_log("DatabaseFout: " . $e->getMessage());
-    $message = urlencode("The service is momentarily not available, is time to get a cup of coffee");
-    HeaderRedirector::toError("error.php", 503);
-
-    /**geen pdo is een 503 Service Unavailable */
+    public function index(): void 
+    {
+        $flasher  = new DashboardFlasher();
+        $flashHandler = new FlashMessageHandler(DashboardFlashTarget::class);
+        $pageData = $this->stats->getOverview();
+        require __DIR__ 
+            . DIRECTORY_SEPARATOR . '..'
+            . DIRECTORY_SEPARATOR . '..'
+            . DIRECTORY_SEPARATOR . 'views'
+            . DIRECTORY_SEPARATOR . 'dashboard-view.php';
+    }
 }
+
 ?>

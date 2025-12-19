@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace GeoFort\Services\Utils\Analytics;
+namespace GeoFort\Services\Analytics;
 use GeoFort\Services\SQL\AnalyticsVisitorSQLService;
 
 final class VisitorTracker {

@@ -1,10 +1,10 @@
 <?php 
 declare(strict_types=1);
-namespace GeoFort\Services\Utils;
-use datetime;
+namespace GeoFort\Utils;
+use DateTime;
 use Exception;
 
-class parseDate 
+class DateFormatter
 {
     public static function parseToLongDutchDate(string $sqlDate, bool $withTime = true): ?string 
     {
@@ -96,6 +96,7 @@ class parseDate
         } catch (Exception){
             return null;
         }
+
     }
 
     private static function inputHasTime(string $sqlDate): bool 

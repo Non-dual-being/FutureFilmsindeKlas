@@ -10,8 +10,8 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/global.css">
     <link rel="stylesheet" href="./styles/video-player.css">
-    <script defer scr="scripts/cssGlobals.js" type="module"></script>
-    <script defer src="scripts/videoscript.js" type="module"></script>
+    <script defer scr="scripts/shared/cssGlobals.js" type="module"></script>
+    <script defer src="scripts/public/videoscript.js" type="module"></script>
  
     <title>VideoPlayer</title>
 </head>

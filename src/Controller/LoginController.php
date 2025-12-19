@@ -13,7 +13,7 @@ use GeoFort\Services\SQL\AdminUsersSQLService;
 use GeoFort\Services\SQL\LoginSecurityService;
 use GeoFort\Services\Http\ClientIpResolver;
 use GeoFort\Services\Http\HeaderRedirector;
-use GeoFort\Services\Utils\parseDate;
+use GeoFort\Utils\DateFormatter;
 
 use GeoFort\Enums\FlashTarget\LoginFlashTarget;
 
@@ -84,7 +84,7 @@ try{
             if ($Lock === null) $Flasher->general("Service fout, neem contact op met beheerder");
 
             if ($Lock->blocked){
-                $lockOutDateNL = parseDate::parseToLongDutchDate($Lock->lockout_until) ?? "onbekende tijd";
+                $lockOutDateNL = DateFormatter::parseToLongDutchDate($Lock->lockout_until) ?? "onbekende tijd";
                 $Flasher->inlogsubmit("Inloggen geblokkeert tot {$lockOutDateNL}");
                 
             } 
@@ -117,7 +117,7 @@ try{
 
                    if ($failedLoginAttempt->blocked){
                     error_log(print_r($failedLoginAttempt, true));
-                    $lockOutDateNL = parseDate::parseToLongDutchDate($failedLoginAttempt->lockout_until) ?? "onbekende tijd";
+                    $lockOutDateNL = DateFormatter::parseToLongDutchDate($failedLoginAttempt->lockout_until) ?? "onbekende tijd";
                     $Flasher->inlogsubmit("Inloggen geblokkeert tot {$lockOutDateNL}");
                 
                     } else {
