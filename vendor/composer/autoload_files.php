@@ -10,4 +10,6 @@ return array(
     '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
     'a4a119a56e50fbb293281d9a48007e0e' => $vendorDir . '/symfony/polyfill-php80/bootstrap.php',
     '63fcd0db4dd44b5ac165930336b32daa' => $baseDir . '/src/Services/ErrorHandlers/Flashhelpers.php',
+    '8b8aa449fc73b39118e06ae3d34a9980' => $baseDir . '/src/Support/ViewRender.php',
+    '6cff42bb81729fdcb806d2c57f1f7a17' => $baseDir . '/src/Support/createLink.php',
 );

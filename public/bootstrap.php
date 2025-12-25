@@ -3,7 +3,6 @@ declare(strict_types=1);
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR .  'autoload.php';
 
 use Dotenv\Dotenv;
-
 use GeoFort\Security\AuthMiddleWare;
 
 use GeoFort\Services\Http\GlobalBaseUrlProvider;
@@ -16,6 +15,9 @@ error_reporting(E_ALL);
 ini_set('log_errors', 1);  
 date_default_timezone_set('Europe/Amsterdam');
 
+/** PADEN DEFINIEREN */
+if (!defined('VIEW_PATH')) define('VIEW_PATH', __DIR__ . '/../views');
+if (!defined('PUBLIC_PATH')) define('PUBLIC_PATH', __DIR__);
 
 try {
         // The path should point to your project's root directory

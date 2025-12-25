@@ -12,6 +12,10 @@ final class AnalyticsVisitorSQLService {
         $this->pdo = $pdo;
     }
 
+    private function errorLogException(string $message = '', string $context = "AnalyticsVisitorSQLService"): void {
+        error_log("[{$context} - error]: {$message}");
+    }
+
     public function upsertVisitor(
         string $fingerprint,
         string $devicetype,
@@ -106,7 +110,7 @@ final class AnalyticsVisitorSQLService {
         }
     }
 
-    public function countTotalVisitors(string $fromDateTime): ?int {
+        public function countTotalVisitorsSince(string $fromDateTime): ?int {
         try{
             $count = 
             "SELECT 
@@ -118,7 +122,7 @@ final class AnalyticsVisitorSQLService {
             ";
 
             $stmt = $this->pdo->prepare($count);
-            $stmt->execute(['from' => $fromDateTime]);
+            $stmt->execute([':mydate' => $fromDateTime]);
             return (int) $stmt->fetchColumn(); // false is cast to zero with int
 
         } catch (PDOException $e){
@@ -128,7 +132,27 @@ final class AnalyticsVisitorSQLService {
                 
     }
 
-    public function getDailyNewVisitors(string $fromDate, string $toDate): ?array {
+    public function getAllVisitors(): ?int {
+        try {
+            $count = 
+            "SELECT 
+                COUNT(*)
+            FROM
+                analytics_visitors
+            ";
+
+            $stmt = $this->pdo->query($count);
+            return $stmt->fetchColumn();
+
+        } catch (PDOException $e) {
+            $this->errorLogException($e->getMessage(), __FUNCTION__);
+            return null;
+
+        }
+    }
+
+
+    public function getDailyNewVisitors(string $from, string $to): ?array {
 
         try {
             $vistorsbyday =
@@ -138,7 +162,7 @@ final class AnalyticsVisitorSQLService {
             FROM
                 analytics_visitors
             WHERE
-                first_seen_at BETWEEN :fromdate AND :todate
+                first_seen_at BETWEEN :from AND :to
             GROUP BY
                 day
             ORDER BY
@@ -147,8 +171,8 @@ final class AnalyticsVisitorSQLService {
             
             $stmt = $this->pdo->prepare($vistorsbyday);
             $stmt->execute([
-                'fromdate' => $fromDate,
-                'todate'   => $toDate
+                'from' => $from,
+                'to'   => $to
             ]);
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC); //FETCH ASSOC is the default set in connector

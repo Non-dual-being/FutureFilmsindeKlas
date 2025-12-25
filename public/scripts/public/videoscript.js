@@ -1,4 +1,4 @@
-import videoList from './../sshared/videolist.js';
+import videoList from './../shared/videolist.js';
 
 const videoPlayer = document.getElementById('videoPlayer');
 const playBtn = document.getElementById('playButton');

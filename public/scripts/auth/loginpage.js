@@ -1,4 +1,4 @@
-import flasher from "./showFlashMsg.js";
+import flasher from "./../shared/showFlashMsg.js";
 
 const {
     inactive : flashMsgInActiveId,

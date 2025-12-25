@@ -28,7 +28,7 @@
         >
             <div 
                 id="<?= htmlspecialchars(LoginFlashTarget::General->varName())?>" 
-                class="future-flash-message flash-hide<?php echo htmlspecialchars($GeneralMsg->type);?>"
+                class="future-flash-message flash-Hide"
                 data-message-type=<?= htmlspecialchars($GeneralMsg->type)?>
             >
                 <?= htmlspecialchars($GeneralMsg->message); ?>
@@ -82,7 +82,7 @@
             >
                 <div 
                     id="<?= htmlspecialchars(LoginFlashTarget::Inlog_Submit->varName())?>" 
-                    class="future-flash-message flash-hide <?php echo htmlspecialchars($inlogSubmitMsg->type);?>"
+                    class="future-flash-message flash-Hide"
                     data-message-type=<?= htmlspecialchars($inlogSubmitMsg->type)?>
                 >
                     <?= htmlspecialchars($inlogSubmitMsg->message); ?>
@@ -98,7 +98,7 @@
             >
                 <div 
                     id="<?= htmlspecialchars(LoginFlashTarget::InActive->varName())?>" 
-                    class="future-flash-message flash-hide<?php echo htmlspecialchars($inactiveMsg->type);?>"
+                    class="future-flash-message flash-Hide"
                     data-message-type=<?= htmlspecialchars($inactiveMsg->type)?>
                 >
                     <?= htmlspecialchars($inactiveMsg->message); ?>

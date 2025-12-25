@@ -94,11 +94,12 @@ final class VisitorTracker {
             'os'      => $os
         ] = $this->detectBrowserAndOs($ua);
 
-        $this->visistorTable->upsertVisitor(
-            fingerprint : $fingerprint,
-            deviceType  : $deviceType,
-            browser     : $browser,
-            countryCode : null
+        $this->visitorTable->upsertVisitor(
+            fingerprint:    $fingerprint,
+            devicetype:     $deviceType,
+            browser:        $browser,
+            os:             $os,
+            countryCode :   null
         );
     }
 
@@ -107,7 +108,7 @@ final class VisitorTracker {
         return hash('sha256', $ip . '|' . $ua . '|' . $this->salt);
     }
 
-    private function detectDeviceType(sting $ua): string 
+    private function detectDeviceType(string $ua): string 
     {
         $ua = strtolower($ua);
 
@@ -155,6 +156,7 @@ final class VisitorTracker {
 
         foreach(self::BOTFRAGMENTS as $fragment){
             if (str_contains($ua, $fragment)){
+                error_log("bot detected");
                 return true;
             }
         }

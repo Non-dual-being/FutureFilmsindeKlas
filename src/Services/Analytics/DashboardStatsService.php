@@ -15,16 +15,16 @@ final class DashboardStatsService {
         private AnalyticsVisitorSQLService $visitors
     ){}
 
-    public function getOverview(): array 
+    public function getOverview(): DashboardOverviewResult
     {
         try {
             $now = new DateTimeImmutable();
             $totals = [
-                'totalVisitors' => $this->visitors->countTotalVisitors(),
-                'visitorsLast7d' => $this->visitors->countVisitorsSince(
+                'totalVisitors' => $this->visitors->getAllVisitors(),
+                'visitorsLast7d' => $this->visitors->countTotalVisitorsSince(
                     $now->modify('-7 days')->format('Y-m-d 00:00:00')
                 ),
-                'visitorsLast30d' => $this->visitors->countVisitorsSince(
+                'visitorsLast30d' => $this->visitors->countTotalVisitorsSince(
                     $now->modify('-30 days')->format('Y-m-d 00:00:00')
                 )
 

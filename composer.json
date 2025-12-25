@@ -10,7 +10,9 @@
             "GeoFort\\": "src/"
         },
         "files": [
-            "src/Services/ErrorHandlers/Flashhelpers.php"
+            "src/Services/ErrorHandlers/Flashhelpers.php",
+            "src/Support/ViewRender.php",
+            "src/Support/createLink.php"
         ]
     }
 }

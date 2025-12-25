@@ -10,7 +10,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/global.css">
     <link rel="stylesheet" href="./styles/selection-page.css">
-    <script defer src="./scripts/selectionscript.js" type="module"></script>
+    <script defer src="./scripts/public/selectionscript.js" type="module"></script>
     <title>Jukebox Future Films</title>
     <script>
         document.documentElement.setAttribute('future-theme', 'light')

@@ -6,6 +6,7 @@ const {
     flashShow,
     flashShowSuccess,
     flashShowError,
+    flashHide
 } = CSSFLASH;
 
 const ADDED_CLASSES = [flashShow, flashShowSuccess, flashShowError];
@@ -13,6 +14,7 @@ const ADDED_CLASSES = [flashShow, flashShowSuccess, flashShowError];
 function showFlashMessage(flashMsg, duration = 5000, fadeOut=true) {
     if (!flashMsg) return;
     let classType;
+
     const getClassType = (type) => {
         if (!type) return;
     
@@ -27,6 +29,7 @@ function showFlashMessage(flashMsg, duration = 5000, fadeOut=true) {
     }
 
     if (flashMsg && flashMsg.textContent.trim() !== '') {
+        flashMsg.classList.remove(flashHide);
         flashMsg.classList.add(flashShow);
         const flashATTR = flashMsg.getAttribute(ATTR);
         if (flashATTR) {
@@ -44,6 +47,7 @@ function showFlashMessage(flashMsg, duration = 5000, fadeOut=true) {
                 }
             }
             flashMsg.textContent = '';
+            flashMsg.classList.add(flashHide);
         }, duration)
         
     }

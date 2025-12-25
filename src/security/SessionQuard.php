@@ -58,6 +58,16 @@ final class SessionQuard {
         $_SESSION['user_agent'] ??= ($_SERVER['HTTP_USER_AGENT'] ?? '');
         $_SESSION['ip_address'] ??= ($_SERVER['REMOTE_ADDR'] ?? '');
 
+        /**
+         * csrf token meegeven 
+         * dit verzekerd meer dat het uitloggen gebeurt vanuit de correct pagina
+         * omdat de browser de sessie cookie meegeeft, kan je vanuit een private sessie bij een publieke sessie start dezelfde sessie herstarten
+         * Dit verzekerd dat je token correct wordt doorgegeven
+         * 
+         * */
+
+        if (!isset($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(32));
+
         /** ??=
          * if left doesnt exist or is null then assign it with right value
          */
@@ -166,6 +176,18 @@ final class SessionQuard {
                     ? 'Strict' 
                     : 'Lax'
             ]);
+
+                    /**
+         * csrf token meegeven 
+         * dit verzekerd meer dat het uitloggen gebeurt vanuit de correct pagina
+         * omdat de browser de sessie cookie meegeeft, kan je vanuit een private sessie bij een publieke sessie start dezelfde sessie herstarten
+         * Dit verzekerd dat je token correct wordt doorgegeven
+         * vanwege de check ga je niet overschrijven waar onnodig
+         * 
+         * */
+
+        if (!isset($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(32));
+
         }
     }
 
