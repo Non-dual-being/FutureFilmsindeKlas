@@ -8,11 +8,15 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/layout-vars.css'))?>" >
     <link rel="stylesheet" href="./styles/global.css">
     <link rel="stylesheet" href="./styles/video-player.css">
+
     <script defer scr="scripts/shared/cssGlobals.js" type="module"></script>
     <script defer src="scripts/public/videoscript.js" type="module"></script>
- 
+    <script defer src="<?= htmlentities(asset('scripts/shared/resize.js'))?>" type="module"></script>
+    
     <title>VideoPlayer</title>
 </head>
 <body class="videoPlayer">

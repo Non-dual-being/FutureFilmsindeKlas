@@ -11,8 +11,8 @@ use GeoFort\Enums\FlashTarget\DashboardFlashTarget;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/global.css'))?>" >
+
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/layout-vars.css'))?>" >
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/flash.css'))?>" >
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/dashboard/global.css'))?>" >
 
@@ -24,7 +24,7 @@ use GeoFort\Enums\FlashTarget\DashboardFlashTarget;
 <body class="dashboard">
     <div 
         class="dash-shell" 
-        id="shell-sidebar" 
+        id="dash-body-container" 
         data-sidebar-open="false"
     >
         <?php render(VIEW_PATH . '/partials/dashboard/sidebar.php', [

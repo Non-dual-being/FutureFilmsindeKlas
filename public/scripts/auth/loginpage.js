@@ -14,4 +14,4 @@ const flashMsgGeneral = document.getElementById(`${PREFIX}${flashMsgGeneralId}`)
 
 if (flashMsgInActive) flasher(flashMsgInActive, 7000);
 if (flashMsgInlogAttempt) flasher(flashMsgInlogAttempt, 7000);
-if (flashMsgGeneral) flasher(flashMsgInlogAttempt, 7000, false);
+if (flashMsgGeneral) flasher(flashMsgGeneral, 7000, false);

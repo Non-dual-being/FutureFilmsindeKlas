@@ -7,7 +7,11 @@ $devices = $pageData['devices'] ?? [];
 $hasDaily = is_array($daily) && count($daily) > 0;
 $hasDevices = is_array($devices) && count($devices) > 0;
 ?>
-<section class="dash-stat-grid">
+<link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/dashboard/analytics/stats.css'))?>" >
+<script src="<?= htmlspecialchars(asset('scripts/dashboard/dashboard-charts.js')) ?>" defer></script>
+
+<section class="dash-overview-grid">
+  <?php /**stats cards (first row) */ ?>
   <article class="dash-card">
     <div class="dash-card__label">Total visitors</div>
     <div class="dash-card__value"><?= (int) ($totals['totalVisitors'] ?? 0) ?></div>
@@ -22,10 +26,9 @@ $hasDevices = is_array($devices) && count($devices) > 0;
     <div class="dash-card__label">New monthly visitors</div>
     <div class="dash-card__value"><?= (int) ($totals['visitorsLast30d'] ?? 0) ?></div>
   </article>
-</section>
 
-<section class="dash-panels">
-  <article class="dash-panel">
+  <?php /**stats grafics (second row) */ ?>
+  <article class="dash-panel__wide">
     <header class="dash-panel__header">
       <h2>New Daily Visitors</h2>
     </header>
@@ -73,4 +76,3 @@ $hasDevices = is_array($devices) && count($devices) > 0;
     </div>
   </article>
 </section>
-<script src="<?= htmlspecialchars(asset('scripts/dashboard/dashboard-charts.js')) ?>" defer></script>

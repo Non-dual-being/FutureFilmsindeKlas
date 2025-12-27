@@ -31,6 +31,7 @@ $activePage = $activePage ?? '';
         >
         <button 
             type="submit"
+            class="dash-btn dash-btn--danger"
         >Logout</button>
     </form>
 </aside>

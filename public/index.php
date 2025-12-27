@@ -8,9 +8,14 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/layout-vars.css'))?>" >
     <link rel="stylesheet" href="./styles/global.css">
     <link rel="stylesheet" href="./styles/selection-page.css">
+    
     <script defer src="./scripts/public/selectionscript.js" type="module"></script>
+    <script defer src="<?= htmlentities(asset('scripts/shared/resize.js'))?>" type="module"></script>
+    
     <title>Jukebox Future Films</title>
     <script>
         document.documentElement.setAttribute('future-theme', 'light')

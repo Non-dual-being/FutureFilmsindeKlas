@@ -60,6 +60,7 @@
     --border-size-lg: 4px;
 
     --vh: 100dvh;
+    --vw: 100vw;
 
     /**height - width **/
     --height-max: 900px;
@@ -188,8 +189,7 @@
     --selection-column-gap--main---md: clamp(var(--spacing-md), 5vh, var(--spacing-lg));
 
 
-    /**dynamic heigt*/
-     --vh: 100dvh;
+
 
      /**------------------------[VIDEO]-------------------****/
      --videoplayer-height-footer-header: max(4.5vh, var(var(--space-letter-xlg)));

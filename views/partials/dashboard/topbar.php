@@ -9,13 +9,13 @@ $email = $currentUserEmail ?? '';
             type="button"
             data-action="toggle-sidebar"
             aria-controls="dash-sidebar"
-            aria-exapaned="false"
+            aria-expanded="false"
         >
             Menu
         </button>
     </div>
    
-    <div class="das-topbar__title">
+    <div class="dash-topbar__title">
         <h1>Future Dashboard</h1>
         <p>GeoFort Analytics</p>
     </div>
