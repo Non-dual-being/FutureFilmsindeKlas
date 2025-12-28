@@ -11,8 +11,7 @@
         },
         "files": [
             "src/Services/ErrorHandlers/Flashhelpers.php",
-            "src/Support/ViewRender.php",
-            "src/Support/createLink.php"
+            "src/Support/Helpers.php"
         ]
     }
 }

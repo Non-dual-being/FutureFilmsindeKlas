@@ -2,7 +2,7 @@
 use GeoFort\Enums\FlashTarget\FlashTargetContract;
 use GeoFort\ErrorHandlers\FlashMessageHandler;
 
-function flash(FlashMessageHandler $handler, FlashTargetContract $target): object
+function flashException(FlashMessageHandler $handler, FlashTargetContract $target): object
 {
     $data = $handler->get($target);
 

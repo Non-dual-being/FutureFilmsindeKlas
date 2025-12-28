@@ -24,7 +24,7 @@ final class HeaderRedirector implements Redirector {
     }
 
     public static function toLogin(
-        string $path = 'loginthefuture.php',
+        string $path = 'auth/login.php',
         ?string $inactiveMsg = null 
     ): never {
         $query = [];

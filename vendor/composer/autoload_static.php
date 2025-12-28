@@ -11,8 +11,7 @@ class ComposerStaticInit7a7ef1f69d23030a1d384b76199c40bb
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '63fcd0db4dd44b5ac165930336b32daa' => __DIR__ . '/../..' . '/src/Services/ErrorHandlers/Flashhelpers.php',
-        '8b8aa449fc73b39118e06ae3d34a9980' => __DIR__ . '/../..' . '/src/Support/ViewRender.php',
-        '6cff42bb81729fdcb806d2c57f1f7a17' => __DIR__ . '/../..' . '/src/Support/createLink.php',
+        'a24bc8cdbdc33f38352812156a4fc5d2' => __DIR__ . '/../..' . '/src/Support/Helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -116,6 +115,7 @@ class ComposerStaticInit7a7ef1f69d23030a1d384b76199c40bb
         'GeoFort\\Database\\Connector' => __DIR__ . '/../..' . '/src/Database/Connector.php',
         'GeoFort\\Enums\\FlashTarget\\FlashTargetContract' => __DIR__ . '/../..' . '/src/Enums/FlashTarget/FlashTargetContract.php',
         'GeoFort\\ErrorHandlers\\FlashMessageHandler' => __DIR__ . '/../..' . '/src/ErrorHandlers/FlashMessageHandler.php',
+        'GeoFort\\ErrorHandlers\\FlashWriter' => __DIR__ . '/../..' . '/src/ErrorHandlers/FlashWriter.php',
         'GeoFort\\ErrorHandlers\\FormExceptionHandler' => __DIR__ . '/../..' . '/src/ErrorHandlers/FormExceptionHandler.php',
         'GeoFort\\ErrorHandlers\\GeneralException' => __DIR__ . '/../..' . '/src/ErrorHandlers/GeneralException.php',
         'GeoFort\\ErrorHandlers\\InvalidArg' => __DIR__ . '/../..' . '/src/ErrorHandlers/InvalidArg.php',
@@ -140,6 +140,7 @@ class ComposerStaticInit7a7ef1f69d23030a1d384b76199c40bb
         'GeoFort\\Services\\Validators\\InputValidator' => __DIR__ . '/../..' . '/src/Services/Validators/InputValidator.php',
         'GeoFort\\Services\\Validators\\PasswordSanitizer' => __DIR__ . '/../..' . '/src/Services/Validators/PasswordSanitizer.php',
         'GeoFort\\Services\\Validators\\ValidationResult' => __DIR__ . '/../..' . '/src/Services/Validators/ValidationResult.php',
+        'GeoFort\\Support\\FlashStore' => __DIR__ . '/../..' . '/src/Support/FlashStore.php',
         'GeoFort\\Utils\\DateFormatter' => __DIR__ . '/../..' . '/src/Utils/DateFormatter.php',
         'GeoFort\\security\\AuthMiddleWare' => __DIR__ . '/../..' . '/src/security/AuthMiddleWare.php',
         'GeoFort\\security\\SessionQuard' => __DIR__ . '/../..' . '/src/security/SessionQuard.php',

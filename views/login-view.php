@@ -20,7 +20,7 @@
     <main class="login-container">
         <h1 class="inlogh1">INLOG FUTURE DASHBOARD</h1>
 
-        <?php $GeneralMsg = flash($FlashHandler, LoginFlashTarget::General)?>
+        <?php $GeneralMsg = flash(LoginFlashTarget::General)?>
 
         <?php if ($GeneralMsg->hasMessage) :?>
         <div 
@@ -36,7 +36,12 @@
         </div>
         <?php endif;?>
 
-        <form method="POST" class="login-form" id="login-form">
+        <form 
+            method="POST" 
+            class="login-form" 
+            id="login-form" 
+            action="<?= htmlspecialchars(asset('auth/login-page.php'))?>"
+        >
             <input 
                 type="hidden" 
                 name="<?= htmlspecialchars(CSRF); ?>" 
@@ -75,7 +80,7 @@
                 class="submit-button"
             >Inloggen</button>
 
-            <?php $inlogSubmitMsg = flash($FlashHandler, LoginFlashTarget::Inlog_Submit)?>
+            <?php $inlogSubmitMsg = flash(LoginFlashTarget::Inlog_Submit)?>
             <?php if ($inlogSubmitMsg->hasMessage) :?>
             <div 
                 class="<?= htmlspecialchars(LoginFlashTarget::getWrapperClass())?>"
@@ -90,7 +95,7 @@
             </div>
             <?php endif;?>
 
-            <?php $inactiveMsg = flash($FlashHandler, LoginFlashTarget::InActive)?>
+            <?php $inactiveMsg = flash(LoginFlashTarget::InActive)?>
 
             <?php if ($inactiveMsg->hasMessage) :?>
             <div 

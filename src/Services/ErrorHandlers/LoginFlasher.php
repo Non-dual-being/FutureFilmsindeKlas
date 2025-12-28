@@ -3,34 +3,35 @@ declare(strict_types=1);
 namespace GeoFort\Services\ErrorHandlers;
 
 use GeoFort\Enums\FlashTarget\LoginFlashTarget;
+use GeoFort\ErrorHandlers\FlashWriter;
 
 final class LoginFlasher {
-    private readonly FLashThrower $thrower;
+    private readonly FlashWriter $writer;
     
     public function __construct()
     {
-        $this->thrower = new FlashThrower(LoginFlashTarget::class);
+        $this->writer = new FlashWriter();
     }
 
       public function inactive(
         string $msg,
         string $type = 'success',
-        bool $throw = true
-    ): void {
-        $this->thrower->throw($msg, $type, LoginFlashTarget::InActive, $throw);
+    ): void 
+    {
+        $this->writer->write($msg, $type, LoginFlashTarget::InActive);
     }
 
     public function inlogsubmit(
         string $msg,
         string $type = 'error',
-        bool $throw = true
-    ): void {
-        $this->thrower->throw($msg, $type, LoginFlashTarget::Inlog_Submit, $throw);
+    ): void 
+    {
+        $this->writer->write($msg, $type, LoginFlashTarget::Inlog_Submit);
     }
 
-    public function general(string $msg, string $type = 'error', bool $throw = true): void
+    public function general(string $msg, string $type = 'error'): void
     {
-        $this->thrower->throw($msg, $type, LoginFlashTarget::General, $throw);
+        $this->writer->write($msg, $type, LoginFlashTarget::General);
     }
 
 }
