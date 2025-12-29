@@ -80,36 +80,14 @@
                 class="submit-button"
             >Inloggen</button>
 
-            <?php $inlogSubmitMsg = flash(LoginFlashTarget::Inlog_Submit)?>
-            <?php if ($inlogSubmitMsg->hasMessage) :?>
-            <div 
-                class="<?= htmlspecialchars(LoginFlashTarget::getWrapperClass())?>"
-            >
-                <div 
-                    id="<?= htmlspecialchars(LoginFlashTarget::Inlog_Submit->varName())?>" 
-                    class="future-flash-message flash-Hide"
-                    data-message-type=<?= htmlspecialchars($inlogSubmitMsg->type)?>
-                >
-                    <?= htmlspecialchars($inlogSubmitMsg->message); ?>
-                </div>
-            </div>
-            <?php endif;?>
+            <?php render(VIEW_PATH . '/partials/dashboard/flash.php', [
+                'target'  => LoginFlashTarget::Inlog_Submit,
+            ])?>
 
-            <?php $inactiveMsg = flash(LoginFlashTarget::InActive)?>
+            <?php render(VIEW_PATH . '/partials/dashboard/flash.php', [
+                'target'  => LoginFlashTarget::InActive,
+            ])?>
 
-            <?php if ($inactiveMsg->hasMessage) :?>
-            <div 
-                class="<?= htmlspecialchars(LoginFlashTarget::getWrapperClass())?>"
-            >
-                <div 
-                    id="<?= htmlspecialchars(LoginFlashTarget::InActive->varName())?>" 
-                    class="future-flash-message flash-Hide"
-                    data-message-type=<?= htmlspecialchars($inactiveMsg->type)?>
-                >
-                    <?= htmlspecialchars($inactiveMsg->message); ?>
-                </div>
-            </div>
-            <?php endif;?>
         </form>
     </main>
 </body>

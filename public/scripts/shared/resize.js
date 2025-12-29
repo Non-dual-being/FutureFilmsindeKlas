@@ -15,6 +15,8 @@ if (HTML_EL) {
         }, 100);
     };
 
+    updateViewVars();
+
     ['resize', 'orientationchange'].forEach(evt => {
         window.addEventListener(evt, updateViewVars);
     });

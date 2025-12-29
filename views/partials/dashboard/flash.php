@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-$flashMsgObj = flash($handler, $target);
+$flashMsgObj = flash($target);
 if (!$flashMsgObj->hasMessage) return;
 
 /**

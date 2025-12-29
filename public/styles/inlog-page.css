@@ -6,7 +6,7 @@ body.main-grid {
     align-content: center ;
     height: 100%;
     width: 100%;
-    min-height: calc(var(--vh) * 100);
+    min-height:var(--vh);
     gap: var(--spacing-md);
     background-color: var(--color-background);
 
@@ -151,7 +151,7 @@ form button:active{
         display: flex;
         flex-direction: column;
         justify-content: start;
-        min-height: calc(var(--vh) * 100);
+        min-height: var(--vh);
         align-items: center;
         padding: var(--spacing-sm) var(--spacing-lg);
         height: 100%;

@@ -53,29 +53,26 @@ if ($envActive === 'development'){
  */
 
 try {
-    $pdo = Connector::getConnection();
-    $analyticsService = new AnalyticsVisitorSQLService($pdo);
-    $salt = $_ENV['ANALYTICS_SALT'] ?? $_SERVER['ANALYTICS_SALT'] ?? '';
+    if (VisitorTracker::shouldTrack($_SERVER)){
+    
+        $pdo = Connector::getConnection();
+        $analyticsService = new AnalyticsVisitorSQLService($pdo);
+        $salt = $_ENV['ANALYTICS_SALT'] ?? $_SERVER['ANALYTICS_SALT'] ?? '';
 
-    if (empty($salt)){
-        error_log("salt in bootstrap could not be innitiallised with env values, falling back to fallback value");
-        $salt = $envActive === 'development'
-            ? 'development-fallback-salt'
-            : 'production-fallback-salt';
+        if (empty($salt)){
+            error_log("salt in bootstrap could not be innitiallised with env values, falling back to fallback value");
+            $salt = $envActive === 'development'
+                ? 'development-fallback-salt'
+                : 'production-fallback-salt';
+        }
+
+        $tracker = new VisitorTracker($analyticsService, $salt);
+        $tracker->track();
+
+
     }
-
-    $tracker = new VisitorTracker($analyticsService, $salt);
-    $tracker->track();
-
 } catch (\Throwable $e){
     error_log("Analytics set up failed in bootstrap: " . $e->getMessage());
 }
 
-
-
-
-
-/**
- * require once omdat je de klassen maar 1 keer wilt inladen en niet per ongeuk twee keer
- */
 ?>

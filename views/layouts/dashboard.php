@@ -43,7 +43,6 @@ use GeoFort\Enums\FlashTarget\DashboardFlashTarget;
 
             <main class="dash-main">
                 <?php render(VIEW_PATH . '/partials/dashboard/flash.php', [
-                    'handler' => $FlashHandler,
                     'target'  => DashboardFlashTarget::Result,
                 ])?>
 
