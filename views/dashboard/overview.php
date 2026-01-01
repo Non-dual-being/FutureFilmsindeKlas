@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+error_log(print_r($pageData, true));
 $totals  = $pageData['totals'] ?? [];
 $daily   = $pageData['daily'] ?? [];
 $devices = $pageData['devices'] ?? [];
@@ -28,7 +29,7 @@ $hasDevices = is_array($devices) && count($devices) > 0;
   </article>
 
   <?php /**stats grafics (second row) */ ?>
-  <article class="dash-panel__wide">
+  <article class="dash-panel--wide">
     <header class="dash-panel__header">
       <h2>New Daily Visitors</h2>
     </header>
@@ -46,7 +47,7 @@ $hasDevices = is_array($devices) && count($devices) > 0;
         <script>
           window.FUTURE_DASH = window.FUTURE_DASH || {};
           window.FUTURE_DASH.dailyLabels = <?= json_encode(array_column($daily, 'day'), JSON_UNESCAPED_UNICODE) ?>;
-          window.FUTURE_DASH.dailyValues = <?= json_encode(array_map('intval', array_column($daily, 'new_visitors'))) ?>;
+          window.FUTURE_DASH.dailyValues = <?= json_encode(array_map('intval', array_column($daily, 'visitors'))) ?>;
         </script>
       <?php endif; ?>
     </div>

@@ -344,6 +344,7 @@ body.is-scroll-locked {
   display: flex;
   flex-direction: column;
   gap: clamp(1.8vh, 1.2rem, 2.2vh);
+  max-width: 100%;
 }
 
 

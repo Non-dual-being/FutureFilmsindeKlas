@@ -19,6 +19,7 @@ use GeoFort\Enums\FlashTarget\DashboardFlashTarget;
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script defer src= "<?= htmlspecialchars(asset('scripts/dashboard/shell.js')) ?>"></script>
+    <script defer src= "<?= htmlspecialchars(asset('scripts/shared/resize.js')) ?>" type="module"></script>
     <title>Future Dashboard</title>
 </head>
 <body class="dashboard">

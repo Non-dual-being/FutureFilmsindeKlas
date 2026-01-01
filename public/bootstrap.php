@@ -6,10 +6,15 @@ use Dotenv\Dotenv;
 use GeoFort\Security\AuthMiddleWare;
 
 use GeoFort\Services\Http\GlobalBaseUrlProvider;
+use GeoFort\Services\Http\CountryCodeResolver;
 use GeoFort\Services\SQL\AnalyticsVisitorSQLService;
-use GeoFort\Services\Analytics\VisitorTracker;
-
+use GeoFort\Services\SQL\AnalyticsSessionSQLService;
+use GeoFort\Services\SQL\AnalyticsPageviewSQLService;
+use GeoFort\Services\Analytics\AnalyticsTracker;
+use GeoFort\Services\Analytics\AnalyticsConfig;
 use GeoFort\Database\Connector;
+
+/**-----------[BASE SETUP]----------------- */
 
 error_reporting(E_ALL);
 ini_set('log_errors', 1);  
@@ -19,9 +24,11 @@ date_default_timezone_set('Europe/Amsterdam');
 if (!defined('VIEW_PATH')) define('VIEW_PATH', __DIR__ . '/../views');
 if (!defined('PUBLIC_PATH')) define('PUBLIC_PATH', __DIR__);
 
+
+/**ENVIRONMENT ENV LADEN */
 try {
-        // The path should point to your project's root directory
-    $path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+    // The path should point to your project's root directory
+    $path = dirname(__DIR__);
     $dotenv = Dotenv::createImmutable($path);
     $dotenv->load();
 
@@ -31,14 +38,25 @@ try {
     die("Configuration error: Could not find the .env file. Please check the environment setup.");
 }
 
-$envActive = $_ENV['APP_ENV'] ?? $_SERVER['APP_ENV'];
+
+/**ENVIRONEMENT CHECK */
+$envActive = $_ENV['APP_ENV'] ?? $_SERVER['APP_ENV'] ?? '';
+if ($envActive === ''){
+    error_log("failed bootstrap: env-var could not be loaded correctly");
+    exit("FutureFilms has a critical error");
+}
 AuthMiddleWare::setEnvironment($envActive);
-
-$baseUrl=$_ENV['BASE_URL'] ?? $_SERVER['BASE_URL'];
-AuthMiddleWare::setBaseUrl($baseUrl);
-
 GlobalBaseUrlProvider::init($envActive);
 
+/**BASEURL CHECK */
+$baseUrl=$_ENV['BASE_URL'] ?? $_SERVER['BASE_URL'] ?? '';
+if ($baseUrl === ''){
+    error_log("failed bootstrap: base_url could not be loaded correctly");
+    exit("FutureFilms has a critical error");
+}
+AuthMiddleWare::setBaseUrl($baseUrl);
+
+/**INITIAL SETUP BASED UPON ENVIRONMENT */
 if ($envActive === 'development'){
     ini_set('display_errors', 1);  // Schakel weergave van fouten in de browser in
     ini_set('display_startup_errors', 1);
@@ -46,32 +64,59 @@ if ($envActive === 'development'){
 } else if ($envActive === 'production'){
     ini_set('display_errors', 0);  // Schakel weergave van fouten in de browser in
     ini_set('display_startup_errors', 0);
+} else {
+    error_log("failed bootstrap: env-var could not be loaded correctly");
+    exit("FutureFilms has a critical error");
 }
 
-/**
- * setting up tracking to get visitor info
- */
+/***--------------------------------------------------------- */
+/***----------------------[TRACKING]------------------------- */
+/***--------------------------------------------------------- */
 
 try {
-    if (VisitorTracker::shouldTrack($_SERVER)){
-    
-        $pdo = Connector::getConnection();
-        $analyticsService = new AnalyticsVisitorSQLService($pdo);
-        $salt = $_ENV['ANALYTICS_SALT'] ?? $_SERVER['ANALYTICS_SALT'] ?? '';
+    $shouldTrack = false;
+    $salt = $_ENV['ANALYTICS_SALT'] ?? $_SERVER['ANALYTICS_SALT'] ?? '';
 
-        if (empty($salt)){
-            error_log("salt in bootstrap could not be innitiallised with env values, falling back to fallback value");
-            $salt = $envActive === 'development'
-                ? 'development-fallback-salt'
-                : 'production-fallback-salt';
+    if ($salt === ''){
+        if ($envActive === 'development'){
+            $salt = 'some_random_salt_development_key';
+            $shouldTrack = true;
+            error_log("using salt fallback key in environment development instead of initiel key");
+        } else {
+            error_log("warning: track disable salt key not accesable");
+        }
+    } else {
+        $shouldTrack = true;
+    }
+    
+    if (VisitorTracker::shouldTrack($_SERVER) && $shouldTrack){
+        $pdo = Connector::getConnection();
+        $visitors = new AnalyticsVisitorSQLService($pdo);
+        $sessions = new AnalyticsSessionSQLService($pdo);
+        $pageviews = new AnalyticsPageviewSQLService($pdo);
+
+        $countryCodeDbPath = $_ENV['GEOLITE_PATH'] ?? $_SERVER['GEOLITE_PATH'] ?? null;
+        $countryCodeResolver = null;
+        
+        if ($countryCodeDbPath === null){
+            error_log("path to GeoLite DB not found");
+        } else {
+            $GeoLite = dirname(__DIR__) . ltrim($countryCodeDbPath, '/');
+            $countryCodeResolver = new CountryCodeResolver($GeoLite) ?? null;
         }
 
-        $tracker = new VisitorTracker($analyticsService, $salt);
+        $tracker = new AnalyticsTracker(
+                visitors: $visitors,
+                sessions: $sessions,
+                pageviews: $pageviews,
+                salt: $salt,
+                countryResolver: $countryResolver
+            );
+
         $tracker->track();
 
-
     }
-} catch (\Throwable $e){
+} catch (\Throwable | PDOException $e){
     error_log("Analytics set up failed in bootstrap: " . $e->getMessage());
 }
 

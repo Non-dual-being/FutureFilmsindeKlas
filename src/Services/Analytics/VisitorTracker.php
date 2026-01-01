@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 namespace GeoFort\Services\Analytics;
+
 use GeoFort\Services\SQL\AnalyticsVisitorSQLService;
+use GeoFort\Services\Http\ClientIpResolver;
+use GeoFort\Services\Http\CountryCodeResolver;
 
 final class VisitorTracker {
     private const DEVICE_TYPES = [
@@ -38,12 +41,14 @@ final class VisitorTracker {
             'headless',
     ];
 
-    private const STOP_TRACK_FLAG = '~\.(css|js|png|jpg|jpeg|webp|svg|ico)$~i/';
+    private const STOP_TRACK_FLAG = '~\.(css|js|png|jpg|jpeg|webp|svg|ico)$~i';
+
     
 
     public function __construct(
         private AnalyticsVisitorSQLService $visitorTable,
-        private string $salt
+        private string $salt,
+        private ?CountryCodeResolver $countrySolver = null
     ) {}
 
     private static function getBaseRequestUrl(array $server): string {
@@ -77,7 +82,7 @@ final class VisitorTracker {
 
         $ua = $server['HTTP_USER_AGENT'] ?? '';
         
-        if ($ua === '' || $this->isBot($ua)) return false;
+        if ($ua === '' || self::isBot($ua)) return false;
 
         return true;
         
@@ -86,14 +91,21 @@ final class VisitorTracker {
     public function track(): void 
     {
 
-        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        $ipObj = ClientIpResolver::getClientIp($_SERVER);
+        $ip = $ipObj->haserror ? '' : $ipObj->ip;
         $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
         $uri = $_SERVER['REQUEST_URI']      ?? '';
 
-        if ($ua === '' || $this->isBot($ua)) return;
+        if ($ua === '' || self::isBot($ua)) return;
 
         $fingerprint = $this->makeFingerprint($ip, $ua);
         $deviceType = $this->detectDeviceType($ua);
+
+        $countryCode = null;
+
+        if ($this->countrySolver !== null){
+            $countryCode = $this->countrySolver->fromIp($ip);
+        }
         [
             'browser' => $browser,
             'os'      => $os
@@ -104,7 +116,7 @@ final class VisitorTracker {
             devicetype:     $deviceType,
             browser:        $browser,
             os:             $os,
-            countryCode :   null
+            countryCode :   $countryCode
         );
     }
 
@@ -155,7 +167,7 @@ final class VisitorTracker {
 
     }
 
-    private function isBot(string $ua): bool 
+    private static function isBot(string $ua): bool 
     {
         $ua = strtolower($ua);
 

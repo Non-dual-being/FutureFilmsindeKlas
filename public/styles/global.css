@@ -59,8 +59,6 @@
 
     --border-size-lg: 4px;
 
-    --vh: 100dvh;
-    --vw: 100vw;
 
     /**height - width **/
     --height-max: 900px;
@@ -212,7 +210,6 @@
 
     /* Vertel de browser dat dit een dark scheme is */
     color-scheme: dark;
-    --vh:  100dvh;
 }
 
 

@@ -15,7 +15,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
     <script defer scr="scripts/shared/cssGlobals.js" type="module"></script>
     <script defer src="scripts/public/videoscript.js" type="module"></script>
-    <script defer src="<?= htmlentities(asset('scripts/shared/resize.js'))?>" type="module"></script>
+    <script defer src="<?= htmlspecialchars(asset('scripts/shared/resize.js'))?>" type="module"></script>
     
     <title>VideoPlayer</title>
 </head>

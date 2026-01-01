@@ -4,10 +4,21 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--dash-gap);
+  max-width: 100%;
 }
 
+.dash-overview-grid > * {
+  min-width: 0;
+}
+
+/*
+  *min-width op alle kinderne zodat ze kunnen meekrimpen ipv default auto-aanpassen ana inhoud
+*/
 
 .dash-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
   background: var(--dash-panel);
   border: 1px solid var(--dash-border);
   border-radius: var(--dash-radius);
@@ -29,13 +40,17 @@
   font-weight: 600;
 }
 
-
-
 .dash-panel {
   background: var(--dash-panel);
   border: 1px solid var(--dash-border);
   border-radius: var(--dash-radius);
   overflow: hidden;
+}
+
+.dash-panel canvas {
+  display: block;
+  width: 100%;
+  max-width: 100%;
 }
 
 .dash-panel__header {
@@ -78,7 +93,7 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .dash-panel {
+  .dash-panel, .dash-panel--wide {
     grid-column: 1 / -1; /**panels full with*/
   }
 }
@@ -86,7 +101,7 @@
 /**desktop view */
 
 @media (min-width: 980px) {
-  .dash-overview-gid {
+  .dash-overview-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-flow: row;
   }
@@ -95,7 +110,7 @@
     grid-column: span 1;
   }
 
-  .dash-panel__wide {
+  .dash-panel--wide {
     grid-column: span 2;
   }
 

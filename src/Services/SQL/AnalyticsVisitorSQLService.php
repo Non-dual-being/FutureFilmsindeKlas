@@ -13,7 +13,7 @@ final class AnalyticsVisitorSQLService {
     }
 
     private function errorLogException(string $message = '', string $context = "AnalyticsVisitorSQLService"): void {
-        error_log("[{$context} - error]: {$message}");
+        error_log("[Analytics][{$context} - error]: {$message}");
     }
 
     public function upsertVisitor(
@@ -40,6 +40,7 @@ final class AnalyticsVisitorSQLService {
             $stmt->execute(['fp' => $fingerprint]);
             $id = $stmt->fetchColumn();
 
+
             /**
              * fetchColumn zonder arguementen pakt de eerste column en de eerste rij
              * bij de tweede aanroep zou fetchcolumn van dezelfde column de tweede rij pakken
@@ -65,7 +66,8 @@ final class AnalyticsVisitorSQLService {
                     'device_type' => $devicetype,
                     'browser'     => $browser,
                     'os'          => $os,
-                    'country'     => $countryCode
+                    'country'     => $countryCode,
+                    'id'          => $id
                 ]);
 
                 return (int) $id;

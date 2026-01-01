@@ -3,37 +3,75 @@ if (data) {
   const visitorsCtx = document.getElementById('visitorsPerDayChart');
   if (visitorsCtx && data.dailyLabels && data.dailyLabels.length) {
     new Chart(visitorsCtx, {
-      type: 'line',
+            type: "line",
       data: {
         labels: data.dailyLabels,
         datasets: [
           {
-            label: 'New Visitors',
+            label: "New visitors",
             data: data.dailyValues,
-            borderColor: 'rgba(52, 152, 219, 0.9)',
-            backgroundColor: 'rgba(52, 152, 219, 0.18)',
+
+            borderColor: "rgba(0, 175, 255, 0.9)",
+            backgroundColor: "rgba(0, 175, 255, 0.12)",
+
+            fill: true,
             borderWidth: 2,
+
             pointRadius: 3,
-            pointBackgroundColor: 'rgba(255, 255, 255, 0.9)',
-            tension: 0.25
+            pointHoverRadius: 5,
+            pointBackgroundColor: "rgba(255, 255, 255, 0.9)",
+            pointBorderColor: "rgba(0, 175, 255, 0.9)",
+            pointBorderWidth: 1,
+
+            tension: 0.3
           }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: { duration: 250 },
+
+        layout: { padding: { top: 6, right: 8, bottom: 2, left: 2 } },
+
         scales: {
           x: {
-            grid: { color: 'rgba(255, 255, 255, 0.03)' }
+            grid: { color: "rgba(255, 255, 255, 0.04)" },
+            ticks: {
+              color: "rgba(255, 255, 255, 0.65)",
+              maxRotation: 0,
+              autoSkip: true,
+              maxTicksLimit: 7
+            }
           },
           y: {
             beginAtZero: true,
-            grid: { color: 'rgba(255, 255, 255, 0.06)' }
+            grid: { color: "rgba(255, 255, 255, 0.08)" },
+            ticks: {
+              color: "rgba(255, 255, 255, 0.65)",
+              precision: 0 // integers
+            }
           }
         },
+
         plugins: {
           legend: {
-            labels: { color: '#f5f7fa' }
+            labels: {
+              color: "rgba(255, 255, 255, 0.85)",
+              boxWidth: 18,
+              boxHeight: 8
+            }
+          },
+          tooltip: {
+            backgroundColor: "rgba(20, 22, 26, 0.92)",
+            borderColor: "rgba(255, 255, 255, 0.12)",
+            borderWidth: 1,
+            titleColor: "rgba(255, 255, 255, 0.9)",
+            bodyColor: "rgba(255, 255, 255, 0.8)",
+            callbacks: {
+              // label: "New visitors: 12"
+              label: (ctx) => `New visitors: ${ctx.parsed.y}`
+            }
           }
         }
       }
