@@ -15,7 +15,7 @@ if (!$flashMsgObj->hasMessage) return;
     <div 
         id="<?= htmlspecialchars($target->varName())?>" 
         class="future-flash-message flash-Hide"
-        data-message-type=<?= htmlspecialchars($flashMsgObj->type)?>
+        data-message-type="<?= htmlspecialchars($flashMsgObj->type)?>"
     >
         <?= htmlspecialchars($flashMsgObj->message); ?>
     </div>

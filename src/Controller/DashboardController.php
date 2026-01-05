@@ -4,55 +4,87 @@ namespace GeoFort\Controller;
 
 use GeoFort\Services\Analytics\DashboardStatsService;
 use GeoFort\Services\Analytics\DashboardRange;
-use GeoFort\ErrorHandlers\FlashMessageHandler;
-use GeoFort\ErrorHandlers\FormExceptionHandler;
 use GeoFort\Services\ErrorHandlers\DashboardFlasher;
+use GeoFort\Services\Htpp\HeaderRedirector;
+
 use GeoFort\Enums\FlashTarget\DashboardFlashTarget;
 
 
 final class DashboardController
 {
+    public const RANGEMAP = [
+        7 => 'weekly',
+        30 => 'monthly',
+        90 => 'over 90 days'
+    ];
+
     public function __construct(
         private DashboardStatsService $stats
     ) {}
 
-    public function index(): void 
+    public function overview(): void 
     {
-        try {
-            $flasher  = new DashboardFlasher();
-            $FlashHandler = new FlashMessageHandler(DashboardFlashTarget::class);
-            $result = $this->stats->getOverview();
-       
-            if (!$result->success) $flasher->result($result->errorMessage ?? 'statistieken kon niet geladen worden');
+        $rangeRaw = $_GET['range'] ?? null;
+        $range    = DashboardRange::fromQuery(is_string($rangeRaw ? $rangeRaw : null));
 
-            $pageData = $result->data ?? [
-                'totals' => [
-                    'totalVisitors'     => 0,
-                    'visitorsLast7d'    => 0,
-                    'visitorsLast30d'   => 0,
-                ],
-                'daily'     => [],
-                'devices'   => []
-            ];
+        $invalidRange = !isset($rangeRaw) && ((int) $rangeRaw !== $range->days);
 
-            $currentUserEmail = (string) ($_SESSION['user_email'] ?? 'Unkown'); 
-            $navItems = [
-                '/dashboard/index.php' => 'overview'
-            ];
-
-            $activePage = '/dashboard/index.php';
-
-
-            /**
-             * Available from log-in
-             * PHP SESSIE COOKie ensures that the values are available during session
-             */
-
-        } catch(FormExceptionHandler $e) {
-            $FlashHandler->handleException($e);
+        if ($invalidRange){
+            HeaderRedirector::toDashboard(
+                ['range' => $range->days]
+            );
+            exit;
         }
 
+        $result   = $this->stats->getOverview($range);
+
+        if (!$result->success) {
+            $flasher = new DashboardFlasher();
+            $flasher->result(
+                $result->errorMessage ?? 'Unable to load stats'
+            );
+        }
+        $pageData = $result->data ?? [
+            'rangeDays' => $range->days,
+            'rangeString' => self::RANGEMAP[$range->days] ?? 'monthly',
+            'from' => $range->from,
+            'to' => $range->to,
+            'cards' => [
+                'totalVisitorsAllTime' => 0,
+                'newVisitorsRange' => 0,
+                'sessionsRange' => 0,
+                'pageviewsRange' => 0,
+                'bounceRate' => 0,
+            ],
+            'charts' => [
+                'dailyNewVisitors' => [],
+                'dailyPageviews' => [],
+                'dailyUniqueVisitors' => [],
+                'deviceDistribution' => [],
+            ],
+            'tables' => [
+                'topPages' => [],
+                'topReferrers' => [],
+            ],
+        ];
+
+        $navItems = [
+            'dashboard/index.php'       => 'Overview',
+            'dashboard/pages.php'       => 'Pages',
+            'dashboard/referrers.php'   => 'Referrers'
+        ];
+
+        $activePage         = 'dashboard/index.php';
+        $currentUserEmail   =  (string) ($_SESSION['user_email'] ?? '');
+
+
+        /**
+         * Available from log-in
+         * PHP SESSIE COOKie ensures that the values are available during session
+         */
+
         require VIEW_PATH . '/layouts/dashboard.php';
+
     }
 }
 

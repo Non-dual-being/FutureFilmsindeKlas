@@ -19,7 +19,6 @@ function flash(FlashTargetContract $target): object
 {
     $payload = FlashStore::get($target->getValue());
 
-    error_log(print_r($payload, true));
 
     return (object) [
         'hasMessage' => is_array($payload) && (trim((string)$payload['message']) !== ''),

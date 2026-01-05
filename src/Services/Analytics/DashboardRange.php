@@ -14,7 +14,7 @@ final class DashboardRange {
     public static function fromQuery(?string $range): self
     {
         $days = (int) ($range ?? 30);
-        $days = in_array($day, [7, 14, 30, 90], true) ? $days : 30;
+        $days = in_array($day, [7, 30, 90], true) ? $days : 30;
 
         $now  = new DateTimeImmutable();
         return new self(
