@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 namespace GeoFort\Controller;
+
 use GeoFort\Services\Analytics\DashboardStatsService;
+use GeoFort\Services\Analytics\DashboardRange;
 use GeoFort\ErrorHandlers\FlashMessageHandler;
 use GeoFort\ErrorHandlers\FormExceptionHandler;
 use GeoFort\Services\ErrorHandlers\DashboardFlasher;

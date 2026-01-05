@@ -22,9 +22,9 @@ final class AnalyticsSessionSQLService {
             "SELECT 
                 id
             FROM
-                analytics_session
+                analytics_sessions
             WHERE 
-                visitor_id = :visitorId
+                visitor_id = :visitor_id
                 AND
                 (
                     (ended_at IS NOT NULL AND ended_at >= (NOW() - INTERVAL :ttl SECOND))
@@ -32,7 +32,7 @@ final class AnalyticsSessionSQLService {
                     (ended_at IS NULL AND started_at >= (NOW() - INTERVAL :ttl SECOND))
                 )
             ORDER BY
-                COALESCE(endend_at, started_at) DESC
+                COALESCE(ended_at, started_at) DESC
             LIMIT 1
             ";
             /**
@@ -46,7 +46,7 @@ final class AnalyticsSessionSQLService {
              */
 
             $ttlSeconds = max(60, $ttlSeconds);
-            $getSessionId = str_replace(':tt', (string) $ttlSeconds, $sql);
+            $getSessionId = str_replace(':ttl', (string) $ttlSeconds, $getSessionId);
 
                  /**
              * de explicite int in de paramater zorgt ervoor dat alleen een interger wordt geaccepteerd en dus kan de query niet gemanipuleert worden
@@ -76,9 +76,13 @@ final class AnalyticsSessionSQLService {
         ?string $referrerHost,
         ?string $utmSource,
         ?string $utmMedium,
-        ?string $utmCampaign
+        ?string $utmCampaign,
+         string $token
     ): ?int {
         try {
+            $ladingPath = substr($ladingPath, 0, 255);
+            $token = trim($token);
+
             $insertSession = 
                 "INSERT INTO
                     analytics_sessions (
@@ -89,7 +93,8 @@ final class AnalyticsSessionSQLService {
                         landing_path,
                         utm_source,
                         utm_medium,
-                        utm_campaign
+                        utm_campaign,
+                        session_token
                     ) VALUES (
                         :visitor_id,
                         NOW(),
@@ -98,7 +103,8 @@ final class AnalyticsSessionSQLService {
                         :landing_path,
                         :utm_source,
                         :utm_medium,
-                        :utm_campaign
+                        :utm_campaign,
+                        :token
                     )
                 ";
 
@@ -109,7 +115,8 @@ final class AnalyticsSessionSQLService {
                     ':landing_path'     => $ladingPath,
                     ':utm_source'       => $utmSource,
                     ':utm_medium'       => $utmMedium,
-                    ':utm_campaign'     => $utmCampaign
+                    ':utm_campaign'     => $utmCampaign,
+                    ':token'            => $token
                 ]);
 
                 return (int) $this->pdo->lastInsertId();
@@ -120,7 +127,7 @@ final class AnalyticsSessionSQLService {
         }
     }
 
-    public function touchSession(int $id): ?bool
+    public function touchSessionById(int $id): ?bool
     {
 
         try {
@@ -143,6 +150,173 @@ final class AnalyticsSessionSQLService {
             return null;
         }
 
+    }
+
+    public function touchSessionByToken(string $token): ?bool
+    {
+
+        try {
+            $token = trim($token);
+            if ($token === '') throw new PDOException("Empty token provided");
+
+            $endSession =
+            "UPDATE
+                analytics_sessions
+            SET
+                ended_at = NOW()
+            WHERE
+                session_token = :token
+            ";
+
+            $stmt = $this->pdo->prepare($endSession);
+            $stmt->execute([':token' => $token]);
+
+            return (bool) $stmt->rowCount() > 0;
+
+        } catch (PDOException $e) {
+            $this->errorLog($e->getMessage() ?? 'unkown error', __FUNCTION__);
+            return null;
+        }
+
+    }
+
+    public function findSessionByToken(string $token): ?array {
+        try {
+            $token = trim($token);
+            if ($token === '') throw new PDOException("Provided token is empty");
+
+            $lookupByToken = 
+            "SELECT
+                *
+            FROM
+                analytics_sessions
+            WHERE
+                session_token = :token
+            LIMIT
+                1
+            ";
+            $stmt = $this->pdo->prepare($lookupByToken);
+            $stmt->execute([':token' => $token]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return ($row === false)
+                ? null
+                : $row;
+            
+        
+            /**
+             * fetch gebruiken hier je hebt maar 1 rij nodig anders moet je indexeren met $data[0] 
+             */
+
+        } catch (PDOException $e) {
+            $this->errorLog($e->getMessage() ?? 'unkown error', __FUNCTION__);
+            return null;
+        }
+    }
+
+    public function isSessionStillFresh(int $sessionId, int $ttlSeconds): ?bool{
+        try {
+            $ttlSeconds = max(60, (int) $ttlSeconds);
+            $sessionStillFresh =
+            "SELECT
+                id
+            FROM
+                analytics_sessions
+            WHERE
+                visitor_id = :visitor_id
+            AND
+                (ended_at IS NOT NULL AND ended_at >= (NOW() - INTERVAL :ttl SECOND))
+            ORDER BY 
+                ended_at
+            LIMIT 1
+            ";
+
+            $sessionStillFresh = str_replace(':ttl', (string) $ttlSeconds, $sessionStillFresh);
+
+            $stmt = $this->pdo->prepare($sessionStillFresh);
+            $stmt->execute([':visitor_id' => $visitorId]);
+            $id = $stmt->fetchColumn();
+
+            return ($id === false)
+                ? false
+                : true;
+
+        } catch (PDOException $e) {
+            $this->errorLog($e->getMessage() ?? 'unkown error', __FUNCTION__);
+            return null;
+        }
+    }
+
+    public function findFreshSessionIdByToken(string $token, int $ttlSeconds): ?int {
+        try{
+            $token = trim($token);
+            if ($token === '') throw new PDOException("Token provided is empty");
+
+            $ttlSeconds = max(60, $ttlSeconds);
+
+            $findFeshSessionByToken = 
+            "SELECT
+                id
+            FROM
+                analytics_sessions
+            WHERE
+                session_token = :token
+                AND ended_at IS NOT NULL
+                AND ended_at >= (NOW() - INTERVAL :ttl SECOND)
+            ORDER BY 
+                ended_at DESC
+            LIMIT
+                1
+            ";
+
+            $findFeshSessionByToken = str_replace(':ttl', (string) $ttlSeconds, $findFeshSessionByToken);
+
+            $stmt = $this->pdo->prepare($findFeshSessionByToken );
+            $stmt->execute([':token' => $token]);
+            $id = $stmt->fetchColumn();
+
+            return ($id === false)
+                ? $id
+                : null;
+        } catch (PDOException $e) {
+            $this->errorLog($e->getMessage() ?? 'unkown error', __FUNCTION__);
+            return null;
+        }
+
+    }
+
+    public function findSessionIdByToken(string $token): ?int {
+        try {
+            $token = trim($token);
+            if ($token === '') throw new PDOException("Provided token is empty");
+
+            $lookupByToken = 
+            "SELECT
+                id
+            FROM
+                analytics_sessions
+            WHERE
+                session_token = :token
+            LIMIT
+                1
+            ";
+            $stmt = $this->pdo->prepare($lookupByToken);
+            $stmt->execute(['token' => $token]);
+            $id= $stmt->fetchColumn();
+
+            return ($id === false)
+                ? null
+                : $id;
+            
+        
+            /**
+             * fetch gebruiken hier je hebt maar 1 rij nodig anders moet je indexeren met $data[0] 
+             */
+
+        } catch (PDOException $e) {
+            $this->errorLog($e->getMessage() ?? 'unkown error', __FUNCTION__);
+            return null;
+        }
     }
         
 }

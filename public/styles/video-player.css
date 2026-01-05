@@ -36,7 +36,7 @@ body.videoPlayer {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: var(--vh);
+    min-height: var(--vh) * 100;
     background-color: var(--color-background);
     background-image: 
          /* Laag 1 (bovenop): Een subtiele paarse nevel voor diepte */
@@ -81,7 +81,7 @@ header, footer {
     width: 100%;
     height: 100%;
     max-width: 1800px;
-    max-height: min(var(--vh), 1024px);
+    max-height: min(var(--vh) * 100, 1024px);
     
     background-color: var(--color-panel);
     border: 1px solid var(--color-border);
@@ -243,8 +243,8 @@ body.videoPlayr .allButtonsContainer{
     }
     body.videoPlayer .video-artboard {
         width: 100vw;
-        height: var(--vh);
-        max-height: var(--vh);
+        height: var(--vh) * 100;
+        max-height: var(--vh) * 100;
         margin: 0;
         border-radius: 0;
         border: none;

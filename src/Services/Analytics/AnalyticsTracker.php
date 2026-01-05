@@ -2,11 +2,12 @@
 declare(strict_types=1);
 namespace GeoFort\Services\Analytics;
 
-use GeoFort\Services\SQL\AnalyticsPageViewSQLService;
+use GeoFort\Services\SQL\AnalyticsPageviewSQLService;
 use GeoFort\Services\SQL\AnalyticsSessionSQLService;
 use GeoFort\Services\SQL\AnalyticsVisitorSQLService;
 use GeoFort\Services\Http\ClientIpResolver;
 use GeoFort\Services\Http\CountryCodeResolver;
+
 
 final class AnalyticsTracker {
     private const DEVICE_TYPES = [
@@ -44,9 +45,10 @@ final class AnalyticsTracker {
     ];
 
     private const STOP_TRACK_FLAG = '~\.(css|js|png|jpg|jpeg|webp|svg|ico)$~i';
+    private const SESSION_COOKIE = 'ff_sid';
 
     public function __construct(
-        private AnalyticsPageViewSQLService $PageViewSql,
+        private AnalyticsPageviewSQLService $PageViewSql,
         private AnalyticsSessionSQLService $SessionSql,
         private AnalyticsVisitorSQLService $VisitorSql,
         private string $salt,
@@ -116,7 +118,7 @@ final class AnalyticsTracker {
 
         foreach(self::BOTFRAGMENTS as $fragment){
             if (str_contains($ua, $fragment)){
-                error_log("bot detected");
+                /* error_log("bot detected"); */
                 return true;
             }
         }
@@ -160,7 +162,7 @@ final class AnalyticsTracker {
 
         if(PHP_SAPI === 'cli') return false;
 
-        $path = self::getBaseRequestUrl($_SERVER);
+        $path = self::getBaseRequestUrl($server);
 
         $stoptrack = (
             (str_starts_with($path, '/dashboard')) 
@@ -180,6 +182,39 @@ final class AnalyticsTracker {
 
         return true;
         
+    }
+
+    private function isSecureRequest(array $server){
+        return (
+            (!empty($server['HTTPS']) && $server['HTTPS'] !== 'off') 
+            ||
+            (($server['SERVER_PORT'] ?? null) == 443)
+        );
+    }
+
+    private function getSessionTokenFromCookie(): ?string
+    {
+        $token = $_COOKIE[self::SESSION_COOKIE] ?? null;
+        if (!is_string($token)) return null;
+
+        $token = trim($token);
+
+        if(!preg_match('/^[a-f0-9]{64}$/i', $token)) return null;
+
+        return $token;
+    }
+
+    private function setSessionCookie(string $token, int $ttlSeconds): void 
+    {
+        $secure = $this-> isSecureRequest($_SERVER);
+
+        setcookie(self::SESSION_COOKIE, $token, [
+            'expires'   => time() + $ttlSeconds,
+            'path'      => '/',
+            'secure'    => $secure,
+            'httponly'  => true,
+            'samesite'  => 'Lax'
+        ]);
     }
 
     public function track(): void 
@@ -207,6 +242,10 @@ final class AnalyticsTracker {
             $countryCode = $this->countryResolver->fromIp($ip);
         }
 
+        $token = $this->getSessionTokenFromCookie();
+        $ttl = AnalyticsConfig::SESSION_TTL_SECONDS;
+
+
         //visitor
         $visitorId = $this->VisitorSql->upsertVisitor(
             fingerprint:    $fingerprint,
@@ -220,27 +259,31 @@ final class AnalyticsTracker {
         $utm = $this->getUtm($_GET);
 
         //session
-        $sessionId = $this->SessionSql->findActiveSessionId(
-                visitorId: $visitorId,
-                ttlSeconds: AnalyticsConfig::SESSION_TTL_SECONDS
-            );
-
-        if ($sessionId === null){
-            $sessionId = $this->SessionSql->createSession(
-                visitorId: $visitorId,
-                ladingPath: $path,
-                referrerHost: $referrerHost,
-                utmSource: $utm['utm_source'],
-                utmMedium: $utm['utm_medium'],
-                utmCampaign: $utm['utm_campaign']
-            );
-        } else {
-            $this->SessionSql->touchSession($sessionId);
+        if ($token !== null){
+            $sessionId = $this->SessionSql->findFreshSessionIdByToken($token, $ttl);
+            if($sessionId !== null){
+                $this->SessionSql->touchSessionByToken($token);
+                $this->PageViewSql->insertPageView($sessionId, $path);
+                if (!headers_sent()) $this->setSessionCookie($token, $ttl);
+                return;
+            }
         }
+        
+        $token = bin2hex(random_bytes(32));
 
-        /**pageview */
+        $sessionId = $this->SessionSql->createSession(
+            visitorId: $visitorId,
+            ladingPath: $path,
+            referrerHost: $referrerHost,
+            utmSource: $utm['utm_source'],
+            utmMedium: $utm['utm_medium'],
+            utmCampaign: $utm['utm_campaign'],
+            token: $token
+        );
+
+        if ($sessionId === null) return;
+        if (!headers_sent()) $this->setSessionCookie($token, $ttl);
         $this->PageViewSql->insertPageView($sessionId, $path);
-            
     }
 }
 ?>

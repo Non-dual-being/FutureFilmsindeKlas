@@ -11,6 +11,7 @@ if (HTML_EL) {
         resizeTimeout = setTimeout(() => {
             setVhVar(HTML_EL);
             setVwVar(HTML_EL);
+            
 
         }, 100);
     };

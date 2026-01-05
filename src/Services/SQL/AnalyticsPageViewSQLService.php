@@ -5,12 +5,12 @@ namespace GeoFort\Services\SQL;
 use PDO;
 use PDOException;
 
-final class AnalyticsPageViewSQLService {
+final class AnalyticsPageviewSQLService {
     public function __construct(
         private PDO $pdo
     ){}
 
-    private function errorLog(string $Msg = '', string $Context = ''): void {
+    private function errorLog(string $Msg = '', string $context = ''): void {
         if ($Msg === '') return;
         error_log("[SQL-ERROR]" .   "[" . __CLASS__ . "]" .     "[$context]: $Msg");
     }
@@ -34,8 +34,8 @@ final class AnalyticsPageViewSQLService {
 
             $stmt = $this->pdo->prepare($insertPageView);
             $stmt->execute([
-                'session_id' => $sessionId,
-                'path'       => $path
+                ':session_id' => $sessionId,
+                ':path'       => $path
             ]);
 
             return (int) $this->pdo->lastInsertId();

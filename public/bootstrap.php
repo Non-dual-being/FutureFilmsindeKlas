@@ -77,19 +77,23 @@ try {
     $shouldTrack = false;
     $salt = $_ENV['ANALYTICS_SALT'] ?? $_SERVER['ANALYTICS_SALT'] ?? '';
 
-    if ($salt === ''){
-        if ($envActive === 'development'){
+    if ($salt === '' && $envActive === 'production'){
+        error_log("warning: track disable salt key not accesable in production mode");
+    } else {
+        if ($salt === '' && $envActive === 'development'){
             $salt = 'some_random_salt_development_key';
             $shouldTrack = true;
             error_log("using salt fallback key in environment development instead of initiel key");
-        } else {
-            error_log("warning: track disable salt key not accesable");
+        } else if ($salt !== '' && in_array($envActive, ['production','development'])) {
+            $shouldTrack = true;
         }
-    } else {
-        $shouldTrack = true;
+      
+
     }
     
-    if (VisitorTracker::shouldTrack($_SERVER) && $shouldTrack){
+   
+
+    if (AnalyticsTracker::shouldTrack($_SERVER) && $shouldTrack){
         $pdo = Connector::getConnection();
         $visitors = new AnalyticsVisitorSQLService($pdo);
         $sessions = new AnalyticsSessionSQLService($pdo);
@@ -97,26 +101,26 @@ try {
 
         $countryCodeDbPath = $_ENV['GEOLITE_PATH'] ?? $_SERVER['GEOLITE_PATH'] ?? null;
         $countryCodeResolver = null;
-        
-        if ($countryCodeDbPath === null){
-            error_log("path to GeoLite DB not found");
-        } else {
-            $GeoLite = dirname(__DIR__) . ltrim($countryCodeDbPath, '/');
+
+        if (is_string($countryCodeDbPath) && $countryCodeDbPath !== ''){
+            $GeoLite = dirname(__DIR__) . '/' . ltrim($countryCodeDbPath, '/');
             $countryCodeResolver = new CountryCodeResolver($GeoLite) ?? null;
+        } else {
+            error_log("path to GeoLite DB not found");
         }
 
         $tracker = new AnalyticsTracker(
-                visitors: $visitors,
-                sessions: $sessions,
-                pageviews: $pageviews,
-                salt: $salt,
-                countryResolver: $countryResolver
-            );
+            VisitorSql: $visitors,
+            SessionSql: $sessions,
+            PageViewSql: $pageviews,
+            salt: $salt,
+            countryResolver: $countryCodeResolver
+        );
 
         $tracker->track();
 
     }
-} catch (\Throwable | PDOException $e){
+} catch (\Throwable $e){
     error_log("Analytics set up failed in bootstrap: " . $e->getMessage());
 }
 

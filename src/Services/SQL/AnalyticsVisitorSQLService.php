@@ -97,17 +97,17 @@ final class AnalyticsVisitorSQLService {
 
             $stmt = $this->pdo->prepare($insert);
             if (!$stmt->execute([
-                'fp'            => $fingerprint,
-                'device_type'   => $devicetype,
-                'browser'       => $browser,
-                'os'            => $os,
-                'country'       => $countryCode 
+                ':fp'            => $fingerprint,
+                ':device_type'   => $devicetype,
+                ':browser'       => $browser,
+                ':os'            => $os,
+                ':country'       => $countryCode 
             ])) return null; //not needed cuz of PDO PDO::ERRMODE_EXCEPTION set in connetor
 
             return (int) $this->pdo->lastInsertId();
 
         } catch (PDOException $e){
-            $this->errorLogException($e->getMessage(), "checkBlockedIP");
+            $this->errorLogException($e->getMessage(), __FUNCTION__);
             return null;
         }
     }
