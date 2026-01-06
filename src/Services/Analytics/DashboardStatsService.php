@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace GeoFort\Services\Analytics;
 
 use GeoFort\Services\SQL\AnalyticsVisitorSQLService;
-use GeoFort\Services\SQL\AnalyticsStatsService;
+use GeoFort\Services\SQL\AnalyticsStatsSQLService;
 use DateTimeImmutable;
 use Throwable;
 
@@ -15,7 +15,7 @@ final class DashboardStatsService {
      */
     public function __construct(
         private AnalyticsVisitorSQLService $visitors,
-        private AnalyticsStatsServic $stats
+        private AnalyticsStatsSQLService $stats
     ){}
 
     public function getOverview(DashboardRange $range): DashboardOverviewResult
@@ -37,7 +37,7 @@ final class DashboardStatsService {
             $deviceDistribution = $this->visitors->getDeviceDistribution() ?? [];
 
             //sessions - pageviews - bounce (rangebased)
-            $pageViewsRange       = (int) $this->stats->countPageViews($range->from, $range->to);
+            $pageviewsRange       = (int) $this->stats->countPageViews($range->from, $range->to);
             $sessionsRange        = (int) $this->stats->countSessions($range->from, $range->to);
 
             $bounce               = $this->stats->getBounceRate($range->from, $range->to);
@@ -50,7 +50,7 @@ final class DashboardStatsService {
             $topReferrers         = $this->stats->getTopReferrers($range->from, $range->to, 10) ?? [];
 
             return new DashboardOverviewResult(
-                succes: true,
+                success: true,
                 data: [
                     'rangeDays' => $range->days,
                     'from' => $range->from,
@@ -58,7 +58,7 @@ final class DashboardStatsService {
 
                     'cards' => [
                         'totalVisitorsAllTime' => $totalVisitorsAllTime,
-                        'newVisitorsRange' => $newVisitorsRange,
+                        'newVisitorsRange' => $newVisitorRange,
                         'sessionsRange' => $sessionsRange,
                         'pageviewsRange' => $pageviewsRange,
                         'bounceRate' => $bounceRate,
@@ -68,7 +68,7 @@ final class DashboardStatsService {
                     // maar we voegen ook traffic chart data toe:
                     'charts' => [
                         'dailyNewVisitors' => $dailyNewVisitors,
-                        'dailyPageviews' => $dailyPageviews,
+                        'dailyPageviews' => $dailyPageViews,
                         'dailyUniqueVisitors' => $dailyUniqueVisitors,
                         'deviceDistribution' => $deviceDistribution,
                     ],

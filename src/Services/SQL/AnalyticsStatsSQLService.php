@@ -11,10 +11,10 @@ final class AnalyticsStatsSQLService
     {  
     }
 
-    private function errorLog(string $msg = '', string $context): void
+    private function errorLog(string $msg = '', string $context = ''): void
     {
         if ($msg === '') return;
-        error_log("[SQL-ERROR]" . "[" . __CLASS__ . "]" . "[$context]");
+        error_log("[SQL-ERROR]" . "[" . __CLASS__ . "]" . "[$context] : " . $msg);
     }
 
     public function countPageViews(string $fromDateTime, string $toDateTime): int
@@ -77,12 +77,12 @@ final class AnalyticsStatsSQLService
         try{
             $dailyPageViews =
                 "SELECT 
-                    DATE(occured_at) as visit_day,
+                    DATE(occurred_at) as visit_day,
                     COUNT(*) as pageviews
                 FROM
-                    analytics_sessions
+                    analytics_pageviews
                 WHERE
-                    occured_at BETWEEN :from_date AND :to_date
+                    occurred_at BETWEEN :from_date AND :to_date
                 GROUP BY
                     visit_day
                 ORDER BY
@@ -119,21 +119,22 @@ final class AnalyticsStatsSQLService
             ON
                 s.id = p.session_id 
             WHERE
-                p.occured BETWEEN :from_date AND :to_date
+                p.occurred_at BETWEEN :from_date AND :to_date
             GROUP BY
                 visit_day
             ORDER BY
                 visit_day
             ";
 
-            $stmt = $this->pdo->prepare($pageviews);
-            $stmt = $stmt->execute([':from_date' => $fromDateTime, ':to_date' => $toDateTime]);
+            $stmt = $this->pdo->prepare($uniqueVisits);
+            $stmt->execute([':from_date' => $fromDateTime, ':to_date' => $toDateTime]);
             $dailyvisitcount = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $dailyvisitcount;
 
 
         } catch (PDOException $e){
             $this->errorLog($e->getMessage() ?? '', __FUNCTION__);
+            return null;
         }
 
     }
@@ -154,7 +155,7 @@ final class AnalyticsStatsSQLService
             FROM
                 analytics_pageviews
             WHERE
-                occured_at BETWEEN :from_date AND :to_date
+                occurred_at BETWEEN :from_date AND :to_date
             GROUP BY
                 path
             ORDER BY

@@ -5,7 +5,6 @@ declare(strict_types=1);
 /**collect data from controller */
 
 $rangeDays = (int) ($pageData['rangeDays'] ?? 30);
-$rangeString = (string) ($pageData['rangeString']);
 
 $cards = $pageData['cards'] ?? [];
 $charts = $pageData['charts'] ?? [];
@@ -66,7 +65,7 @@ $topReferrers = $tables['topReferrers'] ?? [];
   </article>
 
   <article class="dash-card">
-    <div class="dash-card__label">New <?= htmlspecialchars($rangeDays !== 90 ? "$rangeString " : '')?>sessions<?= htmlspecialchars($rangeDays === 90 ? " $rangeString": '')?></div>
+    <div class="dash-card__label">New <?= htmlspecialchars($rangeDays !== 90 ? "$rangeString " : '')?>BounceRate<?= htmlspecialchars($rangeDays === 90 ? " $rangeString": '')?></div>
     <div class="dash-card__value"><?= htmlspecialchars((string) ($cards['pageviewsRange'] ?? 0)) ?>%</div>
   </article>
 
@@ -127,14 +126,35 @@ $topReferrers = $tables['topReferrers'] ?? [];
       <h2>Top pages</h2>
       <div class="dash-panel__body">
         <table class="dash-table">
-          <?php foreach ($topPages as $r) : ?>
-            <tr>
-              <td><?= htmlspecialchars($r['path'] ?? '') ?></td>
-              <td><?= (int) ($r['views'] ?? 0) ?></td>
-            </tr>
-          <?php endforeach; ?>
+          <thead><tr><th>Path<th><th>views<th><tr><thead>
+            <tbody>
+              <?php foreach ($topPages as $r) : ?>
+                <tr>
+                  <td><?= htmlspecialchars($r['path'] ?? '') ?></td>
+                  <td><?= (int) ($r['views'] ?? 0) ?></td>
+                </tr>
+              <?php endforeach; ?>
+            <tbody>
         </table>
       </div>
     </header>
+  </article>
+
+    <!-- Table: Top referrers -->
+  <article class="dash-panel">
+    <header class="dash-panel__header"><h2>Top referrers</h2></header>
+    <div class="dash-panel__body">
+      <table class="dash-table">
+        <thead><tr><th>Referrer</th><th>Sessions</th></tr></thead>
+        <tbody>
+          <?php foreach ($topReferrers as $r): ?>
+            <tr>
+              <td><?= htmlspecialchars($r['referrer_host'] ?? '') ?></td>
+              <td><?= (int) ($r['sessions'] ?? 0) ?></td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
   </article>
 </section>

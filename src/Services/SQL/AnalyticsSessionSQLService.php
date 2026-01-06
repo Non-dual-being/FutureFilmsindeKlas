@@ -254,7 +254,7 @@ final class AnalyticsSessionSQLService {
 
             $ttlSeconds = max(60, $ttlSeconds);
 
-            $findFeshSessionByToken = 
+            $findFreshSessionByToken = 
             "SELECT
                 id
             FROM
@@ -269,15 +269,15 @@ final class AnalyticsSessionSQLService {
                 1
             ";
 
-            $findFeshSessionByToken = str_replace(':ttl', (string) $ttlSeconds, $findFeshSessionByToken);
+            $findFreshSessionByToken = str_replace(':ttl', (string) $ttlSeconds, $findFreshSessionByToken);
 
-            $stmt = $this->pdo->prepare($findFeshSessionByToken );
+            $stmt = $this->pdo->prepare($findFreshSessionByToken );
             $stmt->execute([':token' => $token]);
             $id = $stmt->fetchColumn();
 
             return ($id === false)
-                ? $id
-                : null;
+                ? null
+                : (int) $id;
         } catch (PDOException $e) {
             $this->errorLog($e->getMessage() ?? 'unkown error', __FUNCTION__);
             return null;

@@ -19,5 +19,5 @@ $statsService   = new DashboardStatsService(
 
 $controller     = new DashboardController($statsService);
 
-$controller->oveview();
+$controller->overview();
 ?>

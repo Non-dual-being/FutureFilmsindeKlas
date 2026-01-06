@@ -24,21 +24,21 @@ final class DashboardFlasher {
         string $msg,
         string $type = 'success',
     ): void {
-        $this->thrower->throw($msg, $type, DashboardFlashTarget::Result);
+        $this->writer->write($msg, $type, DashboardFlashTarget::Result);
     }
 
     public function user(
         string $msg,
         string $type = 'error',
     ): void {
-        $this->thrower->throw($msg, $type, DashboardFlashTarget::User);
+        $this->writer->write($msg, $type, DashboardFlashTarget::User);
     }
 
     public function general(
         string $msg, 
         string $type = 'error'): void
     {
-        $this->thrower->throw($msg, $type, DashboardFlashTarget::General);
+        $this->writer->write($msg, $type, DashboardFlashTarget::General);
     }
 
 }

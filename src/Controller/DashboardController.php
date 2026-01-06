@@ -5,7 +5,7 @@ namespace GeoFort\Controller;
 use GeoFort\Services\Analytics\DashboardStatsService;
 use GeoFort\Services\Analytics\DashboardRange;
 use GeoFort\Services\ErrorHandlers\DashboardFlasher;
-use GeoFort\Services\Htpp\HeaderRedirector;
+use GeoFort\Services\Http\HeaderRedirector;
 
 use GeoFort\Enums\FlashTarget\DashboardFlashTarget;
 
@@ -25,12 +25,13 @@ final class DashboardController
     public function overview(): void 
     {
         $rangeRaw = $_GET['range'] ?? null;
-        $range    = DashboardRange::fromQuery(is_string($rangeRaw ? $rangeRaw : null));
+        $range    = DashboardRange::fromQuery(is_string($rangeRaw) ? $rangeRaw : null);
 
-        $invalidRange = !isset($rangeRaw) && ((int) $rangeRaw !== $range->days);
+        $invalidRange = isset($rangeRaw) && ((int) $rangeRaw !== $range->days);
 
         if ($invalidRange){
-            HeaderRedirector::toDashboard(
+            HeaderRedirector::absolute(
+                'dashboard/index.php',
                 ['range' => $range->days]
             );
             exit;
@@ -44,9 +45,11 @@ final class DashboardController
                 $result->errorMessage ?? 'Unable to load stats'
             );
         }
+
+        $rangeString = self::RANGEMAP[$range->days] ?? 'monthly';
+
         $pageData = $result->data ?? [
             'rangeDays' => $range->days,
-            'rangeString' => self::RANGEMAP[$range->days] ?? 'monthly',
             'from' => $range->from,
             'to' => $range->to,
             'cards' => [

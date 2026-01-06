@@ -195,6 +195,9 @@ final class AnalyticsTracker {
     private function getSessionTokenFromCookie(): ?string
     {
         $token = $_COOKIE[self::SESSION_COOKIE] ?? null;
+
+        error_log("token in getSession in tracker: " . $token);
+    
         if (!is_string($token)) return null;
 
         $token = trim($token);
@@ -207,6 +210,8 @@ final class AnalyticsTracker {
     private function setSessionCookie(string $token, int $ttlSeconds): void 
     {
         $secure = $this-> isSecureRequest($_SERVER);
+
+        error_log("secure session : " . $secure);
 
         setcookie(self::SESSION_COOKIE, $token, [
             'expires'   => time() + $ttlSeconds,
