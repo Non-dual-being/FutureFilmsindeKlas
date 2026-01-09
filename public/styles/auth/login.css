@@ -35,7 +35,7 @@ body.main-grid {
     /* De animatie zelf */
     animation: futuristicDrift 40s ease-in-out infinite;
     font-family: var(----font-main);
-    color: var(--color-text-primary);
+    color: var(--ng-text);
     padding: var(--spacing-md);
     overflow: hidden;
     color-scheme: dark; /* Optimaliseert browser-UI (zoals scrollbars) voor donkere thema's */
@@ -59,17 +59,17 @@ body form.login-form {
     justify-content: space-evenly;
     width: 100%;
     gap: var(--spacing-md);
-    background-color: var(--color-panel, #14161A);
-    border: 1px solid var(--color-border);
+    background-color: var(--ng-panel, #14161A);
+    border: 1px solid var(--ng-border);
     border-radius: var(--border-radius-md, 12px);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 0 2px var(--color-accent-blue-glow);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 0 2px var(--ng-accent-glow);
     padding: var(--spacing-lg);
 
 }
 
 .inlogh1 {
     font-family: var(----font-main);
-    color: var(--color-text-primary);
+    color: var(--ng-text);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     display: block;

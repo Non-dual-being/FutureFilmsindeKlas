@@ -11,7 +11,7 @@
 }
 .error-message {
     font-size: 1.2rem;
-    color: var(--color-text-primary);
+    color: var(--ng-text);
     margin-bottom: var(--spacing-lg);
 }
 .error-contact {
