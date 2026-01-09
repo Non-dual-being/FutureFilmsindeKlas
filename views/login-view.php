@@ -7,10 +7,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Login Panel</title>
-    <link rel="stylesheet" href="./../styles/global.css">
-    <link rel="stylesheet" href="./../styles/flash.css">
-    <link rel="stylesheet" href="./../styles/video-player.css">
-    <link rel="stylesheet" href="./../styles/inlog-page.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/layout-vars.css'))?>"> 
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/global.css'))?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/flash.css'))?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/public/video/player.css'))?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/auth/login.css'))?>">
     <script src="./../scripts/shared/cssGlobals.js" defer type="module"></script>
     <script src="./../scripts/auth/loginpage.js" defer type="module"></script>
     <script defer>window.flashTargetIds = <?= json_encode(LoginFlashTarget::getValues()); ?></script>

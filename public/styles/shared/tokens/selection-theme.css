@@ -1,0 +1,103 @@
+@layer theme {
+
+    :root {
+        --color-primary-blue--bg---dark: #152036;
+        --color-primary-blue--bg---medium: #2B305F;
+        --color-primary-blue--bg---light: #3A5078;
+        --color-primary-white--bg: #F4F4F8;
+        --color-accent-blue--bg: #3498db;
+        --color-accent-grey--bg:  rgb(232, 232, 232);
+
+        /*text*/
+        --color-primary-white--text---main: #F5F7FA;
+        --color-primary-white--text---alt: #ffffff;
+        --color-primary-white--text---light: #F7FFF6;
+
+        /*border*/
+        --color-primary-white--border--bright: whitesmoke;
+        --color-primary-grey--border---light: #f3f3f3;
+        --color-primary-white--border--accent: rgba(255, 255, 255, 0.85)
+    }
+
+    :root[future-theme="light"] {
+
+        /**color root in sematic notation*/
+        --c-header-bg: var( --color-primary-blue--bg---dark);
+        --c-header-text: var(--color-primary-white--text---main);
+        
+    /**box-shadow*/
+        --form-box-shadow-color--main: rgba(0, 0, 0, 0.3);
+        --form-box-shadow-color--main-subtle: var(0, 0, 0, 0.1);
+        --form-box-shadow-color--blue-accent: rgba(52, 152, 219, 0.7);
+        --form-box-shadow-color--white-accent: rgba(255, 255, 255, 0.7);
+
+        /**---------------[FONT]-------------*/
+
+        /**color*/
+        --selection-bg-text-color-darkBlue: #2C3E50;
+        --selection-bg-text-color-lightBlue: #5A7692;
+        --selection-bg-text-color-lightBlueShade: #6e7b8b;
+        --selection-border-color--main: rgb(48, 72, 120);
+        --selection-border-color--main--subtleTrans: rgba(48, 72, 120, 0.9);
+        --selection-border-color--main--semiTans: rgba(48, 72, 120, 0.5);
+        --selection-bg-mainContainer: rgba(255, 255, 255, 0.8);
+        --selection-bg-mainContainer--trans: rgba(255, 255, 255, 0.7);
+        --selection-bg-mainContainer--trans---semi: rgba(255, 255, 255, 0.5);
+    
+
+        /**---->>checkbox*/
+        /*default*/
+        --selection-checkbox-bg-color-main: #304878c7;
+        --selection-checkbox-border-color-main: rgba(255, 255, 255, 0.95);
+        --selection-checkbox-border-color-accent--warm: rgba(245, 245, 245, 0.95);
+        
+
+        /*hover*/
+        --selection-checkbox-border-color-main--hover:rgba(255, 255, 255, 1);
+        --selection-checkbox-bg-color-main--hover: #3ea6ea;
+        --selection-checkbox-shadow-outsidecolor: var(--selection-bg-mainContainer--trans);
+        --selection-checkbox-shadow-insidecolor: rgba(255, 255, 255, 0.15);
+        
+
+
+
+        /**-----------[shadow]----------*/
+
+        --selection-bg-text-shadow-blue-trans: rgba(21, 32, 54, 0.3);
+        --selection-bg-text-shadow-blue-trans--Sub: rgba(21, 32, 54, 0.1);
+
+        --selection-border-shadow--main--blueaccent: rgba(52, 152, 219, 0.7);
+
+        /**box-shadow*/
+        --form-box-shadow-main: 0px 4px 12px var(--form-box-shadow-color--main);
+        --form-box-shadow-main--subtle: 0px 4px 12px var(--form-box-shadow-color--main-subtle);
+        --form-box-shaduw--blueaccent: 0 0 18px 2px var(--form-box-shadow-color--blue-accent);
+        --form-box-shaduw--blueaccent---border: 0 0 18px var(--form-box-shadow-color--blue-accent);
+        --form-box-shadow-darkblue--inset: inset 0 0 20px 1px var(--selection-bg-text-color-lightBlueShade);
+
+        /**-->>checkbox*/
+        --form--checkbox-shadow-hover-main: 
+                0 0 2px 1px var(--selection-checkbox-shadow-outsidecolor),
+                inset 0 0 10px 2px var(--selection-checkbox-shadow-insidecolor);
+
+    }
+
+    :root[future-theme="dark"] {
+        /** Tekst: helder en leesbaar, maar niet pijnlijk wit */
+        --color-text-light: #F7FFF6;
+
+
+        /** Containers: subtiel lichter voor een gelaagd effect */
+        --selection-bg-mainContainer: rgba(58, 80, 120, 0.2);
+        /* Transparante versie van --color-primary-light */
+
+        /** Randen & Schaduwen: geen harde lijnen, maar een zachte 'gloed' */
+        --selection-border-color--main: rgba(52, 152, 219, 0.7);
+        /* Transparante versie van je accentkleur */
+
+        /* Vertel de browser dat dit een dark scheme is */
+        color-scheme: dark;
+    }
+
+}
+

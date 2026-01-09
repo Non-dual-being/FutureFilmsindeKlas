@@ -13,7 +13,7 @@ use GeoFort\Enums\FlashTarget\DashboardFlashTarget;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/layout-vars.css'))?>" >
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/flash.css'))?>" >
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/flash.css'))?>" >
     <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/dashboard/global.css'))?>" >
 
     

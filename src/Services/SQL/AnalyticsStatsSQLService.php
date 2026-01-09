@@ -151,7 +151,8 @@ final class AnalyticsStatsSQLService
             $topPages =
             "SELECT
                 path,
-                count(*) as views
+                count(*) as views,
+                AVG(duration_seconds) as view_time
             FROM
                 analytics_pageviews
             WHERE

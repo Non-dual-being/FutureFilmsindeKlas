@@ -1,0 +1,47 @@
+@layer tokens {
+    :root {
+        
+        /**height - width **/
+        --height-max: 900px;
+        --width-max: 1600px;
+
+        --checkbox-dimensions: 24px;
+        --checkbox-dimensions--bigger: 28px;
+
+            /**size*/
+        --selection-font-size-introText--h2---mobile: clamp(16px, 1.7vw, 1.2rem);
+        --selection-font-size-introText--h2--Sub---mobile: clamp(14px, 1.4vw, 1rem);
+
+            /**heigt*/
+        --selection-footer-h: clamp(44px, 8vh, 64px);
+        /*min ideaal, max*/
+        --selection-header-h: clamp(2rem, 7vh, 3rem);
+        /*min ideaal, max*/
+
+        /**padding*/
+        --selection-introText-pad-y: clamp(1rem, 7vh, 1.5rem);
+        --selection-introText-pad-x: clamp(0.7rem, 3vw, 1rem);
+        --selection-footer-pad-y: 6px;
+        --selection-footer-pad-y--landscape: 2px;
+        --selection-mainContainer-pad: clamp(0.5rem, 5vh, 0.7rem) clamp(0.1rem, 5vw, 0.2rem);
+
+        /**column-gap*/
+        --selection-column-gap--main: clamp(1rem, 10vh, 1.5rem);
+        --selection-column-gap--main---sm: clamp(var(--spacing-xs), 2vh, var(--spacing-sm));
+        --selection-column-gap--main---md: clamp(var(--spacing-md), 5vh, var(--spacing-lg));
+
+          /* basiswaarden, overridable in media queries */
+        --start-btn-pad-x: clamp(14px, 2vw, 18px);
+        /* verticaal: zakt mee met viewport hoogte */
+        --start-btn-pad-top: clamp(6px, 1.2vh, 10px);
+        --start-btn-pad-bottom: clamp(14px, 3.2vh, 32px);
+    }
+
+    @media (max-height: 560px) {
+        :root {
+            --start-btn-pad-bottom: clamp(10px, 2.4vh, 18px);
+            --start-btn-pad-top: clamp(4px, 1vh, 8px);
+        }
+    }
+}    
+    

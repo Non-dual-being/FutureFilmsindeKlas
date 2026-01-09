@@ -1,0 +1,36 @@
+@layer tokens {
+    :root{
+        /**font */
+        --font-main: 'DarkForest', sans-serif;
+
+        /** dynamic viewport dimensions */
+        --vw: 1vw; /*default 1 unit */
+        --vh: 1dvh;
+
+        /**-------[Spatiëring ]-----------*/
+        --spacing-xs: 4px;
+        --spacing-sm: 8px;
+        --spacing-smd: 10px;
+        --spacing-md: 16px;
+        --spacing-lg: 24px;
+        --spacing-xlg: 32px;
+
+
+        /*letter-space*/
+        --space-letter-lg: 0.08em;
+        --space-letter-xlg: 0.10em;
+
+        /**-------------[ Borders ]------------*/
+        --border-radius-sm: 5px;
+        --border-radius-smd: 8px;
+        --border-radius-md: 10px;
+        --border-radius-md--extra: 12px;
+        --border-radius-lg: 15px;
+        --border-standard: 3px solid var(--color-primary-white--border);
+
+        --border-size-lg: 4px;
+
+        /**colors**/
+
+    }
+}

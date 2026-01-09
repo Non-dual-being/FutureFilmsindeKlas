@@ -1,0 +1,46 @@
+@layer theme {
+    :root {
+        --color-background: #0A0A0C; /* Net geen puur zwart om banding te voorkomen */
+        --ng-panel: #14161A;      /* Donkergrijs voor het 'zwevende' paneel */
+        --ng-border: rgba(255, 255, 255, 0.1);
+        --color-accent-blue: #00AFFF; /* Helder, energiek blauw voor accenten */
+        --color-accent-blue-glow: rgba(0, 175, 255, 0.35);
+        --ng-accent: rgba(255, 255, 255, 0.9);
+        --color-text-secondary: rgba(255, 255, 255, 0.6);
+
+    }
+}
+
+
+/* styles/shared/tokens/neon-glass.css */
+@layer tokens {
+  :root {
+    /* algemene neon/glass basis */
+    --ng-bg: #0a0a0c;
+    --ng-panel: rgba(20, 22, 26, 0.72);
+    --ng-border: rgba(255, 255, 255, 0.12);
+
+    --ng-text: rgba(255, 255, 255, 0.9);
+    --ng-text-muted: rgba(255, 255, 255, 0.6);
+
+    --ng-accent: #00afff;
+    --ng-accent-glow: rgba(0, 175, 255, 0.35);
+
+    --ng-radius: 12px;
+    --ng-radius-sm: 8px;
+
+    --ng-shadow-panel: 0 16px 48px rgba(0, 0, 0, 0.5);
+    --ng-shadow-inset: inset 0 0 2px var(--ng-accent-glow);
+
+    --ng-focus-ring: 0 0 0 3px color-mix(in srgb, var(--ng-accent) 45%, transparent);
+
+    /* inputs */
+    --ng-field-bg: rgba(255, 255, 255, 0.03);
+    --ng-field-border: rgba(255, 255, 255, 0.22);
+    --ng-field-border-hover: rgba(255, 255, 255, 0.35);
+
+    /* buttons */
+    --ng-btn-bg: rgba(255, 255, 255, 0.06);
+    --ng-btn-border: rgba(255, 255, 255, 0.22);
+  }
+}

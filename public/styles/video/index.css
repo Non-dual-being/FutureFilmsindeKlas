@@ -1,0 +1,16 @@
+@import url("../shared/tokens/layer.css");
+
+@import url("../shared/reset.css") layer(reset);
+@import url("../shared/fonts.css") layer(base);
+
+@import url("../shared/tokens/core.css") layer(tokens);
+@import url("../shared/tokens/video.css") layer(tokens);
+
+@import url("../shared/animation.css") layer(utilities);
+@import url("../shared/utilities.css") layer(utilities);
+
+
+@import url("../shared/tokens/glass-neon.css") layer(theme);
+
+@import url("./player.css") layer(pages);
+

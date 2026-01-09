@@ -1,23 +1,15 @@
-/**==============================================*/
+@layer pages {
+    /**==============================================*/
 /*         ----[ KEYFRAMES ]--------
 /**==============================================*/
 
 /* Keyframes voor de radar-animatie */
-@keyframes radar-sweep {
-    from {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-
-    to {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
 
 
 
 /* ============================================= */
 /*          MOBILE-FIRST BASIS (tot 768px)       */
-/* ============================================= */
+/* ============================================= *
 
 /* Mobile portrait (default) */
 body.futurefilms {
@@ -25,13 +17,16 @@ body.futurefilms {
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    min-height: 100vh;
-    min-width: 100vw;
+    min-height: calc(var(--vh, 1vh) * 100);
+    min-width: calc(var(--vw, 1vw) * 100);
     overflow: hidden;
     height: 100%;
     width: 100%;
+    font-family: var(--font-main);
+    background-color: var(--color-primary-dark);
     /* schaal in de breedte, hoogte auto (dat wil hier zeggen dat de hoogte in verhouding tot de breedte netjes meeschaalt en dus niet uit verhouding raakt */
     background-color: #0f1b2f;
+    color-scheme: light;
 }
 
 /* Stap 2: Definieer de nieuwe .app-container. Dit is je visuele canvas. */
@@ -53,7 +48,7 @@ body.futurefilms {
     max-height: var(--height-max);
     /* De maximale hoogte die je wilde */
 
-    background-image: url('../assets/achtergrond_FutureFilms_selectionpage.png');
+    background-image: url('../../assets/achtergrond_FutureFilms_selectionpage.png');
     background-position: top center;
     background-repeat: repeat-y;
     /* herhaal alleen verticaal */
@@ -304,7 +299,6 @@ body.futurefilms {
     flex-direction: column;
     align-items: center;
     justify-content: end;
-    position: fixed;
     bottom: var(--selection-footer-h);
     top: auto;
     left: 0;
@@ -321,19 +315,18 @@ body.futurefilms {
     align-items: center;
     position: relative;
     width: auto;
-    height: min(10vh, 100px);
+    height: clamp(100px, 10vh, 120px);
     pointer-events: auto;
 }
 
 .start-knop-content .startknopimg {
-    position: absolute;
-    bottom: 0;
-    width: auto;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-
+  height: 100%;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  justify-items: flex-end;
 }
+
 
 .intro-text {
     display: flex;
@@ -416,7 +409,7 @@ body.futurefilms {
             rgba(232, 232, 232, 0.1) 40%,
             rgba(255, 255, 255, 0) 50%,
             var(--color-accent-grey--bg) 80%),
-        url('./../assets/filmrol.webp');
+        url('./../../assets/filmrol.webp');
     background-repeat: no-repeat, repeat-x;
     background-position: center, center;
     background-size: auto 110%;
@@ -486,7 +479,7 @@ body.futurefilms {
 
 .themes-form__checkbox:not(:disabled):hover {
     border-color: var(--selection-checkbox-border-color-main--hover);
-    box-shadow: var(--form--checkbox-shadouw-hover-main);
+    box-shadow: var(--form--checkbox-shadow-hover-main);
     background-color: var(--selection-checkbox-bg-color-main--hover);
 
 }
@@ -513,7 +506,7 @@ body.futurefilms {
     content: "\1F4A7";
     /* Waterdruppel emoji */
     color: var(--color-primary-blue--bg---dark);
-    font-size: var(----font-size-checkbox--icon);
+    font-size: var(--font-size-checkbox--icon);
 
     /* Het 'perfect centreren' trucje */
     position: absolute;
@@ -526,7 +519,7 @@ body.futurefilms {
     content: "\23FB";
     /* Waterdruppel emoji */
     color: var(--color-primary-blue--bg---dark);
-    font-size: var(----font-size-checkbox--icon);
+    font-size: var(--font-size-checkbox--icon);
 
 
     /* Het 'perfect centreren' trucje */
@@ -539,7 +532,7 @@ body.futurefilms {
 .themes-form__checkbox:not(:checked):active::before {
     content: "\25B6";
     color: var(--color-primary-blue--bg---dark);
-    font-size: var(----font-size-checkbox--icon);
+    font-size: var(--font-size-checkbox--icon);
 
 
     /* Het 'perfect centreren' trucje */
@@ -552,7 +545,7 @@ body.futurefilms {
 .themes-form__row--level-selector .themes-form__checkbox:not(:checked):active::after {
     content: "\25B6";
     color: var(--color-primary-blue--bg---dark);
-    font-size: var(----font-size-checkbox--icon);
+    font-size: var(--font-size-checkbox--icon);
 
 
     /* Het 'perfect centreren' trucje */
@@ -622,7 +615,7 @@ body.futurefilms {
     /* Moet supersnel aanvoelen */
 }
 
-.themes-form__checkbox:not(:disabled)::not(:checked):active {
+.themes-form__checkbox:not(:disabled):not(:checked):active {
     transform: scale(0.92);
     /* Krimpt iets om de "klik" te simuleren */
     background-color: var(--color-primary-blue--bg---light);
@@ -675,7 +668,7 @@ body.futurefilms {
 }
 
 .themes-form__icon-label:hover {
-    transform: blur-radius(1.05);
+    transform: translate(1.05);
     /* Speels hover-effect */
 }
 
@@ -792,7 +785,9 @@ body.futurefilms {
     font-size: clamp(27px, 1.6vw, 28px);
     background-color: transparent;
     color: #152036c0;
-    padding: 18px 18px;
+    padding: var(--start-btn-pad-top) var(--start-btn-pad-x)
+    var(--start-btn-pad-bottom);
+    padding-top: 8px;
     border: none;
     cursor: pointer;
     transition: background-size 0.5s ease-out, padding 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
@@ -876,7 +871,7 @@ body.futurefilms {
     }
 
     .start-knop-content {
-        height: min(15vh, 100px);
+        height: clamp(64px, 15vh, 110px);
     }
 
 
@@ -1007,5 +1002,14 @@ body.futurefilms {
         box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.5);
 
     }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .selection-main {
+        animation: none;
+    }
+}
+
 
 }

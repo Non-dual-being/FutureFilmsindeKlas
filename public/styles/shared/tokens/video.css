@@ -1,0 +1,17 @@
+@layer tokens {
+        :root {
+        --vp-background-style: solid; /* solid | subtle-grid | vignette */
+        --vp-bg-color: #0b0b0d;       /* basiszwart, net geen #000 voor banding */
+        --vp-grid-color: rgba(255, 255, 255, 0.04);
+        --vp-vignette-center: rgba(0, 0, 0, 0);
+        --vp-vignette-edge: rgba(0, 0, 0, 0.65);
+        --videoplayer-height-footer-header: max(4.5vh, var(--space-letter-xlg));
+        
+        /* Timing voor transities */
+        --transition-fast: 0.15s ease-out;
+        --transition-medium: 0.25s ease-out;
+
+}
+
+}
+

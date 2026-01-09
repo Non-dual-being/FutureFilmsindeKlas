@@ -1,0 +1,120 @@
+@layer utilities {
+
+  .FlashTargetWrapper{
+      position: relative;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      width: 100%;
+      height: auto;
+      z-index: 2;
+  }
+
+  .future-flash-message{
+      position: absolute;  /* Maakt het mogelijk de foutmelding los van de flow te plaatsen */
+      padding: 0.8rem 0.65rem; /*top bottom left right*/
+      border-radius: var(--border-radius-md, 0.5rem);
+      z-index: 5;
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      font-weight: 660;
+      left: 0;  /* Plaatsing aan de linkerzijde van het inputveld */
+      top: 0;
+      width: 100%;
+      text-align: start;
+      height: auto;
+      transition: all 0.5s ease-in-out;
+
+      box-shadow:
+          0 1px 2px rgba(0, 0, 0, 0.05),
+          0 0 0 1px var(--flash-border),
+          0 6px 18px -8px var(--flash-accent-blue),
+          0 12px 28px -18px var(--flash-accent-purple);
+
+      /* Animatie basis */
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.45s ease, transform 0.45s ease,
+          box-shadow 0.3s ease, border-color 0.3s ease;
+      z-index: 5;
+      }
+
+  .flash-Show {
+      opacity: 1;
+      transform: translateY(-20px);
+      border: 1px solid transparent;
+  }
+
+  .flash-Hide {
+      opacity: 0;
+  }
+
+  /* Activeer puls-animatie alleen wanneer zichtbaar */
+  .future-flash-message.flash-Show {
+    animation: flashPulse 900ms ease-out 1;
+  }
+
+
+  /* Varianten: Success / Error met subtiele kleuraccenten, tekst blijft zwart */
+  .flash-show--Success {
+    border-color: rgba(36, 180, 126, 0.35);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(36, 180, 126, 0.35),
+      0 10px 22px -10px rgba(0, 125, 255, 0.2),
+      0 16px 34px -16px rgba(130, 70, 255, 0.22);
+  }
+
+  .flash-show--Success-subtle {
+    border-color: rgba(36, 180, 126, 0.22);
+  }
+
+  .flash-show--Error {
+    border-color: rgba(220, 38, 38, 0.35);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.05),
+      0 0 0 1px rgba(220, 38, 38, 0.35),
+      0 10px 22px -10px rgba(0, 125, 255, 0.18),
+      0 16px 34px -16px rgba(130, 70, 255, 0.2);
+  }
+
+  .flash-show--Error-subtle {
+    border-color: rgba(220, 38, 38, 0.22);
+  }
+
+  /* Prefers-reduced-motion: minder beweging voor toegankelijkheid */
+  @media (prefers-reduced-motion: reduce) {
+    .future-flash-message {
+      transition: opacity 0.2s linear;
+      transform: none;
+    }
+    .future-flash-message.flash-Show {
+      animation: none;
+    }
+  }
+
+  @keyframes flashPulse {
+    0% {
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.05),
+        0 0 0 1px var(--flash-border),
+        0 6px 18px -8px var(--flash-accent-blue),
+        0 12px 28px -18px var(--flash-accent-purple);
+    }
+    40% {
+      box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(80, 90, 130, 0.38),
+        0 10px 22px -8px rgba(0, 125, 255, 0.25),
+        0 18px 36px -18px rgba(130, 70, 255, 0.28);
+    }
+    100% {
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.05),
+        0 0 0 1px var(--flash-border),
+        0 6px 18px -8px var(--flash-accent-blue),
+        0 12px 28px -18px var(--flash-accent-purple);
+    }
+  }
+
+}
+   

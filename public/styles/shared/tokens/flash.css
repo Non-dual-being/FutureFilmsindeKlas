@@ -1,0 +1,41 @@
+@layer tokens {
+  :root {
+        /* Subtiele blauw/paars accenten via schaduw en border */
+      --flash-accent-blue: rgba(0, 125, 255, 0.15);
+      --flash-accent-purple: rgba(130, 70, 255, 0.15);
+      --flash-border: rgba(80, 90, 130, 0.25);
+
+      --color-futuremessage--PublicGeneral---background: radial-gradient(
+          circle at 80% 50%,
+          color-mix(in srgb, var(--color-primary-white--text---main) 20%, #6e8db6) 0%,
+          color-mix(in srgb, var(--color-primary-white--text---alt) 5%, #3a5078) 78%,
+          rgba(255, 255, 255, 0.8) 100%
+
+          /**circle middelpunt 80 x-as en in het midden y*/
+          /**kleurmix 20 - 80  op positie 0 y*/
+      );
+      --color-futuremessage-PublicGeneral---border: 3px solid rgba(255,255,255, 0.55);
+      --color-futuremessage-PublicGeneral---boxschadow: 
+              0 4px 14px rgba(30, 50, 90, 0.32),
+              0 0 18px rgba(255, 255, 255, 0.12);
+
+        /* Success: koele groenblauw tint, goed leesbaar op je blauwe/donkere achtergronden */
+      --color-futuremessage-PublicGeneral--borderColor---Success: rgba(56, 193, 114, 0.85); /* #38C172 met 85% */
+      --color-futuremessage-PublicGeneral--borderColor---Success--subtle: rgba(56, 193, 114, 0.55);
+
+      /* Error: koele roodtint (niet te warm), afgestemd op je blauwpalet */
+      --color-futuremessage-PublicGeneral--borderColor---Error: rgba(231, 80, 90, 0.9); /* #E7505A met 90% */
+      --color-futuremessage-PublicGeneral--borderColor---Error--subtle: rgba(231, 80, 90, 0.55);
+
+      /* Optionele bijpassende box-shadows voor zachte gloed */
+      --color-futuremessage-PublicGeneral--boxshadow---Success:
+          0 0 14px rgba(56, 193, 114, 0.25),
+          0 0 6px rgba(56, 193, 114, 0.35);
+
+      --color-futuremessage-PublicGeneral--boxshadow---Error:
+          0 0 14px rgba(231, 80, 90, 0.25),
+          0 0 6px rgba(231, 80, 90, 0.35);
+
+    }
+
+}

@@ -109,7 +109,7 @@
 :root[future-theme="light"] {
 
     /**box-shadow*/
-    --form-box-shadow-color--main: var(0, 0, 0, 0.30);
+    --form-box-shadow-color--main: rgba(0, 0, 0, 0.30);
     --form-box-shadow-color--main-subtle: var(0, 0, 0, 0.10);
     --form-box-shadow-color--blue-accent: rgba(52, 152, 219, 0.7);
     --form-box-shadow-color--white-accent: rgba(255, 255, 255, 0.7);
@@ -190,7 +190,7 @@
 
 
      /**------------------------[VIDEO]-------------------****/
-     --videoplayer-height-footer-header: max(4.5vh, var(var(--space-letter-xlg)));
+     --videoplayer-height-footer-header: max(4.5vh, var(--space-letter-xlg));
 
 }
 

@@ -1,0 +1,13 @@
+/** --- UTILITY CLASSES --- */
+@layer utilities {
+    .d-none {
+        display: none;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+
+}
+

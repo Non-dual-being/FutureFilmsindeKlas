@@ -268,7 +268,33 @@ final class AnalyticsTracker {
             $sessionId = $this->SessionSql->findFreshSessionIdByToken($token, $ttl);
             if($sessionId !== null){
                 $this->SessionSql->touchSessionByToken($token);
-                $this->PageViewSql->insertPageView($sessionId, $path);
+                /**Look wihtin active sessios if a page is already visited */
+                $last = $this->PageViewSql->findLastPageview($sessionId);
+
+                if ($last !== null){
+                    $lastPath = (string) $last['path'];
+                    $lastTime = strtotime((string) $last['occurred_at']) ?: null;
+                    if ($lastTime !== null) {
+                        $delta = time() - $lastTime;
+
+                        if (($lastPath === $path) && ($delta < 2)){
+                            /**zelfde pagina onder de twee seconden, geen update doen en ook geen insert */
+                            /** cookie needs to be refreshed for inactivity time */
+                            if (!headers_sent()) {
+                                $this->setSessionCookie($token, $ttl);
+                            }
+                            return;
+                           
+                        }
+                        /** pagina cannot be higher then in-active border session */
+                        $duration = min($delta, AnalyticsConfig::SESSION_TTL_SECONDS);
+                        $this->PageViewSql->updateDurationSeconds((int) $last['id'], $duration);
+
+                    }
+                }
+
+                $insertPageViewActiefSes = $this->PageViewSql->insertPageView($sessionId, $path);
+                /**update sessie cookie cuz if after 25 minutes someone hits the jukebox then reset inactivity time */
                 if (!headers_sent()) $this->setSessionCookie($token, $ttl);
                 return;
             }

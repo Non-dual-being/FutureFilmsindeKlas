@@ -45,7 +45,7 @@ $topReferrers = $tables['topReferrers'] ?? [];
   <!-- Cards -->
   <article class="dash-card">
     <div class="dash-card__label">Total visitors (all-time)</div>
-    <div class="dash-card__value"><?= (int) ($totals['totalVisitors'] ?? 0) ?></div>
+    <div class="dash-card__value"><?= (int) ($cards['totalVisitorsAllTime'] ?? 0) ?></div>
   </article>
 
   <article class="dash-card">
@@ -122,16 +122,17 @@ $topReferrers = $tables['topReferrers'] ?? [];
 
   <!--table: top pages -->
   <article class="dash-panel dash-panel--wide">
-    <header class="dash-panel--header">
+    <header class="dash-panel__header">
       <h2>Top pages</h2>
       <div class="dash-panel__body">
         <table class="dash-table">
-          <thead><tr><th>Path<th><th>views<th><tr><thead>
+          <thead><tr><th>Path</th><th>views</th><th>view-time <span class="subscript">(avg seconds)</span></tr></thead>
             <tbody>
               <?php foreach ($topPages as $r) : ?>
                 <tr>
                   <td><?= htmlspecialchars($r['path'] ?? '') ?></td>
                   <td><?= (int) ($r['views'] ?? 0) ?></td>
+                  <td><?= (int) ($r['view_time'] ?? 0) ?></td>
                 </tr>
               <?php endforeach; ?>
             <tbody>

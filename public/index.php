@@ -9,10 +9,8 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/layout-vars.css'))?>" >
-    <link rel="stylesheet" href="./styles/global.css">
-    <link rel="stylesheet" href="./styles/selection-page.css">
-    
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/index/index.css'))?>" >
+
     <script defer src="<?= htmlspecialchars(asset('scripts/shared/resize.js'))?>" type="module"></script>
     <script defer src="./scripts/public/selectionscript.js" type="module"></script>
  
@@ -85,7 +83,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'bootstrap.php';
                 data-info-disabled-tip="Selecteer twee categorieën om de Jukebox te starten">
                 <img
                     class="startknopimg"
-                    src="./assets/Future_Films_website_knop_2.png"
+                    src="<?=htmlspecialchars(asset("assets/Future_Films_website_knop_2.png"))?>"
                     alt="startquiz"
                 >
                 <button

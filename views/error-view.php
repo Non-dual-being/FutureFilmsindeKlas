@@ -10,9 +10,9 @@
     <title>Systeemfout - Future Films</title>
     
     <!-- Link naar je bestaande, globale CSS voor een consistente stijl -->
-    <link rel="stylesheet" href="./../styles/global.css">
-    <link rel="stylesheet" href="./../styles/error-page.css">
-    <link rel="stylesheet" href="./../styles/video-player.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/global.css'))?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/error/error-page.css'))?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/public/video/player.css'))?>">
   
 </head>
 <body class="videoPlayer"> <!-- Gebruik je geanimeerde achtergrond! -->

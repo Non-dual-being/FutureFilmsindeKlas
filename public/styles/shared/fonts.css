@@ -1,0 +1,10 @@
+/** -- FONTS & VARIABLES ---- */
+@layer base {
+    @font-face {
+        font-family: 'DarkForest';
+        src: url('./../../assets/dark_forest/darkforest.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+}

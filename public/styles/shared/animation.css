@@ -1,0 +1,61 @@
+@layer utilities {
+     @keyframes radar-sweep {
+        from {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        to {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+
+    /* --- VOEG DEZE KEYFRAMES TOE AAN JE CSS (bijv. onderaan) --- */
+    @keyframes bgDriftCalm {
+        0%   { background-position: 0% 40%, 60% 60%; }
+        50%  { background-position: 100% 60%, 40% 40%; }
+        100% { background-position: 0% 40%, 60% 60%; }
+    }
+
+    @keyframes futuristicDrift {
+        0% {
+            /* Startpositie voor beide nevels */
+            background-position: 0% 0%, 0% 0%;
+        }
+        25% {
+            /* Halverwege bewegen ze naar tegenovergestelde hoeken voor een parallax-effect */
+            background-position: 100% 100%, 0% 100%;
+        }
+        75% {
+            /* Halverwege bewegen ze naar tegenovergestelde hoeken voor een parallax-effect */
+            background-position: 0% 100%, 100% 100%;
+        }
+        100% {
+            /* Terug naar de startpositie voor een naadloze loop */
+            background-position: 0% 0%, 0% 0%;
+        }
+    }
+
+    @keyframes radar-sweep {
+        from {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        to {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+
+}    
+   

@@ -1,3 +1,5 @@
+/**glassmorphism / neon HUD”*/
+
 body.main-grid {
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -6,9 +8,9 @@ body.main-grid {
     align-content: center ;
     height: 100%;
     width: 100%;
-    min-height:var(--vh);
+    min-height:calc(var(--vh) * 100);
     gap: var(--spacing-md);
-    background-color: var(--color-background);
+    background-color: var(--ng-bg);
 
     background-image: 
          /* Laag 1 (bovenop): Een subtiele paarse nevel voor diepte */
@@ -83,7 +85,7 @@ form section {
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    gap: clamp(var(--spacing-sm), (var(--vh) * 5), var(--spacing-md));
+    gap: clamp(var(--spacing-sm), calc((var(--vh) * 5)), var(--spacing-md));
 }
 
 form.login-form input[type="email"],
@@ -151,7 +153,7 @@ form button:active{
         display: flex;
         flex-direction: column;
         justify-content: start;
-        min-height: var(--vh);
+        min-height: calc(var(--vh) * 100);
         align-items: center;
         padding: var(--spacing-sm) var(--spacing-lg);
         height: 100%;
@@ -263,7 +265,7 @@ form button:active{
     main.login-container form {
         height: auto;
         min-height: 400px;
-        gap: calc(var(--spacing-md), var(--vh) * 10, var(--spacing-lg));
+        gap: calc(var(--spacing-md), calc(var(--vh) * 10), var(--spacing-lg));
         justify-content: space-around;
     }
 

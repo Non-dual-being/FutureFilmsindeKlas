@@ -1,0 +1,1000 @@
+/**==============================================*/
+/*         ----[ KEYFRAMES ]--------
+/**==============================================*/
+
+
+
+/* ============================================= */
+/*          MOBILE-FIRST BASIS (tot 768px)       */
+/* ============================================= */
+
+/* Mobile portrait (default) */
+body.futurefilms {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    /* schaal in de breedte, hoogte auto (dat wil hier zeggen dat de hoogte in verhouding tot de breedte netjes meeschaalt en dus niet uit verhouding raakt */
+    background-color: #0f1b2f;
+}
+
+/* Stap 2: Definieer de nieuwe .app-container. Dit is je visuele canvas. */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    position: relative;
+    /* Essentieel voor de positionering van header/footer */
+    width: 100%;
+    height: 100%;
+    /* Vul standaard de hoogte van het scherm */
+
+
+    /* Dit is de kern van je vraag: de maximale afmetingen */
+    max-width: var(--width-max);
+    /* Een verstandige maximale breedte voor desktops */
+    max-height: var(--height-max);
+    /* De maximale hoogte die je wilde */
+
+    background-image: url('../assets/achtergrond_FutureFilms_selectionpage.png');
+    background-position: top center;
+    background-repeat: repeat-y;
+    /* herhaal alleen verticaal */
+    background-size: 300vw auto;
+    overflow: hidden;
+    /* Zorgt dat niets buiten de container kan komen */
+
+
+    /* Optioneel: een subtiele rand of schaduw om het 'canvas' af te bakenen */
+
+}
+
+.app-container header,
+.app-container footer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    background-color: var(--color-primary-blue--bg---dark);
+    color: var(--color-primary-white--text---main);
+    text-align: center;
+    position: absolute;
+    /**fixed werkt niet, dat is altijd viewport*/
+    z-index: 100;
+}
+
+.app-container header {
+    top: 0;
+    left: 0;
+    bottom: auto;
+    padding:0;
+    /*[top down] - [left right] */
+    max-width: var(--width-max);
+    height: var(--selection-header-h);
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--color-primary-white--text---main);
+   
+
+}
+
+.header-track {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    /*neem links als rechts evenveel ruimte in zoden de collum 2 precies midden is los van inhoud*/
+    align-items: center;
+    width: 100%;
+    max-width: var(--width-max);
+    margin: 0 auto; /*top down left right*/
+    height: 100%;
+}
+
+.header-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.header-slot--left {
+    justify-content: flex-start;
+}
+
+.header-slot--right {
+    display: none;
+    justify-content: flex-end;
+    padding-right: clamp(var(--spacing-md), 2vw, var(--spacing-lg));
+}
+
+.header-title {
+    grid-column: 2;
+    margin: 0;
+    text-align: center;
+    letter-spacing: var(--space-letter-xlg);
+    text-shadow:
+        0 1px 0 rgba(0,0,0,0.35),
+        0 2px 8px rgba(0,0,0,0.35),
+        0 0 12px rgba(255,255,255,0.06);
+}
+
+.header-download-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    letter-spacing: var(--space-letter-xlg);
+
+    background-color: transparent;
+    color: var(--color-primary-white--text---main);
+    font-family: 'DarkForest', 'sans-serif';
+    font-size: var(--font-size-base);
+    text-decoration: none;
+    cursor: pointer;
+      /* alleen motion/shadow op interactie */
+    transition: transform 180ms ease, box-shadow 200ms ease;
+    will-change: transform;
+}
+
+
+
+/* Icoon volgt tekstkleur (wit) */
+.header-download-link .icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+
+}
+
+/* Hover/focus: geen kleurwissel; wel subtiele beweging en schaduw */
+.header-download-link:hover,
+.header-download-link:focus-visible {
+ transform: translateY(-1px) scale(1.04);
+  /* subtiele “futuristische” glow in jouw blauwtinten */
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.35),                           /* crisp rim */
+    0 4px 12px var(--form-box-shadow-color--main),             /* zachte diepte */
+    0 0 14px 3px var(--form-box-shadow-color--blue-accent),    /* blauwe gloed */
+    inset 0 0 6px var(--form-box-shadow-color--white-accent);  /* lichte inner glow */
+  border-radius: 6px;
+  padding: 0.2rem; /* vergroot hit-area licht bij hover */
+}
+
+/* Keyboard focus – als je wél een zichtbare ring wilt, voeg dan een lichte ring toe */
+.header-download-link:focus-visible {
+  /* optioneel i.p.v. transparent: outline: 2px solid rgba(255,255,255,0.6); */
+}
+
+/* Active: tik terug */
+.header-download-link:active {
+  transform: translateY(0) scale(1.0);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+
+.app-container footer {
+    inset: auto 0 0 0;
+    bottom:0;
+    /*shorthand top: auto, right: 0, bottom 0, left: 0*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--selection-footer-h);
+    padding: var(--selection-footer-pad-y);
+    overflow: hidden;
+}
+
+.app-container footer .icons {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 2vw, 20px);
+    height: 100%;
+}
+
+.app-container .icons .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 85%;
+    aspect-ratio: 1;
+    /*vierkant*/
+}
+
+.app-container footer .icons .icon img {
+    height: 100%;
+    width: auto;
+    display: block;
+}
+
+.selection-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    flex-grow: 1;
+    /* Neemt alle beschikbare ruimte in */
+    width: 98%;
+    max-width: 600px;
+    height: auto;
+    margin-top: calc(var(--selection-header-h) + 1rem);
+    margin-bottom: calc(var(--selection-footer-h) + 1rem);
+    max-height: calc((var(--vh) * 100) - (var(--selection-header-h) + var(--selection-footer-h) + 2rem));
+    overflow-y: auto;
+
+    padding: var(--spacing-xlg) var(--spacing-lg);
+    padding-bottom: 4rem;
+    gap: 3rem;
+    border-radius: var(--border-radius-md);
+
+    background:
+        radial-gradient(100% 140% at 30% 18%,
+            rgba(52, 152, 219, 0.14) 0%,
+            rgba(52, 152, 219, 0.00) 52%),
+        linear-gradient(120deg,
+            rgba(255, 255, 255, 0.70) 0%,
+            rgba(248, 251, 255, 0.70) 50%,
+            rgba(255, 255, 255, 0.70) 100%);
+
+    /* Iets kleinere ‘canvas’, dus accenten zijn dichterbij en duidelijker */
+    background-size: 180% 180%, 160% 160%;
+    background-position: 0% 45%, 60% 60%;
+
+    /* Beweging iets korter (rustig, maar merkbaar) */
+    animation: bgDriftCalm 22s ease-in-out infinite;
+
+
+
+
+    /* Rand-highlight voor definitie */
+    border: 1px solid var(--selection-border-color--main--semiTans);
+    /* 3. De nieuwe 'Glow' schaduw: evenwichtig en blauw */
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px 0 25px 2px var(--selection-bg-mainContainer--trans), inset 0px 0px 8px 1px var(--color-primary-blue--bg---light);
+    position: relative;
+}
+
+/**selection-main*/
+.selection-main {
+    scrollbar-width: thin;
+    scrollbar-color: var(--selection-bg-text-color-lightBlue) transparent;
+}
+
+/*rail + thumb*/
+.selection-main::-webkit-scrollbar {
+    width: 6px;
+
+}
+
+/*rail waar je overheen glijdt*/
+.selection-main::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.selection-main::-webkit-scrollbar-thumb {
+    background-color: var(--selection-bg-text-color-lightBlue);
+    border: 1px solid var(--selection-bg-mainContainer);
+    border-radius: 10px;
+    background-clip: padding-box;
+}
+
+
+.selection-main::-webkit-scrollbar-thumb:hover {
+    background-color: var(--form-box-shaduw--blueaccent)
+}
+
+
+.start-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    position: fixed;
+    bottom: var(--selection-footer-h);
+    top: auto;
+    left: 0;
+    right: 0;
+    height: auto;
+    width: auto;
+    position: absolute;
+}
+
+.start-knop-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    position: relative;
+    width: auto;
+    height: min(10vh, 100px);
+    pointer-events: auto;
+}
+
+.start-knop-content .startknopimg {
+    position: absolute;
+    bottom: 0;
+    width: auto;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+
+}
+
+.intro-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 0px 15px 2px var(--selection-bg-text-color-darkBlue);
+    border-radius: var(--border-radius-md);
+
+}
+
+.intro-text h2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    column-gap: 0.2rem;
+    width: 100%;
+    height: auto;
+    color: var(--selection-bg-text-color-darkBlue);
+    background: linear-gradient(180deg, var(--selection-bg-text-color-darkBlue), var(--selection-bg-text-color-lightBlue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: var(--spacing-sm) var(--spacing-xs);
+}
+
+.intro-text h2 span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    color: transparent;
+}
+
+.intro-text h2 span.main-text {
+    font-size: var(--font-size-h2);
+    text-shadow: 1px 1px 3px var(--selection-bg-text-shadow-blue-trans);
+}
+
+.intro-text h2 span.subtitle {
+    font-size: var(--font-size-label);
+    text-shadow: 1px 1px 2px var(--selection-bg-text-shadow-blue-trans--Sub);
+}
+
+.themes-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    gap: var(--spacing-smd);
+    width: 100%;
+    height: auto;
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-base);
+    background: linear-gradient(to right,
+            var(--color-primary-blue--bg---light) 50%,
+            var(--color-primary-white--bg) 50%);
+    max-height: 550px;
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--form-box-shadow-darkblue--inset);
+    border: 4px solid var(--color-primary-blue--bg---dark);
+    flex-grow: 1;
+
+
+}
+
+.themes-form__row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    /*space in the middle*/
+    padding: var(--spacing-sm) var(--spacing-xs);
+    font-size: var(--font-size-label);
+    background: linear-gradient(to right,
+            var(--color-primary-blue--bg---medium) 50%,
+            rgba(232, 232, 232, 0.1) 40%,
+            rgba(255, 255, 255, 0) 50%,
+            var(--color-accent-grey--bg) 80%),
+        url('./../assets/filmrol.webp');
+    background-repeat: no-repeat, repeat-x;
+    background-position: center, center;
+    background-size: auto 110%;
+    border: 2px solid var(--color-primary-white--border--accent);
+    position: relative;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+
+
+.themes-form__row--level-selector {
+    border: 4px solid var(--color-primary-white--border--accent);
+    box-shadow: var(--form-box-shadow-color--white-accent);
+    background-image: linear-gradient(to right,
+            #33415C 50%,
+            #d8e2f0 50%);
+
+    transition: all 0.2 ease-in-out;
+}
+
+.themes-form__row--level-selector:hover {
+    border-color: #c6d6e7;
+    background-image: linear-gradient(to right,
+            #33415C 50%,
+            #c6d6e7 50%)
+}
+
+
+.themes-form__row label:first-of-type {
+    color: var(--color-primary-white--text---main);
+    font-size: var(--font-size-label);
+    cursor: default;
+}
+
+.themes-form__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+}
+
+.themes-form__row--level-selector .themes-form__controls {
+    gap: var(--spacing-xs);
+    padding-right: var(--spacing-xs);
+}
+
+.themes-form__level-checkboxes {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.themes-form__checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+
+    position: relative;
+    height: var(--checkbox-dimensions);
+    width: var(--checkbox-dimensions);
+    background-color: var(--selection-checkbox-bg-color-main);
+    border: 2px solid var(--selection-checkbox-border-color-main);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.2 ease-out;
+}
+
+.themes-form__checkbox:not(:disabled):hover {
+    border-color: var(--selection-checkbox-border-color-main--hover);
+    box-shadow: var(--form--checkbox-shadow-hover-main);
+    background-color: var(--selection-checkbox-bg-color-main--hover);
+
+}
+
+.themes-form__checkbox:not(:disabled):hover {
+    transform: scale(1.1);
+}
+
+
+
+.themes-form__checkbox:checked {
+    background-color: var(--color-primary-white--bg);
+    border: 3px solid var(--color-primary-blue--bg---dark);
+}
+
+.themes-form__checkbox:checked:active {
+    transform: scale(1.5);
+}
+
+
+
+/* De "waterdruppel" die verschijnt wanneer de checkbox is aangevinkt */
+.themes-form__checkbox:checked:not(:active)::after {
+    content: "\1F4A7";
+    /* Waterdruppel emoji */
+    color: var(--color-primary-blue--bg---dark);
+    font-size: var(--font-size-checkbox--icon);
+
+    /* Het 'perfect centreren' trucje */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.themes-form__checkbox:checked:active::after {
+    content: "\23FB";
+    /* Waterdruppel emoji */
+    color: var(--color-primary-blue--bg---dark);
+    font-size: var(--font-size-checkbox--icon);
+
+
+    /* Het 'perfect centreren' trucje */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.themes-form__checkbox:not(:checked):active::before {
+    content: "\25B6";
+    color: var(--color-primary-blue--bg---dark);
+    font-size: var(--font-size-checkbox--icon);
+
+
+    /* Het 'perfect centreren' trucje */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.themes-form__row--level-selector .themes-form__checkbox:not(:checked):active::after {
+    content: "\25B6";
+    color: var(--color-primary-blue--bg---dark);
+    font-size: var(--font-size-checkbox--icon);
+
+
+    /* Het 'perfect centreren' trucje */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+.themes-form__checkbox:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background-color: grey;
+    border-color: #888;
+}
+
+
+.themes-form__row--level-selector .themes-form__checkbox {
+    border-radius: var(--border-radius-smd);
+    /* Maakt de checkboxen in de selector-rij rond */
+    border: var(--border-size-lg) solid var(--selection-checkbox-border-color-main);
+    height: var(--checkbox-dimensions--bigger);
+    width: var(--checkbox-dimensions--bigger);
+
+}
+
+.themes-form__row--level-selector .themes-form__checkbox::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    /* Groter dan de box zelf */
+    height: 200%;
+
+    /* De "radarstraal" gemaakt met een conic gradient */
+    background: conic-gradient(transparent 0deg,
+            transparent 270deg,
+            var(--color-accent-blue--bg) 300deg,
+            /* De kleur van de straal */
+            transparent 360deg);
+
+    /* Start in het midden en onzichtbaar */
+    transform-origin: center center;
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0;
+
+    transition: opacity 0.3s ease;
+
+}
+
+.themes-form__row--level-selector .themes-form__checkbox:not(:checked):not(:disabled):hover::before {
+    opacity: 1;
+    /* Maak de radar zichtbaar */
+    animation: radar-sweep 1s linear infinite;
+    /* Start de animatie */
+    scale: 1;
+}
+
+.themes-form__row--level-selector .themes-form__checkbox:not(:disabled):not(:checked):active {
+    transform: scale(1.05);
+    /* Krimpt iets om de "klik" te simuleren */
+    background-color: var(--form-box-shadow-color--blue-accent);
+    transition-duration: 0.1s;
+    /* Moet supersnel aanvoelen */
+}
+
+.themes-form__checkbox:not(:disabled)::not(:checked):active {
+    transform: scale(0.92);
+    /* Krimpt iets om de "klik" te simuleren */
+    background-color: var(--color-primary-blue--bg---light);
+    transition-duration: 0.1s;
+    /* Moet supersnel aanvoelen */
+}
+
+
+
+
+
+
+
+/**
+ * 6. De Labels voor de Checkboxes (de nummers en icoontjes)
+ */
+.themes-form__checkbox-label {
+    display: none;
+}
+
+/* De nummers in de level selector moeten wit zijn */
+.themes-form__row--level-selector .themes-form__checkbox-label {
+    color: var(--color-primary-white--text---main);
+}
+
+.themes-form__row--level-selector .themes-form__label::after {
+    content: "⚙️";
+    /* Default: 'in progress' icoon (gear) */
+    font-size: 18px;
+    color: var(--color-primary-white--text---main);
+    /* Wit, past bij de donkere achtergrond */
+    display: inline-block;
+    width: 1.5em;
+    /* Iets meer ruimte */
+    text-align: center;
+    margin-left: var(--spacing-md);
+    transition: content 0.2s ease-in-out;
+    /* Subtiele animatie bij wisselen */
+}
+
+
+.themes-form__icon-label {
+    font-size: 18px;
+    color: var(--color-primary-blue--bg---dark);
+    display: inline-block;
+    width: 1.2em;
+    /* Vaste breedte om verspringen van layout te voorkomen */
+    text-align: center;
+    cursor: pointer;
+}
+
+.themes-form__icon-label:hover {
+    transform: blur-radius(1.05);
+    /* Speels hover-effect */
+}
+
+
+/**
+ * 3. State: ALLE beschikbare niveau-checkboxes zijn aangevinkt.
+ * De logica hier is: de rij mag GEEN checkbox bevatten die NIET disabled is en NIET checked is.
+ * Dit is een robuuste manier die automatisch werkt, zelfs als je niveau 3 disabled is.
+ */
+
+/* Gebruik :has() om het icoon te bepalen op basis van de staat van de checkbox in de rij */
+/* Dit is de modernste en meest robuuste methode */
+.themes-form__row:has(.themes-form__checkbox:checked) .themes-form__icon-label::after {
+    content: "🎬";
+    /* Filmklapper */
+}
+
+.themes-form__row:has(.themes-form__checkbox:not(:checked)) .themes-form__icon-label::after {
+    content: "🎞️";
+    /* Zandloper */
+}
+
+.themes-form__row:has(.themes-form__checkbox:disabled) .themes-form__icon-label::after {
+    content: "🔒";
+    /* Slotje voor disabled */
+}
+
+.themes-form__icon-label.extra3.extra2.extra1.checkbox-some-checked::after {
+    content: "🎞️";
+}
+
+.themes-form__icon-label.extra3.extra2.extra1.checkbox-all-checked::after {
+    content: "⭐";
+}
+
+.themes-form__icon-label.extra3.extra2.extra1.checkbox-none-checked::after {
+    content: "👉";
+}
+
+
+
+.downloadContainer {
+    display: none;
+}
+
+
+/* basisstaat tooltip (onzichtbaar, maar aanwezig) */
+.start-knop-content.has-disabled::before {
+    content: attr(data-info-disabled-tip);
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    background: linear-gradient(135deg, #4fc3f7, #81d4fa, #aed581);
+    color: #083344;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+    font-size: clamp(0.9rem, 1.4vw, 1rem);
+    padding: 0.8em 1em;
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
+    white-space: normal;
+    overflow-wrap: break-word;
+    display: inline-block;
+    width: max-content;
+    /* ✅ voorkomt dat hij altijd 100% breed wordt */
+    max-width: 500px;
+    z-index: 10;
+
+    opacity: 0;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+}
+
+/* pijltje */
+.start-knop-content.has-disabled::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: -14px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #81d4fa;
+    z-index: 10;
+
+    opacity: 0;
+    /* start */
+    transform: translateY(-5px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+}
+
+/* toon tooltip bij hover (JS voegt .show-tooltip toe) */
+.start-knop-content.has-disabled.show-tooltip::before,
+.start-knop-content.has-disabled.show-tooltip::after {
+    opacity: 1;
+    transform: translateX(-50%);
+}
+
+
+.StartQuizknop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    max-width: 300px;
+    width: auto;
+    position: absolute;
+    top: 0;
+    font-family: 'DarkForest', sans-serif;
+    font-size: clamp(27px, 1.6vw, 28px);
+    background-color: transparent;
+    color: #152036c0;
+    padding: 18px 18px;
+    border: none;
+    cursor: pointer;
+    transition: background-size 0.5s ease-out, padding 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    background-size: 0% 100%;
+
+}
+
+.StartQuizknop:hover {
+    color: white;
+    border-radius: 7px;
+    background-image: linear-gradient(to right, #152036c0 0%, #304878 100%);
+    background-size: 250% 250%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    /* Hover-effect */
+}
+
+
+.StartQuizknop:disabled {
+    cursor: default;
+}
+
+
+
+/* Extra vrolijke hover voor disabled */
+.StartQuizknop:disabled:hover {
+    background: repeating-linear-gradient(-45deg,
+            #b3e5fc,
+            #b3e5fc 12px,
+            #81d4fa 12px,
+            #81d4fa 24px);
+    color: #004d40;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.9);
+    transform: scale(1.02) rotate(-1deg);
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6);
+    cursor: default;
+    transition: all 0.5s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Fallback voor oudere browsers die :has() niet ondersteunen */
+@supports not selector(:has(a)) {
+    .themes-form__checkbox:checked+.themes-form__checkbox-label+.themes-form__icon-label::after {
+        content: "🎬";
+    }
+
+    .themes-form__checkbox:not(:checked)+.themes-form__checkbox-label+.themes-form__icon-label::after {
+        content: "⏳";
+    }
+
+    .themes-form__checkbox:disabled+.themes-form__checkbox-label+.themes-form__icon-label::after {
+        content: "🔒";
+    }
+
+}
+
+
+
+@media (orientation: landscape) {
+
+    footer {
+        padding: var(--selection-footer-pad-y--landscape) 0;
+    }
+
+    footer .icons {
+        gap: clamp(20px, 3vw, 28px);
+    }
+
+    footer .icons .icon {
+        height: 100%;
+    }
+
+    .start-knop-content {
+        height: min(15vh, 100px);
+    }
+
+
+}
+
+
+@media (min-width: 768px) {
+
+    body.futurefilms {
+        justify-content: center;
+    }
+
+    .app-container {
+        background-position: top center;
+        background-repeat: no-repeat;
+        /* herhaal alleen verticaal */
+        background-size: cover;
+
+    }
+
+    .selection-main {
+        scrollbar-color: var(--selection-border-color--main--semiTans) transparent;
+        width: 100%;
+        max-width: 600px;
+        border: 6px solid var(--color-primary-blue--bg---light)
+    }
+
+
+    .selection-main::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /*thumb is de greep*/
+
+    .selection-main::-webkit-scrollbar-thumb {
+        border-width: 2px;
+    }
+
+    .selection-main::-webkit-scrollbar-thumb:hover {
+        background-color: var(--selection-border-color--main--subtleTrans);
+    }
+
+    .selection-main {
+
+        background:
+            /* Accentlaag: brede, zachte blauwe veeg */
+            radial-gradient(120% 160% at 20% 10%,
+                rgba(52, 152, 219, 0.12) 0%,
+                /* accentblauw heel licht */
+                rgba(52, 152, 219, 0.00) 55%),
+            /* Hoofdlaag: bijna wit, subtiele koel-warme variatie */
+            linear-gradient(120deg,
+                rgba(255, 255, 255, 0.92) 0%,
+                rgba(248, 251, 255, 0.92) 50%,
+                /* koel wit */
+                rgba(255, 255, 255, 0.92) 100%);
+
+        /* Grotere, rustige beweging (geen flikkering) */
+        background-size: 220% 220%, 180% 180%;
+        background-position: 0% 40%, 60% 60%;
+        animation: bgDriftCalm 28s ease-in-out infinite;
+
+    }
+
+    .themes-form,
+    .intro-text {
+        max-width: 500px;
+    }
+
+    .header-slot--right {
+        display: flex;
+    }
+
+}
+
+@media (min-height: 700px) and (min-width: 1420px) {
+
+    .app-container header h2 {
+        display: none;
+    }
+
+
+    .downloadContainer {
+        position: absolute;
+        bottom: 235px;
+        /* Ensures the div stands slightly higher from the bottom, depending on the screen size */
+        left: 175px;
+        /* Ensures the div comes a bit to the right from the left side, depending on the screen size */
+        top: auto;
+        padding: var(--spacing-md);
+        /* Optional, for extra space within the div */
+        z-index: 1;
+        /* Ensures the div is not covered by other elements */
+        display: flex;
+    }
+
+    button.download {
+        font-family: 'DarkForest', sans-serif;
+        font-size: max(15px, 1.5vw);
+        padding: 10px 20px;
+        background-color: transparent;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        color: #152036;
+        border: 2px solid white;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        transition: background-size 0.5s ease-out, padding 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        background-size: 0% 100%;
+    }
+
+    button.download:hover {
+        color: white;
+        background-image: linear-gradient(to right, #152036c0 0%, #304878 100%);
+        background-size: 120% 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        border: none;
+    }
+
+    .header-download-link{
+        display: none;
+    }
+}
+
+@media (min-height: 901px) and (min-width: 1601px) {
+    .app-container {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Lichte gloed */
+        box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.5);
+
+    }
+
+}
