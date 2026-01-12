@@ -1,15 +1,13 @@
 /**glassmorphism / neon HUD”*/
-
-body.main-grid {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr;
-    place-items: center;
-    align-content: center ;
-    height: 100%;
+@layer pages {
+    body.main-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    height: auto;
     width: 100%;
-    min-height:calc(var(--vh) * 100);
-    gap: var(--spacing-md);
+    min-height: calc(var(--vh, 1dvh) * 100);
     background-color: var(--ng-bg);
 
     background-image: 
@@ -34,44 +32,37 @@ body.main-grid {
 
     /* De animatie zelf */
     animation: futuristicDrift 40s ease-in-out infinite;
-    font-family: var(----font-main);
+    font-family: var(--font-main);
     color: var(--ng-text);
-    padding: var(--spacing-md);
-    overflow: hidden;
+    padding: clamp(12px, 2.5vh, 28px) var(--spacing-md);
+    overflow-x: hidden;
+    overflow-y: auto;
     color-scheme: dark; /* Optimaliseert browser-UI (zoals scrollbars) voor donkere thema's */
 
 }
 
 .login-container {
-    grid-row: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: var(--spacing-lg);
-    width: 100%;
-    max-width: 500px;
+    width: min(500px, 100%);
+    min-height: 0;
+    flex: 1 0 100%;
 }
+
 
 body form.login-form {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     width: 100%;
-    gap: var(--spacing-md);
-    background-color: var(--ng-panel, #14161A);
-    border: 1px solid var(--ng-border);
-    border-radius: var(--border-radius-md, 12px);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 0 2px var(--ng-accent-glow);
-    padding: var(--spacing-lg);
-
+    gap: 1.5rem;
 }
 
 .inlogh1 {
     font-family: var(----font-main);
-    color: var(--ng-text);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     display: block;
     text-align: center;
 }
@@ -85,32 +76,20 @@ form section {
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    gap: clamp(var(--spacing-sm), calc((var(--vh) * 5)), var(--spacing-md));
 }
 
 form.login-form input[type="email"],
 form.login-form input[type="password"] {
-    width: 100%;
-    padding: var(--spacing-md);
-    font-family: var(----font-main);
-    border-radius: var(--border-radius-sm);
-    background-color: transparent;
-    color: var(--color-primary-white--text---main);
+    font-family: var(--font-main);
     font-size: var(--font-size-base);
-    font: var(----font-main);
-    transition: all 0.3 ease-in-out;
-    border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
-form.login-form input[type="email"]:hover,
-form.login-form input[type="password"]:hover {
-    box-shadow: var(--form-box-shadow-main);
-}
+
 
 form.login-form input[type="email"]:active,
 form.login-form input[type="password"]:active {
-    box-shadow: var(--form-box-shadow-main--subtle);
-    border: 1px solid var(  --selection-checkbox-border-color-accent--warm);
+    box-shadow: var(--ng-shadow-panel);
+    border: 1px solid var(--ng-border);
 }
 
 form label {
@@ -119,160 +98,65 @@ form label {
 }
 
 form button {
+    appearance: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: var(--spacing-md) var(--spacing-sm);
-    border-radius: var(--border-radius-sm);
-    border: 3px solid white;
-    background: var(--selection-checkbox-border-color-accent--warm);
-    color: black;
-    font-family: var(----font-main);
-    letter-spacing: var(--space-letter-xlg);
+    font-family: var(--font-main);
+ 
     font-weight: bold;
     font-size: var(--font-size-h2);
-    transition: all 0.5s ease-in-out;
     cursor: pointer;
 }
 
-form button:hover{
-    background-color: transparent ;
-    color: var(--selection-checkbox-border-color-accent--warm);
-    box-shadow: var(--form-box-shadow-darkblue--inset);
-
-}
-
-form button:active{
-    background-color: var(--selection-bg-text-shadow-blue-trans);
-    box-shadow: none;
-}
-
-@media (max-width: 926px) {
-    body.main-grid{
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        min-height: calc(var(--vh) * 100);
-        align-items: center;
-        padding: var(--spacing-sm) var(--spacing-lg);
-        height: 100%;
-        width: 100%;
-        max-width: 100vw;
-
-    }
-
-    .login-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-        height: 100%;
-        min-height: 100%;
-        width: 100%; 
-        flex-grow: 1;
-        grid-row: none;
-
-    }
-
-}
-
-@media (max-width: 926px) and (orientation: portrait){
-    .login-container{
-        justify-content: center;
-    }
-
-    .inlogh1 {
-        display: inline-flex;
-        flex-direction: row;
-
-    }
-
-    .login-container form.login-form,
-    .login-container .inlogh1 {
-
-        width: 100%;
-        
-    }
 
 
 
-     body.main-grid .login-container form.login-form{
-        height: auto;
-        justify-content: space-evenly;
-        gap: 3rem;
-        padding: 3rem var(--spacing-xlg); 
-        
-    }
-
-     body.main-grid .login-container form.login-form section{
-        display: flex;
-        flex-direction: column;
-        height: auto;
-        gap: var(--spacing-md);
-     }
-}
 
 
-@media (max-width: 926px) and (orientation: landscape) {
-        body.main-grid  {
-            overflow-y: auto;
-        }
-
-        body.main-grid .login-container {
-            height: auto;
-            min-height: 100%;
-            max-width: 600px;
-        }
-
-        
-        body.main-grid .login-container form.login-form section{
-            display: flex;
-            flex-direction: column;
-            height: auto;
-            gap: var(--spacing-md);
-        }
-
-        body.main-grid .login-container form.login-form{
-            height: auto;
-            justify-content: space-evenly;
-            gap: 2rem;
-            padding: 3rem var(--spacing-xlg); 
-        
-        }
-
-}
-
-@media screen and (min-width: 927px) {
-
+/* Small screens: minder padding binnen panel */
+  @media (max-width: 480px) {
     body.main-grid {
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        align-items: center;
-        gap: 0;
-        padding: max(2rem, 10vh) 0;
-        margin: 0 auto;
+      padding: 12px 12px;
+      gap: var(--spacing-md);
     }
 
-    body.main-grid main.login-container{
-        flex-grow: 1;
-        justify-content: start;
-        max-width: 600px;
+    .login-form.ng-form {
+      gap: var(--spacing-xlg);
+      padding: 2rem;
+    }
+  }
+
+  /* Low height screens: voorkom “center” gedrag en maak het compacter */
+  @media (max-height: 560px) {
+    body.main-grid {
+      padding: var(--spacing-xlg) var(--spacing-md);
+      gap: var(--spacing-md);
+    }
+
+    .login-form.ng-form {
+      gap: var(--spacing-xlg);
+       padding: 2rem;
+    }
+  }
+
+  /* Big height: mag weer wat meer “centered” voelen */
+  @media (min-height: 720px) {
+    body.main-grid {
+      padding: clamp(52px, 3.5vh, 64px) var(--spacing-md);
+
     }
 
 
-    main.login-container form {
-        height: auto;
-        min-height: 400px;
-        gap: calc(var(--spacing-md), calc(var(--vh) * 10), var(--spacing-lg));
-        justify-content: space-around;
-    }
 
-    main.login-container form section {
-
+     body form.login-form {
+       padding: 1.5rem;
+       gap: 3rem;
     }
-    
+  }
+
+
+
 }
-
 

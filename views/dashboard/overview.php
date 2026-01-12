@@ -21,7 +21,6 @@ $topReferrers = $tables['topReferrers'] ?? [];
 
 ?>
 
-<link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/dashboard/analytics/stats.css'))?>" >
 <script src="<?= htmlspecialchars(asset('scripts/dashboard/dashboard-charts.js')) ?>" defer></script>
 
 <section class="dash-filterbar">
@@ -31,40 +30,40 @@ $topReferrers = $tables['topReferrers'] ?? [];
   >7</a>
 
   <a 
-    class = "dash-chip <?=$rangeDays === 30 ? 'is-active' : ''?>"
+    class = "dash-chip  <?=$rangeDays === 30 ? 'is-active' : ''?>"
     href  = "?range=30"
   >30</a>
 
   <a 
-    class = "dash-chip <?=$rangeDays === 90 ? 'is-active' : ''?>"
+    class = "dash-chip  <?=$rangeDays === 90 ? 'is-active' : ''?>"
     href  = "?range=90"
   >90</a>
 </section>
 
 <section class="dash-overview-grid">
   <!-- Cards -->
-  <article class="dash-card">
+  <article class="dash-card ng-panel">
     <div class="dash-card__label">Total visitors (all-time)</div>
     <div class="dash-card__value"><?= (int) ($cards['totalVisitorsAllTime'] ?? 0) ?></div>
   </article>
 
-  <article class="dash-card">
+  <article class="dash-card ng-panel">
     <div 
       class="dash-card__label">New <?= htmlspecialchars($rangeDays !== 90 ? "$rangeString " : '')?>visitors<?= htmlspecialchars($rangeDays === 90 ? " $rangeString" : '')?></div>
     <div class="dash-card__value"><?= (int) ($cards['newVisitorsRange'] ?? 0) ?></div>
   </article>
 
-  <article class="dash-card">
+  <article class="dash-card ng-panel">
     <div class="dash-card__label">New <?= htmlspecialchars($rangeDays !== 90 ? "$rangeString " : '')?>sessions<?= htmlspecialchars($rangeDays === 90 ? " $rangeString": '')?></div>
     <div class="dash-card__value"><?= (int) ($cards['sessionsRange'] ?? 0) ?></div>
   </article>
 
-  <article class="dash-card">
+  <article class="dash-card ng-panel">
     <div class="dash-card__label">New <?= htmlspecialchars($rangeDays !== 90 ? "$rangeString " : '')?>pageviews<?= htmlspecialchars($rangeDays === 90 ? " $rangeString": '')?></div>
     <div class="dash-card__value"><?= (int) ($cards['sessionsRange'] ?? 0) ?></div>
   </article>
 
-  <article class="dash-card">
+  <article class="dash-card ng-panel">
     <div class="dash-card__label">New <?= htmlspecialchars($rangeDays !== 90 ? "$rangeString " : '')?>BounceRate<?= htmlspecialchars($rangeDays === 90 ? " $rangeString": '')?></div>
     <div class="dash-card__value"><?= htmlspecialchars((string) ($cards['pageviewsRange'] ?? 0)) ?>%</div>
   </article>
@@ -96,7 +95,7 @@ $topReferrers = $tables['topReferrers'] ?? [];
   </article>
   
   <!--device donut-->
-  <article class="dash-panel">
+  <article class="dash-panel ng-panel">
     <header class="dash-panel__header">
       <h2>Device Distribution</h2>
     </header>
@@ -121,7 +120,7 @@ $topReferrers = $tables['topReferrers'] ?? [];
   </article>
 
   <!--table: top pages -->
-  <article class="dash-panel dash-panel--wide">
+  <article class="dash-panel dash-panel--wide ng-panel">
     <header class="dash-panel__header">
       <h2>Top pages</h2>
       <div class="dash-panel__body">
@@ -142,7 +141,7 @@ $topReferrers = $tables['topReferrers'] ?? [];
   </article>
 
     <!-- Table: Top referrers -->
-  <article class="dash-panel">
+  <article class="dash-panel ng-panel">
     <header class="dash-panel__header"><h2>Top referrers</h2></header>
     <div class="dash-panel__body">
       <table class="dash-table">

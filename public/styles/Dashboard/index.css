@@ -1,0 +1,20 @@
+@import url("../shared/tokens/layer.css");
+
+@import url("../shared/reset.css") layer(reset);
+@import url("../shared/fonts.css") layer(base);
+
+@import url("../shared/tokens/core.css") layer(tokens);
+@import url("../shared/tokens/dashboard.css") layer(tokens);
+@import url("../shared/tokens/glass-neon.css") layer(tokens);
+@import url("../shared/tokens/glass-neon.dashboard.css") layer(tokens);
+
+@import url("../shared/animation.css") layer(utilities);
+@import url("../shared/utilities.css") layer(utilities);
+@import url("../shared/flash.css") layer(utilities);
+
+@import url("../shared/components/dashboard/glass-neon/chip.css") layer(components);
+@import url("../shared/components/dashboard/glass-neon/panel.css") layer(components);
+@import url("../shared/components/dashboard/glass-neon/table.css") layer(components);
+
+@import url("./dashboard.css") layer(pages);
+@import url("./analytics/stats.css") layer(pages);

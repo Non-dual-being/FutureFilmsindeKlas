@@ -1,0 +1,151 @@
+/* styles/shared/components/neon-glass.css */
+@layer components {
+    /* header area in panel */
+  .ng-panel__header {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
+      width: auto;
+      gap: 8px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid color-mix(in srgb, var(--ng-border) 85%, transparent);
+      margin-bottom: 14px;
+  }
+
+  .ng-help {
+    font-size: 0.85rem;
+    color: var(--ng-text-muted);
+    line-height: 1.35;
+    letter-spacing: 0.3em;
+  }
+
+  span.accent {
+    color: var(--ng-accent);
+  }
+
+  .ng-form {
+    padding: 1rem;
+  }
+  .ng-panel {
+    background: var(--ng-panel);
+    /**background-color would also work with background you can set also a image the postition etc*/
+    border: 1px solid var(--ng-border);
+    border-radius: var(--ng-radius);
+    box-shadow: var(--ng-shadow-panel), var(--ng-shadow-inset);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /**blurs background not conent*/
+  }
+
+  .ng-title {
+    color: var(--ng-text);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+
+    .ng-field-group {
+      display: grid;
+      gap: clamp(6px, 1vh, 8px);
+    }
+
+
+  .ng-field {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: var(--ng-radius-sm);
+    border: 1px solid var(--ng-field-border);
+    background: var(--ng-field-bg);
+    color: var(--ng-text);
+    letter-spacing: 0.15em;
+    outline: none;
+    transition: border-color 180ms ease, box-shadow 220ms ease,
+      background-color 220ms ease, transform 120ms ease;
+  }
+
+  .ng-field--label {
+    letter-spacing: 0.3em;
+    font-size: clamp(1rem, 2.1vw, 1.2rem);
+    color: var(--ng-text);
+    margin-bottom: 0;
+  }
+
+  .ng-field::placeholder {
+    color: color-mix(in srgb, var(--ng-text-muted) 85%, transparent);
+    letter-spacing: 0.5em;
+  }
+
+  .ng-field:hover {
+    border-color: var(--ng-field-border-hover);
+  }
+
+  .ng-field:focus-visible {
+    border-color: var(--ng-accent);
+    box-shadow: var(--ng-focus-ring), 0 0 16px var(--ng-accent-glow);
+  }
+
+  .ng-help {
+    font-size: 0.85rem;
+    color: var(--ng-text-muted);
+    line-height: 1.35;
+  }
+
+    /* optioneel: netjes focus “glow” op de hele groep */
+  .ng-field-group:has(.ng-field:focus-visible) .ng-label {
+    color: color-mix(in srgb, var(--ng-accent) 70%, var(--ng-text));
+  }
+
+  .ng-btn {
+    padding: 12px 16px;
+    border-radius: var(--ng-radius-sm);
+    border: 1px solid var(--ng-btn-border);
+    background: var(--ng-btn-bg);
+    color: var(--ng-text);
+
+    letter-spacing: var(--space-letter-xlg);
+
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 220ms ease,
+      border-color 180ms ease, background-color 220ms ease;
+  }
+
+  .ng-btn:hover {
+    border-color: var(--ng-accent);
+    box-shadow: 0 0 18px var(--ng-accent-glow);
+    transform: translateY(-1px);
+  }
+
+  .ng-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  .ng-btn:focus-visible {
+    outline: none;
+    /**removes basick outline browser*/
+    border-color: var(--ng-accent);
+    box-shadow: var(--ng-focus-ring), 0 0 18px var(--ng-accent-glow);
+  }
+
+  .ng-btn--primary {
+    border-color: color-mix(in srgb, var(--ng-accent) 55%, var(--ng-btn-border));
+  }
+}
+
+@media (max-width: 475px) and (orientation: portrait) {
+
+  .ng-panel__header {
+      align-items: center;
+      max-width: 100%;
+    
+  }
+
+  .ng-help {
+    font-size: 0.85rem;
+    color: var(--ng-text-muted);
+    line-height: 1.35;
+    letter-spacing: 0.3em;
+  }
+
+}

@@ -7,11 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Future Login Panel</title>
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/layout-vars.css'))?>"> 
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/global.css'))?>">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/flash.css'))?>">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/public/video/player.css'))?>">
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/auth/login.css'))?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/auth/index.css'))?>">
     <script src="./../scripts/shared/cssGlobals.js" defer type="module"></script>
     <script src="./../scripts/auth/loginpage.js" defer type="module"></script>
     <script defer>window.flashTargetIds = <?= json_encode(LoginFlashTarget::getValues()); ?></script>
@@ -19,7 +15,11 @@
 </head>
 <body class="main-grid">
     <main class="login-container">
-        <h1 class="inlogh1">INLOG FUTURE DASHBOARD</h1>
+        <header class="ng-panel__header">
+             <h1 class="inlogh1 ng-title">LOG-IN FUTURE DASHBOARD</h1>
+             <p class="ng-help">Log-in as <span class="accent">admin</span> to analyse</p>
+        </header>
+       
 
         <?php $GeneralMsg = flash(LoginFlashTarget::General)?>
 
@@ -39,7 +39,7 @@
 
         <form 
             method="POST" 
-            class="login-form" 
+            class="login-form ng-panel ng-form" 
             id="login-form" 
             action="<?= htmlspecialchars(asset('auth/login-page.php'))?>"
         >
@@ -47,8 +47,12 @@
                 type="hidden" 
                 name="<?= htmlspecialchars(CSRF); ?>" 
                 value="<?= $_SESSION[CSRF]; ?>">
-            <section class="email">
-                <label for="email">Email</label>
+
+            <section class="email ng-field-group">
+                <label 
+                    for="email" 
+                    class=ng-field--label
+                >Email</label>
                 <input 
                     type="email" 
                     id="email" 
@@ -57,20 +61,24 @@
                     autocomplete="email" 
                     required
                     inputmode="email"
+                    class="ng-field"
                 >
             </section>
             
-            <section class="password">
-                <label for="password">Wachtwoord</label>
+            <section class="password ng-field-group">
+                <label 
+                    for="password"
+                    class=ng-field--label
+                >password</label>
                 <input 
                     type="password" 
                     autocomplete="current-password" 
                     id="password" 
                     name="password" 
-                    placeholder="Wachtwoord" 
+                    placeholder="password" 
                     required
+                    class="ng-field"
                 >
-
             </section>
           
             <!--De autocompletion is voor browsers zodat ze op een correcte manier het wachtwoord kunnen automatisch invulen-->
@@ -78,7 +86,7 @@
                 type="submit" 
                 id="verzendknop" 
                 name="loginSubmit"
-                class="submit-button"
+                class="submit-button ng-btn"
             >Inloggen</button>
 
             <?php render(VIEW_PATH . '/partials/dashboard/flash.php', [

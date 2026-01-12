@@ -1,6 +1,6 @@
 /**mobile first */
-
-.dash-overview-grid {
+@layer pages {
+  .dash-overview-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--dash-gap);
@@ -31,7 +31,7 @@
   padding: 8px 12px;
   border-radius: 999px;
 
-  color: var(--dash-text-muted);
+  color: var(--ng-text-muted);
   text-decoration: none;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -65,7 +65,7 @@
 }
 
 .dash-chip:hover {
-  color: var(--dash-text);
+  color: var(--ng-text);
   border-color: rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.06);
   transform: translateY(-1px);
@@ -73,20 +73,28 @@
 
 .dash-chip:focus-visible {
   outline: none;
-  border-color: var(--dash-accent);
-  box-shadow: 0 0 12px var(--dash-accent-glow);
-  color: var(--dash-text);
+  border-color: var(--ng-accent);
+  box-shadow: 0 0 12px var(--ng-accent-glow);
+  color: var(--ng-text);
 }
 
 /* selected/active state */
 .dash-chip.is-active {
   color: #fff;
-  border-color: var(--dash-accent);
+  border-color: var(--ng-accent);
   background: rgba(0, 175, 255, 0.10);
   box-shadow:
     0 0 12px rgba(0, 175, 255, 0.22),
     inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
+
+ .ng-btn.ng-btn--chip {
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+  }
 
 .dash-table {
   width: 100%;
@@ -105,7 +113,7 @@
 }
 
 .dash-table th {
-  color: var(--dash-text-muted);
+  color: var(--ng-text-muted);
   border-bottom: 1px solid rgba(255, 255, 255, 0.10);
 }
 
@@ -116,16 +124,16 @@
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  background: var(--dash-panel);
-  border: 1px solid var(--dash-border);
+  background: var(--ng-panel);
+  border: 1px solid var(--ng-border);
   border-radius: var(--dash-radius);
   padding: 14px 16px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35),
-    inset 0 0 2px var(--dash-accent-glow);
+    inset 0 0 2px var(--ng-accent-glow);
 }
 
 .dash-card__label {
-  color: var(--dash-text-muted);
+  color: var(--ng-text-muted);
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -138,8 +146,8 @@
 }
 
 .dash-panel {
-  background: var(--dash-panel);
-  border: 1px solid var(--dash-border);
+  background: var(--ng-panel);
+  border: 1px solid var(--ng-border);
   border-radius: var(--dash-radius);
   overflow: hidden;
 }
@@ -152,7 +160,7 @@
 
 .dash-panel__header {
   padding: 12px 16px;
-  border-bottom: 1px solid var(--dash-border);
+  border-bottom: 1px solid var(--ng-border);
 }
 
 .dash-panel__header h2 {
@@ -210,5 +218,7 @@
   .dash-panel--wide {
     grid-column: span 2;
   }
+
+}
 
 }

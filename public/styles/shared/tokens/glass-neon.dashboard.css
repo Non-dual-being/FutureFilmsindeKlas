@@ -1,0 +1,11 @@
+/* styles/shared/tokens/neon-glass.dashboard.css */
+@layer tokens {
+  body.dashboard {
+    /* override de basis neon/glass tokens */
+    --ng-accent: #a78bfa;
+    --ng-accent-glow: rgba(167, 139, 250, 0.35);
+
+    /* dashboard panelen zijn iets donkerder/transparanter */
+    --ng-panel: rgba(18, 20, 24, 0.76);
+  }
+}

@@ -1,0 +1,27 @@
+    
+@layer tokens {
+    :root {
+    /**colors*/
+
+    /**space*/
+    --dash-radius: 12px;
+    --dash-gap: 16px;
+
+    /**elemets*/
+    --padding-side-bar: 16px;
+    --dash-topbar-h: 78px;
+    --dash-side-bar-w: calc(280px + var(--padding-side-bar));
+    --padding-topbarY: 10px;
+    --padding-topbarX: 20px;
+
+    /**z-index values */
+    --dash-z-index__topbar: 6;
+    --dash-z-index__sidebar: 5;
+    --dash-z-index__backdrop: 4;
+
+
+
+    }
+
+}    
+    

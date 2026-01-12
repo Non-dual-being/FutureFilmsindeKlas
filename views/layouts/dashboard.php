@@ -12,9 +12,7 @@ use GeoFort\Enums\FlashTarget\DashboardFlashTarget;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/layout-vars.css'))?>" >
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/shared/flash.css'))?>" >
-    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/dashboard/global.css'))?>" >
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset('styles/dashboard/index.css'))?>" >
 
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
