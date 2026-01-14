@@ -47,6 +47,12 @@ final class AnalyticsTracker {
     private const STOP_TRACK_FLAG = '~\.(css|js|png|jpg|jpeg|webp|svg|ico)$~i';
     private const SESSION_COOKIE = 'ff_sid';
 
+    private const EXCLUDED_PATHS = [
+        '/dashboard',
+        '/auth',
+        '/error'
+    ];
+
     public function __construct(
         private AnalyticsPageviewSQLService $PageViewSql,
         private AnalyticsSessionSQLService $SessionSql,
@@ -164,15 +170,9 @@ final class AnalyticsTracker {
 
         $path = self::getBaseRequestUrl($server);
 
-        $stoptrack = (
-            (str_starts_with($path, '/dashboard')) 
-            || 
-            (str_starts_with($path, '/auth')) 
-            || 
-            (str_starts_with($path, '/error'))
-        );
-
-        if ($stoptrack) return false;
+        foreach(self::EXCLUDED_PATHS as $excluded){
+            if (str_contains($path, $excluded)) return false;
+        }
 
         if (preg_match(self::STOP_TRACK_FLAG, $path)) return false;
 

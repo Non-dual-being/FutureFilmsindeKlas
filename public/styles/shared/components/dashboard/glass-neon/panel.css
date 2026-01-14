@@ -1,0 +1,85 @@
+/* styles/dashboard/components/panel.css */
+@layer components {
+
+  .dash-filterbar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  /**fitlers out the range */
+
+  .dash-card,
+  .dash-panel {
+    background: var(--ng-panel);
+    border: 1px solid var(--ng-border);
+    border-radius: var(--dash-radius, 12px); /* Gebruik een dashboard-specifieke token */
+    box-shadow: var(--ng-shadow-panel), var(--ng-shadow-inset);
+    overflow: hidden;
+  }
+
+  .dash-card {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 16px;
+  }
+
+  .dash-card__label {
+    color: var(--ng-text-muted);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .dash-card__value {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--ng-text);
+  }
+
+  .dash-panel__header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--ng-border);
+  }
+
+  .dash-panel__header h2 {
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0;
+    color: var(--ng-text);
+  }
+
+  .dash-panel__body {
+    padding: 14px 16px;
+  }
+
+  .dash-panel canvas {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+
+  .dash-empty {
+    border: 1px dashed color-mix(in srgb, var(--ng-border) 80%, transparent);
+    border-radius: var(--dash-radius, 12px);
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    text-align: center;
+  }
+
+  .dash-empty__title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--ng-text);
+  }
+
+  .dash-empty__text {
+    color: var(--ng-text-muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}

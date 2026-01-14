@@ -11,6 +11,6 @@
 @import url("../shared/animation.css") layer(utilities);
 @import url("../shared/utilities.css") layer(utilities);
 
-@import url("./../shared/components/neon-glass.css") layer(components);
+@import url("./../shared/components/auth/glass-neon.css") layer(components);
 
 @import url("./login.css") layer(pages);

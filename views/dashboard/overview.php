@@ -60,12 +60,12 @@ $topReferrers = $tables['topReferrers'] ?? [];
 
   <article class="dash-card ng-panel">
     <div class="dash-card__label">New <?= htmlspecialchars($rangeDays !== 90 ? "$rangeString " : '')?>pageviews<?= htmlspecialchars($rangeDays === 90 ? " $rangeString": '')?></div>
-    <div class="dash-card__value"><?= (int) ($cards['sessionsRange'] ?? 0) ?></div>
+    <div class="dash-card__value"><?= (int) ($cards['pageviewsRange'] ?? 0) ?></div>
   </article>
 
   <article class="dash-card ng-panel">
     <div class="dash-card__label">New <?= htmlspecialchars($rangeDays !== 90 ? "$rangeString " : '')?>BounceRate<?= htmlspecialchars($rangeDays === 90 ? " $rangeString": '')?></div>
-    <div class="dash-card__value"><?= htmlspecialchars((string) ($cards['pageviewsRange'] ?? 0)) ?>%</div>
+    <div class="dash-card__value"><?= htmlspecialchars((string) ($cards['bounceRate'] ?? 0)) ?>%</div>
   </article>
 
   <!--charts-->
