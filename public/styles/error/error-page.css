@@ -1,20 +1,24 @@
-.error-container {
-    text-align: center;
-    padding: var(--spacing-xlg);
-    background: rgba(20, 22, 26, 0.5); /* Semi-transparant paneel */
-    border-radius: var(--border-radius-md);
-}
-.error-code {
-    font-size: 3rem;
-    color: var(--color-futuremessage-PublicGeneral--borderColor---Error);
-    margin-bottom: var(--spacing-md);
-}
-.error-message {
-    font-size: 1.2rem;
-    color: var(--ng-text);
-    margin-bottom: var(--spacing-lg);
-}
-.error-contact {
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
-}
+ @layer pages {
+    .error-container {
+        text-align: center;
+        padding: var(--spacing-xlg);
+        background: rgba(20, 22, 26, 0.5); /* Semi-transparant paneel */
+        border-radius: var(--border-radius-md);
+    }
+    .error-code {
+        font-size: 3rem;
+        color: var(--color-futuremessage-PublicGeneral--borderColor---Error);
+        margin-bottom: var(--spacing-md);
+    }
+    .error-message {
+        font-size: 1.2rem;
+        color: var(--ng-text);
+        margin-bottom: var(--spacing-lg);
+    }
+    .error-contact {
+        font-size: 0.9rem;
+        color: var(--color-text-secondary);
+    }
+
+ }   
+  

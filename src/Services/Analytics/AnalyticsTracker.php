@@ -66,6 +66,9 @@ final class AnalyticsTracker {
         if (empty($server)) return '';
         $uri = $server['REQUEST_URI'] ?? '';
         $path = parse_url($uri, PHP_URL_PATH) ?: '';
+
+        if ($path === '/index.php') $path = '/';
+
         $path = substr($path, 0, 255);
 
         return $path;

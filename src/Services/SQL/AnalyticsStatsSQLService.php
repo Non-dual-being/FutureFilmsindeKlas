@@ -162,15 +162,14 @@ final class AnalyticsStatsSQLService
             ORDER BY
                 views DESC
             LIMIT
-                :limit_placeholder
+                :limit_pv
             ";
             
-            $topPages = str_replace(':limit_placeholder', (string) $limit, $topPages);
             $stmt = $this->pdo->prepare($topPages);
-            $stmt->execute([
-                ':from_date'        => $fromDateTime,
-                ':to_date'          => $toDateTime,
-            ]);
+            $stmt->bindValue(':from_date', $fromDateTime);
+            $stmt->bindValue(':to_date', $toDateTime);
+            $stmt->bindValue(':limit_pv', $limit, PDO::PARAM_INT);
+            $stmt->execute();
 
             $topPagesOverview = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $topPagesOverview;
@@ -207,21 +206,21 @@ final class AnalyticsStatsSQLService
         ORDER BY
             visitor_sessions DESC
         LIMIT
-            :limit_placeholder
+            :limit_refer
         ";
-        $topReferrers = str_replace(':limit_placeholder', (string) $limit, $topReferrers);
-
+   
         /**
          * Some Dbs have ar not capable of binding params in limit clause
          * Explicit int in param and casting to string makes is safe to hardcode the limit
+         * use str_repalce if binding the limit clause is not possible in the PDO
          */
 
 
         $stmt = $this->pdo->prepare($topReferrers);
-        $stmt->execute([
-            ':from_date'    => $fromDateTime,
-            ':to_date'      => $toDateTime
-        ]);
+        $stmt->bindValue(':from_date', $fromDateTime);
+        $stmt->bindValue(':to_date', $toDateTime);
+        $stmt->bindValue(':limit_refer', $limit, PDO::PARAM_INT);
+        $stmt->execute();
 
         $topRefered = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $topRefered;

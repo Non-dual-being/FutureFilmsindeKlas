@@ -7,6 +7,7 @@ use GeoFort\Security\AuthMiddleWare;
 
 use GeoFort\Services\Http\GlobalBaseUrlProvider;
 use GeoFort\Services\Http\CountryCodeResolver;
+use GeoFort\Services\Http\HeaderRedirector;
 use GeoFort\Services\SQL\AnalyticsVisitorSQLService;
 use GeoFort\Services\SQL\AnalyticsSessionSQLService;
 use GeoFort\Services\SQL\AnalyticsPageviewSQLService;
@@ -14,7 +15,29 @@ use GeoFort\Services\Analytics\AnalyticsTracker;
 use GeoFort\Services\Analytics\AnalyticsConfig;
 use GeoFort\Database\Connector;
 
+
 /**-----------[BASE SETUP]----------------- */
+
+$requestedPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+$validRoutes = [
+    '/', 
+    '/index.php', 
+    'index.php', 
+    'videoplayer.php', 
+    'auth/login-page.php',
+    'dashboard/index.php',
+    'dashboard/pages.php',
+    'dashboard/referrers.php',
+    'error/index.php',
+
+];
+
+if (!in_array(ltrim($requestedPath, '/'))) {
+    HeaderRedirector::toError(
+
+    );
+}
 
 error_reporting(E_ALL);
 ini_set('log_errors', 1);  
